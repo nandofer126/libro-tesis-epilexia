@@ -1,0 +1,46 @@
+# --- Salida de compilación (latexmk escribe todo en build/) ---
+build/
+Thesis.pdf
+
+# --- Auxiliares de LaTeX (por si alguien compila sin latexmk) ---
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.nlo
+*.nls
+*.out
+*.snm
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.xdv
+*.dvi
+*.ps
+*.run.xml
+*.bcf
+*-blx.bib
+svg-inkscape/
+
+# --- Sistema / editores ---
+.DS_Store
+*.swp
+*~
+.vscode/
+.idea/
+
+# --- Archivos personales de Claude Code (CLAUDE.md sí se versiona) ---
+.claude/settings.local.json
+CLAUDE.local.md
+
+# --- Copias sueltas / exportaciones ---
+*.zip

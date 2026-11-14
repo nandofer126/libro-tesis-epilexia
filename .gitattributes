@@ -1,0 +1,16 @@
+# Texto: normalizar finales de línea a LF para evitar diffs falsos entre macOS/Windows/Linux
+*.tex   text eol=lf diff=tex
+*.bib   text eol=lf
+*.cls   text eol=lf
+*.sty   text eol=lf
+*.md    text eol=lf
+Makefile text eol=lf
+latexmkrc text eol=lf
+
+# Binarios: nunca intentar mergear línea a línea
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.pdf  binary
+*.svg  binary
+*.eps  binary

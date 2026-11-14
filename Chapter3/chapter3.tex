@@ -1,0 +1,419 @@
+\chapter{Metodología de desarrollo}
+\label{cap:metodologia}
+
+\section{Enfoque metodológico}
+\label{sec:enfoque-metodologico}
+
+El desarrollo de EpilexIA se llevó a cabo mediante un enfoque orientado a la
+definición progresiva de requerimientos, el diseño e implementación de los
+componentes del sistema y su posterior verificación y validación. Debido a que el proyecto se desarrolló en un contexto relacionado con el análisis de estudios EEG y comprendió la interacción de
+diferentes componentes de \textit{software}, se consideró necesario mantener una correspondencia entre las necesidades identificadas, las funcionalidades implementadas y las actividades destinadas
+a comprobar su funcionamiento.
+
+Para organizar este proceso se adoptó como referencia el Modelo V de desarrollo
+de sistemas. Este modelo permite relacionar las etapas de definición y diseño
+con actividades posteriores de verificación y validación. En el proyecto, su
+aplicación fue adaptada a las condiciones de trabajo existentes, particularmente
+a la disponibilidad de los profesionales del área de Neurología del Hospital
+Central del Instituto de Previsión Social y a la necesidad de presentar avances
+funcionales durante las instancias de revisión.
+
+El trabajo combinó, por tanto, actividades de relevamiento, diseño,
+implementación, integración, pruebas y validación. Los requerimientos obtenidos
+durante las reuniones y revisiones sirvieron como base para el desarrollo de
+los diferentes módulos, mientras que las funcionalidades desarrolladas
+fueron posteriormente presentadas y revisadas para identificar ajustes
+y nuevas necesidades.
+ Este mecanismo permitió mantener una relación continua entre los
+requerimientos identificados y la evolución del sistema.
+
+La metodología se aplicó de manera incremental sobre los distintos componentes
+de EpilexIA. El desarrollo comprendió la base de datos, los servicios del
+\textit{backend}, la interfaz web, el visualizador de señales EEG y la integración con
+el servicio de inteligencia artificial, además de funcionalidades transversales
+como el control de acceso, la auditoría y la trazabilidad. La integración
+progresiva de estos componentes permitió realizar verificaciones parciales
+antes de evaluar su funcionamiento conjunto.
+
+\section{Modelo V}
+\label{sec:modelo-v}
+
+El Modelo V es un enfoque de desarrollo de sistemas que establece una relación
+explícita entre las actividades de definición y diseño y las actividades de
+verificación y validación. Su representación gráfica adopta la forma de una
+letra V, en la que el lado izquierdo corresponde a la descomposición progresiva
+del sistema desde los requerimientos hacia niveles de diseño más detallados,
+mientras que el lado derecho representa las actividades de integración,
+verificación y validación asociadas con los elementos definidos previamente
+\citep{ForsbergMooz1991}.
+
+En la rama izquierda se establecen las necesidades y requerimientos del
+sistema y se desarrollan progresivamente su arquitectura y diseño. A medida
+que se desciende en el modelo aumenta el nivel de detalle hasta alcanzar la
+implementación, ubicada conceptualmente en la parte inferior de la V. A partir
+de este punto se inicia la integración de los componentes y la ejecución de
+las actividades de prueba correspondientes.
+
+Una característica fundamental del Modelo V es la correspondencia entre las
+etapas de desarrollo y las actividades destinadas a comprobar los resultados
+obtenidos. De esta manera, los componentes implementados pueden ser sometidos
+a pruebas unitarias, su interacción puede evaluarse mediante pruebas de
+integración y el sistema completo puede verificarse con respecto a los
+requerimientos establecidos. Finalmente, la validación permite determinar si
+la solución desarrollada responde a las necesidades y al propósito para los
+cuales fue concebida \citep{ForsbergMooz1991}.
+
+Esta correspondencia favorece la trazabilidad entre requerimientos, diseño,
+implementación y pruebas, debido a que las actividades de comprobación pueden
+ser consideradas desde las etapas iniciales del desarrollo. No obstante, el
+Modelo V presenta una estructura originalmente secuencial y puede requerir
+adaptaciones cuando los requerimientos evolucionan o cuando resulta necesario
+incorporar retroalimentación durante el desarrollo. Por este motivo, su
+aplicación puede ajustarse a las características y restricciones particulares
+del proyecto.
+
+\section{Adaptación del Modelo V al proyecto \mbox{EpilexIA}}
+\label{sec:adaptacion-modelo-v}
+
+La aplicación del Modelo V en el desarrollo de EpilexIA se realizó de manera
+adaptada a las características del proyecto y al contexto en el que se llevó
+a cabo. Si bien se mantuvo como principio la correspondencia entre la
+definición de requerimientos, el diseño de la solución, su implementación y
+las actividades posteriores de verificación y validación, estas etapas no se
+desarrollaron como una secuencia estrictamente lineal.
+
+Una de las principales condiciones consideradas fue la disponibilidad de los
+profesionales vinculados al proceso de análisis de estudios EEG en el Hospital
+Central del Instituto de Previsión Social. Las instancias de interacción con
+estos profesionales fueron utilizadas para relevar necesidades, revisar
+funcionalidades y obtener retroalimentación sobre los avances realizados.
+Como consecuencia, determinados requerimientos fueron precisados o ajustados
+a medida que se disponía de nuevas observaciones sobre el funcionamiento del
+sistema.
+
+A partir de los requerimientos identificados se definieron progresivamente la
+arquitectura y los componentes necesarios para la solución. El desarrollo se
+organizó sobre distintos elementos de EpilexIA, entre ellos la base de datos,
+los servicios del \textit{backend}, la interfaz web, la gestión de estudios, el
+visualizador de señales EEG y la integración con el servicio de inteligencia
+artificial. Cada componente atravesó actividades de implementación y
+verificación antes de su integración con el resto del sistema.
+
+La verificación se realizó progresivamente durante el desarrollo. Las
+funcionalidades implementadas fueron comprobadas de forma individual y, a
+medida que se integraban los distintos componentes, se realizaron pruebas
+sobre su interacción. Este proceso permitió identificar problemas de
+funcionamiento, inconsistencias entre componentes y aspectos que requerían
+ajustes antes de continuar con etapas posteriores de integración.
+
+La validación incorporó además la revisión de avances funcionales y la
+retroalimentación obtenida durante las instancias de seguimiento del proyecto.
+Cuando estas revisiones evidenciaban nuevas necesidades o modificaciones sobre
+una funcionalidad existente, los cambios se incorporaban nuevamente al ciclo
+de análisis, diseño, implementación y verificación. De esta forma, el proyecto
+mantuvo la relación entre las etapas planteadas por el Modelo V, pero permitió
+iteraciones sobre determinadas partes del sistema cuando las condiciones del
+desarrollo lo requerían.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{ThesisFigs/modelo_v_epilexia.png}
+    \caption{Adaptación del Modelo V al proceso de desarrollo de EpilexIA.
+    Elaboración propia basada en \citet{ForsbergMooz1991}.}
+    \label{fig:modelo-v-epilexia}
+\end{figure}
+
+
+Esta adaptación del Modelo V al proceso de desarrollo de EpilexIA se
+representa de forma esquemática en la Figura~\ref{fig:modelo-v-epilexia}.
+La adaptación permitió conservar la trazabilidad entre las necesidades
+identificadas, las decisiones de diseño, las funcionalidades implementadas y
+las actividades destinadas a comprobarlas, sin impedir la incorporación de
+retroalimentación durante el desarrollo. Las
+secciones siguientes describen con mayor detalle las actividades de
+relevamiento, diseño, implementación, integración, verificación y validación
+realizadas en el proyecto.
+
+
+\section{Relevamiento de requerimientos}
+\label{sec:relevamiento-requerimientos}
+
+El relevamiento de requerimientos constituyó una actividad fundamental para
+comprender el contexto de utilización de EpilexIA y definir las funcionalidades
+que debía proporcionar el sistema. Este proceso se desarrolló considerando el
+flujo de trabajo relacionado con los estudios EEG en el Hospital Central del
+Instituto de Previsión Social y las necesidades identificadas durante las
+instancias de interacción con los profesionales involucrados.
+
+Durante las primeras etapas del proyecto se analizaron las actividades
+relacionadas con la gestión y revisión de estudios electroencefalográficos,
+así como las características de las herramientas utilizadas en dicho contexto.
+Este análisis permitió identificar necesidades vinculadas con el acceso a los
+estudios, la visualización de señales EEG, la gestión de la información
+asociada y la elaboración de informes, además de aspectos relacionados con la
+seguridad, el control de acceso y la trazabilidad de las operaciones realizadas
+en el sistema.
+
+El relevamiento no se limitó a una única etapa inicial. A lo largo del
+desarrollo se realizaron reuniones de seguimiento y revisión en las que se
+presentaron avances funcionales y se analizaron observaciones sobre el
+comportamiento esperado del sistema. Estas instancias permitieron precisar
+requerimientos previamente identificados e incorporar ajustes derivados de una
+mejor comprensión del flujo de trabajo y de las necesidades de los usuarios.
+
+Este proceso tuvo especial relevancia en las funcionalidades relacionadas con
+el análisis de estudios EEG. Aspectos como la visualización de las señales, la
+utilización de montajes electroencefalográficos, la aplicación de filtros y
+parámetros de visualización, la representación de eventos y anomalías, y la
+revisión de los resultados provenientes del procesamiento mediante inteligencia
+artificial fueron refinados progresivamente durante el desarrollo. De manera
+similar, se revisaron los mecanismos de gestión de estudios, elaboración de
+informes y colaboración entre los profesionales.
+
+Los requerimientos relacionados con los perfiles de usuario también
+evolucionaron durante el proyecto. Las primeras definiciones contemplaban una
+separación más específica de determinados perfiles clínicos. Posteriormente,
+a partir de las revisiones realizadas sobre el flujo de trabajo, estas
+responsabilidades fueron reorganizadas en perfiles que representaran de forma
+más adecuada la utilización prevista del sistema. Como resultado, la
+configuración final contempla los perfiles Administrador, Técnico y
+Especialista, cada uno asociado con las operaciones que le corresponden dentro
+de EpilexIA.
+
+Además de los requerimientos funcionales, durante el relevamiento se
+consideraron aspectos relacionados con la operación del sistema, entre ellos
+el acceso mediante navegador web, la utilización desde diferentes tipos de
+dispositivos, la protección de la información, la autenticación y autorización
+de usuarios, la auditoría de operaciones y la necesidad de integrar los
+diferentes componentes que intervienen en el procesamiento y visualización de
+los estudios EEG.
+
+La información obtenida mediante este proceso sirvió como base para definir
+los requerimientos funcionales y no funcionales del sistema y orientar las
+decisiones posteriores de arquitectura, diseño e implementación. La especificación de estos requerimientos y su relación con los diferentes componentes de EpilexIA se presenta en el Capítulo~\ref{cap:analisis-diseno}.
+
+\section{Diseño y desarrollo de la solución}
+\label{sec:diseno-desarrollo-solucion}
+
+A partir de los requerimientos identificados se inició el diseño de la solución,
+definiendo los principales componentes de EpilexIA y las responsabilidades
+asociadas con cada uno de ellos. El sistema fue concebido mediante una
+arquitectura modular que permitiera separar la gestión de la información, la
+lógica de negocio, la interacción con los usuarios y el procesamiento de las
+señales EEG.
+
+El diseño contempló una aplicación web para la interacción con los usuarios,
+servicios de \textit{backend} encargados de gestionar la lógica del sistema y el acceso
+a los datos, una base de datos para la persistencia de la información y
+componentes destinados al procesamiento de los estudios EEG. Asimismo, se
+consideró la integración con el servicio de inteligencia artificial encargado
+del procesamiento automatizado de las señales, manteniendo separadas las
+responsabilidades correspondientes a la aplicación web y al componente de
+procesamiento mediante inteligencia artificial.
+
+El desarrollo se realizó progresivamente sobre los diferentes módulos del
+sistema. Entre ellos se incluyeron la autenticación y gestión de usuarios, la
+gestión de pacientes y estudios, la carga de archivos asociados con los
+estudios EEG, la visualización de señales electroencefalográficas, la gestión
+de eventos y anomalías, la elaboración de informes clínicos, el control de
+acceso y la auditoría de las operaciones. A estos módulos se incorporaron
+posteriormente las funcionalidades necesarias para integrar los resultados
+provenientes del servicio de inteligencia artificial.
+
+Las funcionalidades relacionadas con la visualización de señales EEG
+requirieron un proceso de diseño y ajuste progresivo debido a las
+características particulares de este tipo de información. Durante el
+desarrollo se consideraron aspectos como la representación de los canales, los
+montajes electroencefalográficos, los filtros, la sensibilidad, la ventana
+temporal, el espectrograma y la sincronización con la información audiovisual
+asociada al estudio. Estas funcionalidades fueron revisadas y modificadas a
+medida que se evaluaba su comportamiento dentro del visualizador.
+
+
+De manera similar, la integración con el componente de inteligencia artificial
+evolucionó durante el desarrollo. Se definieron mecanismos para solicitar el
+procesamiento de un estudio, identificar las ejecuciones, consultar su estado
+y recuperar los resultados almacenados. La separación entre los componentes
+encargados de la gestión del sistema y aquellos responsables del procesamiento
+mediante inteligencia artificial permitió delimitar sus responsabilidades y
+facilitar su integración dentro de la arquitectura general de EpilexIA.
+
+
+El desarrollo de los distintos componentes estuvo acompañado por revisiones
+funcionales y técnicas. Los resultados obtenidos en cada etapa permitieron
+detectar necesidades de ajuste tanto en la interfaz como en los servicios y
+estructuras de datos involucrados. De esta forma, las decisiones de diseño no
+se consideraron elementos invariables, sino que fueron refinadas cuando las
+actividades de integración y revisión evidenciaban la necesidad de realizar
+modificaciones.
+
+Como resultado de este proceso se obtuvo una solución compuesta por módulos
+relacionados entre sí, cuya integración permite cubrir el flujo de trabajo
+contemplado por EpilexIA. La arquitectura, el diseño de la base de datos, las interfaces de integración y las decisiones específicas adoptadas para cada componente se describen posteriormente en el Capítulo~\ref{cap:analisis-diseno}, mientras que los detalles de su implementación se presentan en el
+Capítulo~\ref{cap:implementacion-sistema}.
+
+
+
+\section{Verificación e integración}
+\label{sec:verificacion-integracion}
+
+La verificación de EpilexIA se realizó de manera progresiva durante el
+desarrollo, con el propósito de comprobar que las funcionalidades
+implementadas respondieran al comportamiento esperado antes de avanzar hacia
+su integración con otros componentes. Este proceso permitió detectar
+inconsistencias y realizar ajustes durante la construcción del sistema, en
+lugar de concentrar las actividades de comprobación únicamente al finalizar
+el desarrollo.
+
+En una primera instancia se verificaron funcionalidades específicas de los
+distintos componentes. Estas comprobaciones abarcaron operaciones relacionadas
+con la gestión de usuarios, pacientes y estudios, el almacenamiento y consulta
+de información, la carga de archivos, la visualización de señales EEG, la
+gestión de informes, el control de acceso y la auditoría. Las correcciones
+derivadas de estas verificaciones fueron incorporadas antes o durante las
+etapas posteriores de integración.
+
+A medida que los componentes alcanzaban un estado funcional, se verificó su
+interacción dentro de la arquitectura del sistema. Esto implicó comprobar el
+intercambio de información entre la interfaz web, los servicios del \textit{backend} y la base de datos, así como el acceso a los archivos asociados con los estudios.
+En el caso del visualizador EEG, la integración requirió verificar que la
+información obtenida a partir de los estudios pudiera ser representada
+correctamente y utilizada por las diferentes funcionalidades de análisis
+disponibles en la interfaz.
+
+
+La integración con el subsistema de inteligencia artificial contempló
+la solicitud de ejecuciones de procesamiento, su identificación y
+seguimiento, la consulta de los estados correspondientes y la
+recuperación de los resultados asociados con los estudios EEG.
+Durante las pruebas funcionales se verificó la consulta y
+presentación de resultados previamente almacenados. Sin embargo,
+no fue posible completar la validación de una nueva ejecución
+integral del motor de inteligencia artificial, debido a las
+limitaciones del entorno de pruebas. Esta situación se documenta en el Capítulo~\ref{pruebas_evaluacion}.
+
+
+
+Las actividades de integración también permitieron identificar situaciones
+que no resultaban evidentes al evaluar cada componente de forma aislada.
+Entre ellas se encontraron aspectos relacionados con el intercambio de datos,
+la correspondencia entre estructuras utilizadas por diferentes servicios, la
+gestión de archivos y la presentación de la información en la interfaz. Los
+problemas detectados durante estas instancias dieron lugar a ajustes en los
+componentes involucrados y a nuevas verificaciones después de aplicar las
+correcciones.
+
+De esta manera, la verificación y la integración se desarrollaron como
+actividades relacionadas y recurrentes durante la evolución de EpilexIA. Las
+comprobaciones realizadas durante esta etapa permitieron preparar versiones
+funcionales del sistema para las posteriores instancias de revisión y
+validación. La estrategia de pruebas, los casos evaluados y los resultados obtenidos
+se presentan posteriormente en el Capítulo~\ref{pruebas_evaluacion}.
+
+
+\section{Validación con usuarios}
+\label{sec:validacion-usuarios}
+
+
+Las actividades de validación funcional de EpilexIA comprendieron
+instancias de revisión de las funcionalidades implementadas y la
+obtención de retroalimentación de usuarios vinculados con el
+contexto de utilización del sistema. Estas actividades permitieron
+contrastar los avances realizados con las necesidades identificadas
+durante el relevamiento y evaluar la adecuación de las
+funcionalidades al flujo de trabajo previsto.
+
+
+Durante el desarrollo se presentaron versiones funcionales y avances del
+sistema con el propósito de revisar su comportamiento y recopilar observaciones.
+La retroalimentación obtenida permitió identificar aspectos que requerían
+ajustes, tanto en la organización de las funcionalidades como en la forma de
+interactuar con ellas. Estas observaciones fueron posteriormente consideradas
+en nuevas actividades de análisis, diseño e implementación.
+
+Las revisiones tuvieron especial importancia en las funcionalidades
+relacionadas con el trabajo sobre estudios EEG. La disposición de los
+elementos del visualizador, la representación de las señales, los controles
+destinados al análisis y la organización de la información asociada al estudio
+fueron objeto de ajustes durante el desarrollo. De manera similar, se revisaron
+aspectos relacionados con los perfiles de usuario, la gestión de estudios, la
+elaboración de informes y la presentación de los resultados provenientes del
+procesamiento mediante inteligencia artificial.
+
+La participación de los usuarios permitió además detectar diferencias entre
+algunas definiciones inicialmente consideradas y las necesidades observadas
+durante las revisiones. Cuando se identificaba una modificación necesaria, esta
+era analizada antes de incorporarse al sistema y posteriormente se verificaba
+su funcionamiento. De este modo, la validación no se limitó a una actividad
+realizada al finalizar el proyecto, sino que proporcionó retroalimentación
+durante distintas etapas del desarrollo.
+
+Estas instancias de validación estuvieron orientadas principalmente a comprobar
+la adecuación funcional y de uso de EpilexIA dentro del contexto para el cual
+fue desarrollado. Por tanto, deben distinguirse de una validación clínica del
+modelo de inteligencia artificial o de una evaluación destinada a establecer
+la eficacia diagnóstica del sistema, aspectos que no forman parte del alcance
+del presente trabajo.
+
+
+Los procedimientos de evaluación aplicados al sistema, las pruebas
+realizadas y los resultados obtenidos se presentan posteriormente
+en el Capítulo~\ref{pruebas_evaluacion}.
+
+
+\section{Ciclos de trabajo y retroalimentación}
+\label{sec:ciclos-retroalimentacion}
+
+El desarrollo de EpilexIA se organizó mediante ciclos de trabajo en los que
+las actividades de análisis, diseño, implementación, verificación y revisión
+se relacionaron de forma continua. Estos ciclos permitieron avanzar sobre
+funcionalidades específicas y, al mismo tiempo, incorporar las observaciones
+obtenidas durante las reuniones de seguimiento y las revisiones de los avances
+del sistema.
+
+Cada ciclo partía de una necesidad previamente identificada o de un ajuste
+derivado de una revisión anterior. A partir de ella se analizaba el cambio
+requerido, se definían las modificaciones necesarias y se procedía con su
+implementación. Una vez alcanzado un estado funcional, se realizaban
+comprobaciones sobre el comportamiento obtenido y, cuando correspondía, la
+funcionalidad era integrada con los demás componentes del sistema.
+
+Las reuniones de seguimiento constituyeron un mecanismo importante para
+mantener estos ciclos de retroalimentación. Durante dichas instancias se
+revisaban funcionalidades implementadas, se analizaban dificultades
+encontradas y se discutían posibles ajustes. Las observaciones obtenidas podían
+dar lugar a modificaciones sobre una funcionalidad existente, a la
+reorganización de determinados elementos o a la incorporación de nuevas
+necesidades relacionadas con el funcionamiento del sistema.
+
+
+Este mecanismo resultó particularmente relevante en aquellos componentes cuya
+definición evolucionó durante el proyecto. La visualización y el análisis de
+señales EEG, los perfiles y permisos de usuario, la gestión de estudios e
+informes y la integración con el servicio de inteligencia artificial fueron
+objeto de sucesivas revisiones a medida que avanzaba el desarrollo.
+
+Los cambios incorporados eran posteriormente sometidos a las verificaciones
+técnicas y funcionales correspondientes, de acuerdo con el alcance y las
+condiciones de prueba disponibles para cada componente, antes de considerarse
+integrados al sistema.
+
+
+
+La retroalimentación también se produjo a partir de las actividades técnicas
+de integración. La interacción entre los distintos componentes permitió
+identificar situaciones que requerían modificaciones en las estructuras de
+datos, los servicios o la interfaz de usuario. De esta manera, los ciclos de
+trabajo no estuvieron determinados únicamente por observaciones de los
+usuarios, sino también por los resultados obtenidos durante la implementación
+y las pruebas de integración.
+
+En consecuencia, la adaptación metodológica utilizada en EpilexIA conservó la
+relación entre requerimientos, diseño, implementación, verificación y
+validación planteada por el Modelo V, incorporando ciclos de retroalimentación
+cuando las revisiones funcionales o técnicas hacían necesario modificar una
+decisión previa. Este enfoque permitió que la solución evolucionara de manera
+controlada a partir de las necesidades identificadas y de los resultados
+obtenidos durante su desarrollo.

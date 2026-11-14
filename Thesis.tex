@@ -1,0 +1,272 @@
+% ------ DEFINIMOS DATOS DEL DOCUMENTO ------
+\documentclass[spanish, 12pt, oneside]{Thesis}  
+% Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
+\usepackage[spanish,activeacute]{babel}
+\graphicspath{ThesisFigs/}  % Location of the graphics files (set up for graphics to be in PDF format)
+\usepackage[utf8]{inputenc}
+% \usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{subfig}
+\usepackage{float}
+
+% ----- INICIO IMPORTACION DE PAQUETES ------
+%\usepackage[round]{natbib}
+\usepackage{epsfig}
+\usepackage{colortbl}
+% Include any extra LaTeX packages required
+%\usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
+\usepackage[natbibapa]{apacite}
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+\hypersetup{urlcolor=black, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{fancyhdr}
+\usepackage{nomencl}
+%\usepackage{float}
+\usepackage[left]{lineno}
+\usepackage[titletoc]{appendix}
+\usepackage{graphicx}
+%\usepackage{caption}
+%\usepackage{subfigure}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\usepackage{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,calc,positioning,arrows.meta,shapes.geometric,
+    fit}
+\usetikzlibrary{babel}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{rotating}
+% Agregado para girar a horizontal una pagina.
+\usepackage{pdflscape}
+% Agregado para insertar pdf en latex.
+\usepackage{pdfpages}
+%\usepackage{colortbl}
+\usepackage{slashbox}
+\usepackage{longtable}
+\usepackage[inkscapelatex=false]{svg}
+\usepackage{placeins}
+\usepackage{needspace}
+
+\usepackage{lineno}
+
+\definecolor{mylightblue}{RGB}{059,131,189}
+\definecolor{mygreen}{RGB}{040,114,051}
+\definecolor{myblue}{RGB}{062,095,138}
+\definecolor{mygray}{RGB}{156,156,156}
+\definecolor{myorange}{RGB}{255,128,0} 
+
+%  ESPANIOL
+%\usepackage[spanish]{babel}
+%\usepackage{algorithm}
+%\usepackage{algpseudocode}
+
+%\addto\captionsspanish{%
+%  \renewcommand{\algorithmname}{Algoritmo}
+%}
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+
+%Acento
+%\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%
+
+%%%%%%%
+% En el preámbulo:
+
+% Declaración del entorno:
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definición}[section]
+
+%%%%%%%%%%%%
+
+\tikzstyle{intt}=[draw,text centered,minimum size=6em,text width=5.25cm,text height=0.34cm]
+\tikzstyle{intl}=[draw,text centered,minimum size=2em,text width=2.75cm,text height=0.34cm]
+\tikzstyle{int}=[draw,minimum size=2.5em,text centered,text width=3.5cm]
+\tikzstyle{intg}=[draw,minimum size=3em,text centered,text width=6.cm]
+\tikzstyle{sum}=[draw,shape=circle,inner sep=2pt,text centered,node distance=3.5cm]
+\tikzstyle{summ}=[drawshape=circle,inner sep=4pt,text centered,node distance=3.cm]
+\tikzstyle{decision} = [draw,shape=diamond, fill=blue!20, text width=6em, text badly centered, node distance=3cm, inner sep=0pt]
+
+\usepackage{varioref}
+%\usepackage[tablename=Tabla]{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\setlength\unitlength{20pt}
+\usepackage{pst-plot}
+\addtopsstyle{gridstyle}{gridlabels=0pt,griddots=0}
+% ----- FIN IMPORTACION DE PAQUETES
+
+%% ----------------------------------------------------------------
+\newcommand{\abbrlabel}[1]{\makebox[3cm][l]{\textbf{#1}\ }}
+\newenvironment{abbreviations}{
+    \begin{list}{}
+    {
+    \renewcommand{\makelabel}{\abbrlabel}
+    \setlength\leftmargin{1.5in}
+    \setlength\labelwidth{1.5in}
+    \setlength\itemsep{0pt}
+    \setlength\parsep{0pt}
+    }
+}{
+    \end{list}
+}
+%% -------------------------------------------------------------
+
+\fancypagestyle{mylandscape}{
+\fancyhf{} %Clears the header/footer
+\fancyfoot{% Footer
+\makebox[\textwidth][r]{% Right
+  \rlap{\hspace{.75cm}% Push out of margin by \footskip
+    \smash{% Remove vertical height
+      \raisebox{4.87in}{% Raise vertically
+        \rotatebox{90}{\thepage}}}}}}% Rotate counter-clockwise
+\renewcommand{\headrulewidth}{0pt}% No header rule
+\renewcommand{\footrulewidth}{0pt}% No footer rule
+}
+
+
+\usepackage{xurl}
+
+% Command to use grados
+\newcommand{\grad}{$^{\circ}$ }
+
+% INICIO DEL DOCUMENTO -----------------------------------------------------------
+\begin{document}
+\maketitle
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+\frontmatter      % Begin Roman style (i, ii, iii, iv...) page numbering
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+%% --------------- INICIO DEDICATORIAS --------------------------------
+\setstretch{1.3}  % Return the line spacing back to 1.3
+\pagestyle{empty}  % Page style needs to be empty for this page
+\include{Dedication/dedication}
+% Add a gap in the Contents, for aesthetics
+%% --------------- FIN DEDICATORIAS --------------------------------
+
+%% --------------- INICIO AGRADECIMIENTOS --------------------------------
+% The Acknowledgements page, for thanking everyone
+\include{Acknowledgement/acknowledgement}
+\clearpage  % End of the Acknowledgements
+%% --------------- FIN AGRADECIMIENTOS --------------------------------
+
+%% --------------- INICIO ABSTRACT ---------------------------------------
+\addtotoc{Abstract}  % Add the "Abstract" page entry to the Contents
+\include{Abstract/abstract}
+\clearpage  % Abstract ended, start a new page
+%% --------------- FIN ABSTRACT ---------------------------------------
+
+%% --------------- INICIO RESUMEN ---------------------------------------
+\addtotoc{Resumen}  % Add the "Resumen" page entry to the Contents
+\input{Resumen/resumen}
+\clearpage  % Abstract ended, start a new page
+%% --------------- FIN RESUMEN ---------------------------------------
+
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+%% --------------- INICIO INDICE -----------------------------------------
+\lhead{\emph{Contenido}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+%% --------------- FIN INDICE -----------------------------------------
+
+%% --------------- INICIO LISTA DE FIGURAS -------------------------------
+\lhead{\emph{Lista de Figuras}}  % Set the left side page header to "List if Figures"
+\renewcommand\listfigurename{Lista de Figuras}
+\listoffigures  % Write out the List of Figures
+%% --------------- FIN LISTA DE FIGURAS ------------------------------- 
+
+%% --------------- INICIO LISTA DE ACRONIMOS -----------------------------
+\addtotoc{Lista de Siglas y Abreviaturas}
+\include{Abbreviations/abbreviations}
+%% --------------- FIN LISTA DE ACRONIMOS -----------------------------
+
+%% --------------- INICIO LISTA DE SIMBOLOS ------------------------------
+\addtotoc{Lista de Símbolos y Unidades}
+\include{Symbols/symbols}
+%% --------------- FIN LISTA DE SIMBOLOS ------------------------------
+
+%% --------------- INICIO LISTA DE TABLAS --------------------------------
+ \lhead{\emph{Lista de Tablas}}  % Set the left side page header to "List of Tables"
+ \renewcommand\listtablename{Lista de Tablas}
+ \listoftables  % Write out the List of Tables
+%% --------------- FIN LISTA DE TABLAS --------------------------------
+ 
+%% --------------- Contenido -----------------------------------
+\clearpage
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+% Include the chapters of the thesis, as separate files
+% Just uncomment the lines as you write the chapters
+
+\linenumbers
+\lhead{\emph{Introducción}} 
+\renewcommand\chaptername{Capítulo}
+\input{Chapter1/chapter1} % Introduction
+
+\lhead{\emph{Marco teórico y estado del arte}}
+\input{Chapter2/chapter2}
+
+\lhead{\emph{Metodología de desarrollo}}
+\input{Chapter3/chapter3}
+
+\lhead{\emph{Análisis de requerimientos y diseño}}
+\input{Chapter4/chapter4}
+
+\lhead{\emph{Implementación del Sistema}}
+\input{Chapter5/chapter5}
+
+\lhead{\emph{Pruebas y evaluación}}
+\input{Chapter6/chapter6}
+
+\bibliographystyle{apacite}
+\bibliography{References/references}
+\end{document}
+
+
+
+\textbf{
+    {\huge
+        \begin{center}
+        \part[Marco Teórico]{
+            Marco Teórico \\ 
+            \huge{}}
+        \end{center}
+    }
+}
+
+
+
+
+\clearpage
+\lhead{\emph{Conclusiones y Trabajos Futuros}} 
+\renewcommand\chaptername{Capítulo}%título "Capítulo"
+\input{Conclusion/conclusion} % Conclusión
+
+
+%% --------------- Anexo --------------------------------------
+\lhead{\emph{Anexo}}
+\addtotoc{Anexo}
+\input{Annex/annex}
+\backmatter
+%% --------------- Referencias ------------------------------------
+
+\lhead{\emph{Referencias}}
+\renewcommand{\bibname}{Referencias}
+\bibliography{References/references}
+\bibliographystyle{alpha}
+
+\end{document}  % The End
+%% ----------------------------------------------------------------
