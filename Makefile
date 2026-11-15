@@ -4,12 +4,17 @@
 #   make watch     -> recompila automáticamente al guardar
 #   make clean     -> borra build/
 #   make open      -> abre el PDF (macOS)
-#   make overleaf  -> genera dist/tesis_epilexia_overleaf.zip para subir a Overleaf
+#   make overleaf  -> genera dist/overleaf-completo/ (y su .zip) desde el último commit
+#                     de la rama actual; `make overleaf REF=main` para otra rama/commit
 
 TEXLIVE_IMAGE ?= texlive/texlive:latest
 OUT := build
 PDF := $(OUT)/Thesis.pdf
+REF ?= HEAD
+OVERLEAF_DIR := dist/overleaf-completo
 ZIP := dist/tesis_epilexia_overleaf.zip
+# Archivos del repo que no hacen falta en Overleaf
+REPO_ONLY := README.md CLAUDE.md CONTRIBUTING.md Makefile latexmkrc .gitignore .gitattributes
 LATEXMK := latexmk -outdir=$(OUT) -interaction=nonstopmode -file-line-error -synctex=1
 
 # \include escribe un .aux por archivo dentro de su carpeta: con -outdir esas
@@ -36,8 +41,15 @@ clean:
 open:
 	open $(PDF)
 
+# Exporta el proyecto COMPLETO (todas las carpetas e imágenes) tal como está en
+# el commit $(REF). Overleaf reemplaza carpetas enteras al subir: nunca subir
+# carpetas parciales.
 overleaf:
-	mkdir -p dist
-	rm -f $(ZIP)
-	zip -r -q $(ZIP) . -x '.git/*' '$(OUT)/*' 'dist/*' '.claude/*' '*.zip' '*.DS_Store'
-	@echo "Listo: $(ZIP) (Overleaf: New Project > Upload Project)"
+	rm -rf dist/overleaf-completo dist/tesis_epilexia_overleaf.zip
+	mkdir -p $(OVERLEAF_DIR)
+	git archive $(REF) | tar -x -C $(OVERLEAF_DIR)
+	cd $(OVERLEAF_DIR) && rm -f $(REPO_ONLY)
+	cd $(OVERLEAF_DIR) && zip -r -q ../$(notdir $(ZIP)) .
+	@git diff --quiet HEAD -- . || echo "AVISO: hay cambios sin commitear; NO están incluidos (se exporta $(REF))."
+	@echo "Listo: $(OVERLEAF_DIR)/ ($$(find $(OVERLEAF_DIR) -type f | wc -l | tr -d ' ') archivos) desde $(REF) = $$(git rev-parse --short $(REF))"
+	@echo "Subir TODO su contenido a Overleaf y confirmar Overwrite (ver README, sección Overleaf)."

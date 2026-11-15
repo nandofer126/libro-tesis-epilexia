@@ -49,6 +49,13 @@ Los capítulos se incluyen con `\input{ChapterN/chapterN}`; cada uno define su `
 - Antes de commitear o abrir un PR: compilar y confirmar que no hay errores ni citas/referencias indefinidas nuevas.
 - No versionar `build/`, PDFs generados ni auxiliares (ya en `.gitignore`).
 - En conflictos de merge/rebase: combinar ambos cambios cuando sean compatibles, preguntar cuando se contradigan, y recompilar antes de continuar.
+- `main` = última versión aprobada por el tutor (respaldo). No mergear PRs a `main` salvo pedido explícito del usuario.
+
+## Overleaf
+
+- Un solo proyecto (plan gratuito), solo lectura/comentarios del tutor; nunca se edita ahí.
+- Para subir: `make overleaf [REF=<rama|commit>]` → `dist/overleaf-completo/` con el **proyecto completo** del último commit (avisar si hay cambios sin commitear). El usuario lo sube con *Upload* + **Overwrite** y luego *Recompile from scratch*.
+- **Nunca** preparar carpetas parciales (solo lo cambiado): Overleaf reemplaza carpetas enteras y borra lo que falte. Pasos detallados en el README, sección Overleaf.
 
 ## Fuente de verdad técnica
 
