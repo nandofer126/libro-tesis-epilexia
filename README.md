@@ -66,9 +66,17 @@ make docker   # usa la imagen texlive/texlive:latest (~4 GB la primera vez)
 
 Abrí el repo con Claude Code y pedile "compilá la tesis y mostrame los errores". El archivo [CLAUDE.md](CLAUDE.md) le explica cómo compilar, revisar el log y respetar las convenciones del repo.
 
+### 4. Overleaf (lectura del tutor)
+
+```bash
+make overleaf   # genera dist/tesis_epilexia_overleaf.zip
+```
+
+En Overleaf: *New Project → Upload Project* y subir el zip. Verificar en *Menu → Settings* que el compilador sea **pdfLaTeX** y el documento principal **Thesis.tex**. El `latexmkrc` del repo es compatible con Overleaf (no redirige la salida).
+
 ### Requisitos de la cadena de compilación
 
-- Motor: **pdfLaTeX** (`latexmk`, configurado en [latexmkrc](latexmkrc)).
+- Motor: **pdfLaTeX** (`latexmk`; opciones locales en el [Makefile](Makefile), configuración común en [latexmkrc](latexmkrc)).
 - Bibliografía: **BibTeX** con **apacite** (`\citep`, `\citet`, estilo APA).
 - Codificación: **UTF-8**.
 

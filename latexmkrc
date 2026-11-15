@@ -1,7 +1,6 @@
 # Configuración de latexmk para el libro de tesis EpilexIA.
-# Uso: `latexmk` (o `make`) desde la raíz del repo. El PDF queda en build/Thesis.pdf.
+# Se mantiene mínima a propósito: Overleaf también lee este archivo, y las
+# opciones locales (carpeta build/, synctex, etc.) se pasan desde el Makefile.
 @default_files = ('Thesis.tex');
-$pdf_mode = 1;            # pdflatex
-$bibtex_use = 2;          # ejecuta bibtex (apacite) y limpia el .bbl con -c
-$out_dir = 'build';
-$pdflatex = 'pdflatex -interaction=nonstopmode -file-line-error -synctex=1 %O %S';
+$pdf_mode = 1;            # pdfLaTeX
+$bibtex_use = 2;          # ejecuta BibTeX (apacite)

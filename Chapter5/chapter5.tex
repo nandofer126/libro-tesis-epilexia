@@ -61,6 +61,10 @@ Estas herramientas proporcionaron una base de trabajo para desarrollar y mantene
 
 
 
+Además del código fuente, cada repositorio contiene los archivos de contexto utilizados por los asistentes de inteligencia artificial (\texttt{CLAUDE.md}, \texttt{AGENTS.md} y las reglas de Cursor) y una carpeta de documentación con los planes y análisis elaborados durante el desarrollo.
+El repositorio del \textit{backend} incluye además la especificación general del sistema.
+La forma en que estos elementos se utilizaron se describe en la Sección~\ref{sec:desarrollo-asistido-ia}.
+
 \subsection{Tecnologías utilizadas}
 
 La implementación de EpilexIA comprende diferentes tecnologías de
@@ -346,12 +350,7 @@ de configuración para establecer sus conexiones y rutas de
 acceso, evitando incorporar estos valores directamente en
 el código de las aplicaciones.
 
-Las configuraciones disponibles permiten establecer entornos
-de ejecución locales y contemplan una propuesta de despliegue
-integrado con servicios y redes diferenciadas. No obstante,
-esta última se encuentra documentada como una configuración
-preliminar, por lo que no se considera evidencia suficiente
-para describir un entorno de producción definitivo.
+Las configuraciones disponibles permiten establecer entornos de ejecución locales y un despliegue integrado con servicios y redes diferenciadas, utilizado en el entorno en la nube que se describe en la Sección~\ref{subsec:despliegue-nube}.
 
 En conjunto, Docker, Docker Compose, Nginx, WildFly y Uvicorn
 proporcionan los mecanismos necesarios para ejecutar e integrar
@@ -653,9 +652,7 @@ recursos requeridos para las operaciones de
 visualización y procesamiento.
 
 El sistema contempla la incorporación de archivos
-de señales electroencefalográficas en formatos
-compatibles con las funcionalidades implementadas,
-entre ellos EDF y CSV. Asimismo, permite asociar
+de señales electroencefalográficas en formato EDF. Asimismo, permite asociar
 archivos de video a los estudios y dispone de
 mecanismos de preparación de determinados formatos
 audiovisuales para su utilización desde la
@@ -1897,7 +1894,7 @@ sin bloquear la interfaz durante el
 procesamiento asíncrono de las señales.
 
 El sistema admite la selección de archivos
-EEG en formatos CSV y EDF. Para el material
+EEG en formato EDF. Para el material
 audiovisual se contempla la carga de archivos
 MP4 y conjuntos EZVideo. En el flujo de
 registro, cuando se selecciona un video,
@@ -3199,13 +3196,7 @@ La lectura de las señales se realiza mediante
 la biblioteca MNE, utilizando la función
 \texttt{mne.io.read\_raw\_edf()}. Por tanto,
 el formato de entrada implementado en el
-motor es EDF. Esta característica debe
-distinguirse de los formatos admitidos
-por otros componentes de EpilexIA, ya
-que el procesamiento de inteligencia
-artificial no incorpora lectores específicos
-para archivos CSV u otros formatos
-electroencefalográficos.
+motor es EDF, en concordancia con el formato admitido por la plataforma para la carga de estudios.
 
 Una vez abierto el registro, el procedimiento
 identifica la organización de los canales
@@ -3516,6 +3507,30 @@ predicciones obtenidas y sus referencias temporales
 constituyen la información de entrada para los
 procedimientos posteriores de selección, almacenamiento
 y consulta de resultados.
+
+\subsection{Modelo de detección vigente: HGB 2.0}
+\label{subsec:modelo-vigente-hgb}
+
+La descripción de las subsecciones anteriores corresponde a la versión inicial del motor, cuyo clasificador se seleccionaba mediante la clave \texttt{MLP}.
+Durante el proyecto, dicho modelo fue reemplazado por el modelo HGB~2.0, un clasificador de \textit{Gradient Boosting} basado en histogramas, en línea con los antecedentes desarrollados en la FP-UNA \citep{Lezcano2026GradientBoosting}.
+Todas las pruebas finales documentadas en el Capítulo~\ref{pruebas_evaluacion} se realizaron con este modelo.
+
+La incorporación del modelo HGB~2.0 mantiene la organización general del procesamiento, basada en la lectura del archivo EDF, la segmentación en ventanas de 10 segundos a 256~Hz, la extracción de características y la inferencia, e introduce las siguientes diferencias respecto de la versión inicial:
+
+\begin{itemize}
+    \item \textbf{Montaje:} las señales se adaptan a un montaje bipolar longitudinal de 18 derivaciones, en lugar de las 23 derivaciones previstas inicialmente.
+    \item \textbf{Filtrado:} antes de la extracción de características se aplica un filtro pasabanda Butterworth de orden 4 entre 0,5 y 45~Hz, junto con un filtro de rechazo de la frecuencia de red.
+    \item \textbf{Características:} para cada derivación se calculan 75 características, organizadas en tres bloques de 25, por lo que cada ventana se representa mediante 1350 valores.
+    \item \textbf{Ventanas sin señal:} los tramos en los que la señal permanece plana se identifican y se excluyen del análisis.
+    \item \textbf{Normalización:} las características se normalizan para cada registro mediante estadísticos robustos, mediana y rango intercuartílico, calculados sobre los primeros 30 minutos de señal válida, o sobre 10 minutos cuando la duración del registro no lo permite.
+    \item \textbf{Regla de detección:} un intervalo se señala únicamente cuando dos ventanas consecutivas superan un umbral de probabilidad de 0,95, lo que equivale a 20 segundos continuos por encima de dicho umbral.
+\end{itemize}
+
+El paquete serializado del modelo incluye la configuración de preprocesamiento con la que fue entrenado.
+Antes de ejecutar la inferencia, el motor verifica que la frecuencia de muestreo, la duración de las ventanas, las derivaciones y las características coincidan con dicha configuración, y aborta la ejecución en caso contrario.
+El umbral y la cantidad de ventanas consecutivas se obtienen del paquete del modelo y pueden establecerse para cada ejecución.
+
+Los intervalos resultantes se persisten y se consultan mediante los mecanismos descritos en la subsección siguiente, sin modificaciones en la comunicación con el \textit{backend} clínico.
 
 \subsection{Persistencia y consulta de los resultados}
 
@@ -4054,13 +4069,24 @@ organización requiere que determinados recursos, como
 la red y los volúmenes compartidos, estén disponibles
 antes de iniciar los servicios que dependen de ellos.
 
-Aunque existe una configuración conjunta documentada
-para un posible despliegue en la nube, esta se encuentra
-identificada como una propuesta en desarrollo. En
-consecuencia, la implementación relevada corresponde
-a una organización distribuida entre configuraciones
-individuales, sin un procedimiento único de despliegue
-completamente automatizado.
+Además de las configuraciones individuales, existe una configuración conjunta que reúne todos los servicios y que se utiliza en el despliegue en la nube descrito en la subsección siguiente.
+
+\subsection{Entorno de despliegue en la nube}
+\label{subsec:despliegue-nube}
+
+EpilexIA se encuentra desplegado en infraestructura en la nube provista por la empresa BigQ, socio del sector privado del proyecto.
+Sobre este entorno se realizaron las pruebas documentadas en el Capítulo~\ref{pruebas_evaluacion} y las sesiones de validación con la especialista del IPS, quien accede al sistema por internet desde el hospital.
+
+El despliegue reúne en un servidor los componentes descritos en la subsección anterior, ejecutados como contenedores mediante una configuración conjunta de Docker Compose.
+Un servidor Nginx actúa como punto único de entrada: publica la aplicación web y encamina las solicitudes hacia el \textit{backend} clínico.
+Las bases de datos, la API de inteligencia artificial y el motor de procesamiento no se exponen a internet y se comunican únicamente a través de una red interna.
+Los archivos EEG y los modelos entrenados se almacenan en volúmenes compartidos entre los servicios que los requieren.
+
+El acceso de los usuarios se realiza mediante HTTPS, bajo un dominio provisto por la empresa, cuya infraestructura incorpora además mecanismos de protección perimetral.
+De este modo se atiende el requerimiento RNF-SEG-003.
+La administración de estos elementos corresponde al proveedor de infraestructura y no forma parte del alcance de este trabajo.
+
+Este entorno constituye la base operativa del sistema durante el proceso de transferencia al IPS, que prevé su despliegue en servidores propios de la institución.
 
 \subsection{Contenedorización y configuración de servicios}
 
@@ -4514,13 +4540,8 @@ del sistema se encuentren inmediatamente disponibles.
 
 En cuanto a las limitaciones del despliegue, la
 implementación relevada se encuentra distribuida entre
-configuraciones Docker Compose individuales. Aunque existe
-una configuración conjunta documentada como propuesta
-para un posible despliegue en la nube, no se identificó
-un procedimiento único y completamente automatizado
-que abarque la preparación de todos los recursos,
-la inicialización de los servicios y la verificación
-integral de su funcionamiento.
+configuraciones Docker Compose individuales y una configuración conjunta utilizada en la nube.
+No se dispone de un procedimiento único y completamente automatizado que abarque la preparación de todos los recursos, la inicialización de los servicios y la verificación integral de su funcionamiento.
 
 Esta organización requiere coordinar las configuraciones
 de los distintos proyectos y comprobar la disponibilidad

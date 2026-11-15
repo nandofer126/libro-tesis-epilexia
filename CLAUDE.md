@@ -5,7 +5,7 @@ Libro de tesis de grado (Ingeniería en Informática, FP-UNA) sobre **EpilexIA**
 ## Compilación
 
 - Entrada: `Thesis.tex` · Clase: `Thesis.cls` (book, a4paper, 12pt, oneside, babel spanish).
-- Cadena: **pdfLaTeX + BibTeX (apacite)** vía `latexmk` ([latexmkrc](latexmkrc)). Salida: `build/Thesis.pdf`.
+- Cadena: **pdfLaTeX + BibTeX (apacite)** vía `latexmk`. Compilar siempre con `make` (crea las subcarpetas de `build/` que necesita `\include` y pasa `-outdir=build`). Salida: `build/Thesis.pdf`. El `latexmkrc` es mínimo para que también funcione en Overleaf; `make overleaf` genera el zip para subir.
 - Comandos: `make` (TeX Live local) · `make docker` (sin LaTeX instalado; requiere Docker corriendo) · `make clean`.
 - Si no hay `latexmk` ni Docker disponibles, avisar al usuario y sugerir las opciones del README; **no** instalar MacTeX/TeX Live sin preguntar (son varios GB).
 - Tras compilar, revisar `build/Thesis.log` y reportar: errores (`! ...` / `file:line: error`), `Citation ... undefined`, `Reference ... undefined`, `There were multiply-defined labels`, y `Overfull \hbox` significativos (> 10pt). No dar por buena una compilación sin mirar el log.
@@ -21,7 +21,7 @@ Libro de tesis de grado (Ingeniería en Informática, FP-UNA) sobre **EpilexIA**
 | `Chapter4/chapter4.tex` | Análisis de requerimientos y diseño |
 | `Chapter5/chapter5.tex` | Implementación del sistema |
 | `Chapter6/chapter6.tex` | Pruebas y evaluación |
-| `Chapter7/chapter7.tex` | Vacío, no incluido en `Thesis.tex` |
+| `Chapter7/chapter7.tex` | Conclusiones y trabajos futuros |
 | `Abstract/`, `Resumen/`, `Dedication/`, `Acknowledgement/`, `Abbreviations/`, `Symbols/` | Preliminares |
 | `Conclusion/`, `Annex/`, `AppendixA/`, `AppendixB/` | Finales (Conclusión y Anexo están **después** de `\end{document}`, hoy no se compilan) |
 | `References/references.bib` | Bibliografía |

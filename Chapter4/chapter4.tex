@@ -934,7 +934,7 @@ de las señales electroencefalográficas.
 En la primera etapa, el usuario autorizado selecciona
 un paciente existente o incorpora uno nuevo. Posteriormente,
 completa la información del estudio, selecciona el archivo
-EEG en formato CSV o EDF y, cuando corresponde, identifica
+EEG en formato EDF y, cuando corresponde, identifica
 al Especialista responsable de su revisión. El \textit{backend}
 verifica los datos y registra el estudio con estado inicial
 Pendiente.
@@ -1914,7 +1914,7 @@ formatos adecuados a su naturaleza, como
 y respuestas binarias para los documentos generados.
 
 La gestión de los estudios EEG contempla interfaces
-para recibir archivos CSV y EDF mediante carga
+para recibir archivos EDF mediante carga
 fragmentada. Una vez completada la transferencia,
 el \textit{backend} ensambla el archivo y ejecuta su
 procesamiento de manera asíncrona. Como resultado,
@@ -2159,7 +2159,7 @@ determinados durante su análisis.
 
 Para incorporar las señales al sistema, el \textit{backend}
 principal dispone de interfaces que permiten
-recibir archivos en formatos CSV y EDF mediante
+recibir archivos en formato EDF mediante
 un mecanismo de carga fragmentada. Este
 procedimiento divide la transferencia en partes
 que se envían sucesivamente desde la aplicación
@@ -2475,6 +2475,9 @@ El procedimiento también contempla mecanismos de sustitución ante la ausencia 
 Una vez preparadas las características, el motor carga mediante la biblioteca \texttt{joblib} el artefacto de aprendizaje automático previamente entrenado y ejecuta las predicciones sobre las ventanas analizadas. El procedimiento utiliza el método \texttt{predict} del estimador y, cuando está disponible, \texttt{predict\_proba} para obtener probabilidades asociadas a las clases consideradas. La preparación de las entradas y la ejecución de inferencias no implican un nuevo entrenamiento del modelo.
 
 La revisión del código del motor no identifica etapas explícitas de filtrado pasa-banda, filtrado de rechazo de frecuencia de red, eliminación automática de artefactos o normalización global de la señal antes de su ingreso al estimador. Algunas características incorporan transformaciones internas para su cálculo, pero estas no equivalen a un preprocesamiento global. Asimismo, al no encontrarse los artefactos entrenados en el repositorio auditado, no es posible determinar a partir de este código si contienen transformaciones adicionales.
+
+La descripción precedente corresponde a la versión inicial del procedimiento.
+La versión vigente del motor, asociada al modelo HGB~2.0 y utilizada en las pruebas finales, incorpora etapas de filtrado y normalización, un montaje de 18 derivaciones y una regla de ventanas consecutivas, que se describen en la Sección~\ref{subsec:modelo-vigente-hgb}.
 
 En la modalidad de cola persistente, el procesamiento se ejecuta de forma independiente de la navegación del especialista por la interfaz web. El trabajador obtiene las ejecuciones pendientes desde PostgreSQL, inicia el procedimiento de inferencia y actualiza la información de estado y resultados. Los intervalos temporales analizados se expresan en segundos relativos al inicio del registro, lo que permite relacionar las predicciones con las posiciones correspondientes dentro del estudio EEG.
 
@@ -3067,7 +3070,7 @@ de información y la opción de creación de nuevos estudios.
 
 
 
-El registro de un nuevo estudio se realiza mediante un formulario que permite seleccionar al paciente asociado e incorporar el archivo de señales EEG en formato CSV o EDF. La interfaz presenta diferencias según el perfil del usuario: en el caso del Técnico, se requiere seleccionar al especialista responsable del estudio, mientras que para el perfil Especialista dicho campo no se muestra. Asimismo, el formulario ofrece la posibilidad de adjuntar un video de monitoreo en formato MP4 o mediante archivos correspondientes a una grabación EZVideo.
+El registro de un nuevo estudio se realiza mediante un formulario que permite seleccionar al paciente asociado e incorporar el archivo de señales EEG en formato EDF. La interfaz presenta diferencias según el perfil del usuario: en el caso del Técnico, se requiere seleccionar al especialista responsable del estudio, mientras que para el perfil Especialista dicho campo no se muestra. Asimismo, el formulario ofrece la posibilidad de adjuntar un video de monitoreo en formato MP4 o mediante archivos correspondientes a una grabación EZVideo.
 
 Cuando el paciente requerido no se encuentra disponible en
 el selector, la aplicación permite registrar uno nuevo sin
@@ -3079,12 +3082,12 @@ una funcionalidad complementaria a la creación de estudios
 EEG, sin constituir un módulo independiente de gestión
 de pacientes.
 
-La Figura~\ref{fig:nuevo-estudio-eeg} presenta el formulario de creación de estudios EEG correspondiente al perfil Técnico. En ella se observan los campos de selección del paciente y del especialista responsable, así como los controles para incorporar el archivo EEG y, opcionalmente, un video de monitoreo.
+La Figura~\ref{fig:nuevo-estudio-eeg} presenta el formulario de creación de estudios EEG correspondiente al perfil Especialista. En ella se observan el campo de selección del paciente, así como los controles para incorporar el archivo EEG y, opcionalmente, un video de monitoreo.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{ThesisFigs/nuevo-estudio-eeg.png}
-    \caption{Formulario de creación de estudios EEG correspondiente al perfil Técnico de EpilexIA.}
+    \caption{Formulario de creación de estudios EEG correspondiente al perfil Especialista de EpilexIA.}
     \label{fig:nuevo-estudio-eeg}
 \end{figure}
 

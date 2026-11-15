@@ -1,5 +1,6 @@
 # --- Salida de compilación (latexmk escribe todo en build/) ---
 build/
+dist/
 Thesis.pdf
 
 # --- Auxiliares de LaTeX (por si alguien compila sin latexmk) ---
