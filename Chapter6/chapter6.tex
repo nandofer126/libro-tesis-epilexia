@@ -1758,7 +1758,95 @@ No obstante, estas actividades se realizaron con una especialista y no constituy
 
 En consecuencia, las sesiones aportaron evidencia sobre la utilización de EpilexIA en el entorno hospitalario del IPS. Para determinar su aplicabilidad clínica de manera más amplia, serían necesarias evaluaciones adicionales con otros profesionales y una mayor diversidad de estudios EEG.
 
+Como parte de la preparación para el uso del sistema en el hospital, se elaboraron y entregaron tres documentos: un manual de usuario para los perfiles Especialista y Técnico, un manual para el equipo de TI responsable de la administración del sistema y una guía específica para la exportación y carga de estudios, que es la tarea central del personal técnico.
 
+
+\section{Síntesis de la evaluación por aspectos de calidad}
+\label{sec:sintesis-aspectos}
+
+El Cuadro~\ref{tab:sintesis-aspectos} sintetiza, para cada aspecto de calidad considerado, los puntos cubiertos por las pruebas de este capítulo y por las pruebas automatizadas de los repositorios, y los que no fueron cubiertos.
+La organización de la evaluación y de su reporte toma como referencia las guías GEP-HI \citep{Nykanen2011GEPHI} y STARE-HI \citep{Talmon2009STAREHI}.
+Las guías y normas citadas se emplean como marco de referencia; el presente trabajo no afirma conformidad ni certificación respecto de ninguna de ellas.
+
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.19\textwidth}|>{\raggedright\arraybackslash}p{0.46\textwidth}|>{\raggedright\arraybackslash}p{0.25\textwidth}|}
+\caption{Síntesis de la evaluación de EpilexIA por aspectos de calidad.}
+\label{tab:sintesis-aspectos}\\
+\hline
+\textbf{Aspecto y referencia} & \textbf{Puntos cubiertos y pruebas realizadas} & \textbf{Puntos no cubiertos} \\
+\hline
+\endfirsthead
+
+\multicolumn{3}{c}{\textit{Continuación del Cuadro~\thetable}}\\
+\hline
+\textbf{Aspecto y referencia} & \textbf{Puntos cubiertos y pruebas realizadas} & \textbf{Puntos no cubiertos} \\
+\hline
+\endhead
+
+\textbf{Diseño y reporte de la evaluación} \citep{Nykanen2011GEPHI,Talmon2009STAREHI} &
+Definición de la estrategia y de los ámbitos de prueba; casos con procedimiento, resultado esperado y resultado obtenido; descripción del contexto, del sistema y de los participantes; declaración de limitaciones. &
+Plan formal de evaluación previo a la ejecución; gestión de riesgos del estudio; reporte de la totalidad de los elementos de STARE-HI. \\
+\hline
+
+\textbf{Usabilidad} \citep{ISO9241-11:2018,Brooke1996SUS} &
+Eficacia: la especialista completó las tareas del flujo clínico en sesiones semanales durante dos meses. Contexto de uso real: equipos y red del hospital. Observaciones registradas e incorporadas (Cuadro~\ref{tab:observaciones-especialista}). Documentación entregada: manual de usuario para especialistas y técnicos, manual para el equipo de TI a cargo de la administración del sistema y guía específica de carga de estudios. &
+Eficiencia (tiempos y errores); satisfacción mediante el cuestionario SUS; más de un participante; perfiles Técnico y Administrador. \\
+\hline
+
+\textbf{Rendimiento} &
+Sin evaluación. &
+Trabajo futuro. \\
+\hline
+
+\textbf{Fiabilidad} &
+Seguimiento de la actividad del motor (PI-09); comportamiento ante la indisponibilidad del servicio de IA (PI-15) y ante la saturación de la cola (PI-16); persistencia de la información tras cerrar y reiniciar la sesión (PF-09, PF-11, PF-13); pruebas automatizadas de los reintentos en la carga de archivos. &
+Ensayos de fallos provocados durante el procesamiento. \\
+\hline
+
+\textbf{Seguridad y control de acceso} \citep{OWASP2025ASVS} &
+Autenticación (PF-01, PF-02, PI-01); gestión y revocación de sesiones (PI-03); autorización por rol y por recurso, verificada también en el \textit{backend} (PF-12, PF-14, PI-02) y mediante pruebas automatizadas; registro de auditoría (PF-15, PI-14). Mecanismos de protección de datos implementados: contraseñas almacenadas mediante \textit{hash}, \textit{tokens} con vencimiento para sesiones y cuentas, enlaces para compartir estudios revocables, enmascarado de datos sensibles en los registros de ejecución, restricciones en la carga de archivos, componentes internos sin exposición a internet y comunicación mediante HTTPS. &
+Verificación sistemática frente a los requisitos de la norma; pruebas de intrusión. \\
+\hline
+
+\textbf{Privacidad} &
+Sin evaluación. &
+Trabajo futuro. \\
+\hline
+
+\textbf{Fidelidad del visualizador} &
+Sensibilidad (PF-06); montajes Doble Banana y Transversal (PF-07); filtros de corte inferior, de corte superior y \textit{Notch} (PF-08); pruebas automatizadas de filtros, unidades, escalas, eje temporal y montajes. &
+Comparación cuantitativa con señales de comportamiento conocido. \\
+\hline
+
+\textbf{Interoperabilidad} \citep{Kemp1992EDF,KempOlivan2003EDFPlus} &
+Lectura de registros EDF y EDF+, con pruebas automatizadas del lector; carga y procesamiento de registros exportados por el equipo de adquisición (PF-05, PI-05); seis estudios reales; conversión del video del equipo de adquisición a MP4; exportación del informe a PDF. &
+Importación de las anotaciones de EDF+; comparación con un lector independiente; intercambio con otros sistemas. \\
+\hline
+
+\textbf{Accesibilidad} \citep{W3C2023WCAG22} &
+Sin evaluación. &
+Trabajo futuro. \\
+\hline
+
+\textbf{Trazabilidad} &
+Auditoría de las acciones por usuario, con consulta y filtros (PF-15); registro de eventos del ciclo de IA (PI-14); identificador, estado y parámetros de cada ejecución (PI-06, PI-10); vínculo entre resultados, ejecución e informe (PI-11, PI-17). &
+Reconstrucción documentada de una ejecución completa, del registro EEG al informe. \\
+\hline
+
+\textbf{Verificación funcional integrada} &
+15 casos funcionales (PF-01 a PF-15) y 17 de integración (PI-01 a PI-17) aprobados; flujo completo sobre seis estudios reales, del registro del estudio al informe; pruebas automatizadas en los repositorios. &
+Pruebas automatizadas de extremo a extremo; integración continua; otros navegadores y tamaños de pantalla. \\
+\hline
+
+\end{longtable}
+\endgroup
+
+Tres aspectos no fueron evaluados y se plantean como trabajo futuro: el rendimiento, la privacidad y la accesibilidad.
+Respecto de la privacidad, el subsistema de inteligencia artificial recibe el número de documento del paciente, que se utiliza para vincular los estudios y las ejecuciones entre ambas bases de datos.
+Como trabajo futuro se prevé reemplazar el documento por un identificador único sin significado.
 
 
 \clearpage

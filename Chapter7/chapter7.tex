@@ -41,7 +41,6 @@ La especialista clasificó los intervalos señalados por el modelo y confirmó l
 En uno de los estudios, por ejemplo, de once intervalos señalados la especialista confirmó diez, identificó el restante como un artefacto de movimiento y agregó manualmente una anomalía (Figuras~\ref{fig:ia-revision-listado} y~\ref{fig:ia-revision-manual}).
 Todas las ejecuciones se realizaron con el modelo de detección vigente, denominado HGB~2.0 y basado en \textit{Gradient Boosting} (Sección~\ref{subsec:modelo-vigente-hgb}), que reemplazó al modelo utilizado en las etapas iniciales del proyecto.
 Este modelo opera con un umbral de probabilidad de 0,95 y requiere dos ventanas consecutivas por encima de dicho umbral para señalar un intervalo.
-El comportamiento observado resultó acorde con el desempeño esperado para dicho modelo.
 
 En síntesis, EpilexIA constituye una plataforma funcional en todos sus componentes, incluida la detección de anomalías asistida por inteligencia artificial, cuyo funcionamiento fue verificado de extremo a extremo con estudios reales y revisado por una especialista del área.
 A la fecha de redacción de este documento, el sistema opera en la infraestructura en la nube provista por BigQ (Sección~\ref{subsec:despliegue-nube}), donde se realizaron las validaciones con la especialista, y se encuentra en proceso de transferencia al IPS para su utilización por los profesionales responsables de la revisión de estudios EEG.
@@ -209,10 +208,14 @@ Las conclusiones de este trabajo deben interpretarse considerando las siguientes
 
     \item \textbf{Evaluación de usabilidad.}
     La evaluación con usuarios tuvo carácter cualitativo, sin cuestionarios estandarizados ni medición de indicadores de eficacia, eficiencia o satisfacción.
-    Los perfiles Técnico y Administrador no fueron evaluados con usuarios del hospital; su primera utilización por personal del IPS se prevé en las capacitaciones descritas en la Sección~\ref{subsec:actividades-en-curso}.
+    Los perfiles Técnico y Administrador no fueron evaluados con usuarios del hospital; su primera utilización por personal del IPS tendrá lugar en las capacitaciones programadas para fines de noviembre de 2026 (Sección~\ref{subsec:actividades-en-curso}).
 
     \item \textbf{Ausencia de mediciones sistemáticas de rendimiento.}
     No se documentaron tiempos de respuesta, consumo de recursos ni comportamiento bajo carga concurrente.
+
+    \item \textbf{Privacidad y accesibilidad sin evaluar.}
+    Estos aspectos no fueron evaluados (Cuadro~\ref{tab:sintesis-aspectos}).
+    En particular, el subsistema de inteligencia artificial recibe el número de documento del paciente, que se utiliza para vincular los estudios entre ambas bases de datos.
 
     \item \textbf{Cobertura de las pruebas.}
     Las pruebas automatizadas utilizan dependencias simuladas y no existen pruebas automatizadas de extremo a extremo ni medición formal de cobertura.
@@ -246,9 +249,10 @@ Se distinguen las actividades de transferencia que ya se encuentran en curso de 
     En esta etapa se prevé que la especialista utilice la plataforma de manera habitual sobre un volumen creciente de estudios, con una asistencia técnica progresivamente menor por parte del equipo de desarrollo.
 
     \item \textbf{Capacitación de los usuarios del IPS.}
-    Como parte de la transferencia, entre fines de noviembre y comienzos de diciembre de 2026 se prevén jornadas de capacitación para los dos perfiles que aún no utilizaron el sistema en el hospital.
+    Como parte de la transferencia, las jornadas de capacitación para los dos perfiles que aún no utilizaron el sistema en el hospital están programadas para fines de noviembre de 2026.
     El equipo de TI del IPS será capacitado en el perfil Administrador: ingreso al sistema, creación de usuarios y restablecimiento de contraseñas de técnicos y especialistas.
     El personal de enfermería del área de Neurología será capacitado en el perfil Técnico: registro de pacientes y carga de nuevos estudios, de modo que estos queden disponibles para su análisis por los especialistas, conforme al flujo de trabajo para el cual fue diseñado el sistema.
+    Las capacitaciones se apoyan en los manuales entregados para cada perfil.
 
     \item \textbf{Plan de mantenimiento y soporte.}
     Establecer un plan de mantenimiento que contemple la atención de incidencias, las correcciones y los ajustes menores que surjan del uso cotidiano, incluidas las observaciones de la especialista aún pendientes (Cuadro~\ref{tab:observaciones-especialista}).
@@ -258,7 +262,7 @@ Se distinguen las actividades de transferencia que ya se encuentran en curso de 
 \subsection{Líneas de trabajo futuro}
 \label{subsec:lineas-futuras}
 
-Las siguientes líneas atienden las limitaciones identificadas en la Sección~\ref{sec:limitaciones}:
+Las siguientes líneas atienden las limitaciones identificadas en la Sección~\ref{sec:limitaciones} y los puntos no cubiertos que se detallan en el Cuadro~\ref{tab:sintesis-aspectos}:
 
 \begin{itemize}
     \item \textbf{Seguimiento del desempeño del modelo en condiciones de uso real.}
@@ -275,6 +279,12 @@ Las siguientes líneas atienden las limitaciones identificadas en la Sección~\r
 
     \item \textbf{Fortalecimiento de la verificación.}
     Incorporar pruebas automatizadas de extremo a extremo y medición de cobertura, y realizar una evaluación específica de seguridad.
+
+    \item \textbf{Privacidad.}
+    Reemplazar el número de documento del paciente que se transmite al subsistema de inteligencia artificial por un identificador único sin significado.
+
+    \item \textbf{Accesibilidad.}
+    Definir los criterios de accesibilidad aplicables a la interfaz y revisarlos tomando como referencia las pautas WCAG~2.2 \citep{W3C2023WCAG22}.
 
     \item \textbf{Herramientas de apoyo al desarrollo.}
     Incorporar, para el desarrollo de funcionalidades futuras, herramientas actuales de desarrollo guiado por pruebas o por especificaciones, que complementen las prácticas de desarrollo asistido por inteligencia artificial descritas en la Sección~\ref{sec:desarrollo-asistido-ia}.
