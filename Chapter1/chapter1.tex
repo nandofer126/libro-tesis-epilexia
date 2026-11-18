@@ -12,14 +12,14 @@
 \label{sec:contexto-motivacion}
 
 % - epilepsia y EEG
-La epilepsia es una enfermedad cerebral crónica no transmisible que afecta a personas de todas las edades y constituye uno de los trastornos neurológicos más frecuentes a nivel mundial \citep{WHO2024Epilepsy}. El electroencefalograma (EEG) constituye una herramienta de especial relevancia para apoyar el diagnóstico, la clasificación y el seguimiento de pacientes con epilepsia \citep{NoachtarRemi2009}. Mediante el registro de la actividad eléctrica cerebral, el EEG permite al especialista identificar patrones y eventos de interés para la evaluación neurológica. En la práctica clínica, estos estudios pueden generar registros extensos cuya revisión requiere tiempo, experiencia y herramientas adecuadas para facilitar su análisis.
+La epilepsia es una enfermedad cerebral crónica no transmisible que afecta a personas de todas las edades y constituye uno de los trastornos neurológicos más frecuentes a nivel mundial \citep{WHO2024Epilepsy}. El electroencefalograma (EEG) es una herramienta de especial relevancia para apoyar el diagnóstico, la clasificación y el seguimiento de pacientes con epilepsia \citep{NoachtarRemi2009}. Mediante el registro de la actividad eléctrica cerebral, el EEG permite al especialista identificar patrones y eventos de interés para la evaluación neurológica. En la práctica clínica, estos estudios pueden generar registros extensos cuya revisión requiere tiempo, experiencia y herramientas adecuadas para facilitar su análisis.
 
 
 % - contexto del Hospital Central del IPS
-En el área de Neurología del Hospital Central del Instituto de Previsión Social (IPS), la adquisición y la revisión de las señales EEG se realizan mediante el \textit{software} Easy Cadwell III. Esta herramienta permite la captura y visualización de los registros electroencefalográficos. No obstante, a partir del relevamiento realizado en el contexto del proyecto se identificaron necesidades relacionadas con la integración del flujo de trabajo posterior a la adquisición, entre ellas el acceso mediante navegador web, la gestión centralizada de pacientes, estudios e informes clínicos y una mayor trazabilidad de las actividades realizadas durante el proceso de análisis.
+En el área de Neurología del Hospital Central del Instituto de Previsión Social (IPS), la adquisición y la revisión de las señales EEG se realizan mediante el \textit{software} Easy III, de Cadwell. Esta herramienta permite la captura y visualización de los registros electroencefalográficos. No obstante, a partir del relevamiento realizado en el contexto del proyecto se identificaron necesidades relacionadas con la integración del flujo de trabajo posterior a la adquisición, entre ellas el acceso mediante navegador web, la gestión centralizada de pacientes, estudios e informes clínicos y una mayor trazabilidad de las actividades realizadas durante el proceso de análisis.
 
 % - flujo de trabajo actual
-En el flujo de trabajo relevado, diferentes etapas pueden involucrar el sistema utilizado para la adquisición de las señales, los registros complementarios y los procedimientos empleados para la elaboración y gestión de informes. A ello se suma la posibilidad de incorporar técnicas automatizadas de análisis de señales que permitan presentar información de apoyo al profesional médico, manteniendo la interpretación clínica y la toma de decisiones bajo la responsabilidad del especialista.
+En el flujo de trabajo relevado, la especialista revisa los estudios en la misma computadora en la que está instalado el \textit{software} de adquisición, conectada al equipo de registro. Los informes se redactan en esa computadora mediante un procesador de textos, a partir de una plantilla, y se imprimen para su entrega al paciente. Tanto los estudios como los informes permanecen almacenados en ese equipo, por lo que su consulta depende del acceso a dicha computadora. A ello se suma la posibilidad de incorporar técnicas automatizadas de análisis de señales que permitan presentar información de apoyo al profesional médico, manteniendo la interpretación clínica y la toma de decisiones bajo la responsabilidad del especialista.
 
 % - presentación de EpilexIA
 
@@ -39,7 +39,7 @@ La participación del sector privado facilita el acceso a una infraestructura qu
 
 % - motivación para desarrollar EpilexIA
 La motivación principal del proyecto radica en aprovechar tecnologías web para proporcionar una plataforma integrada y accesible desde diferentes dispositivos, como computadoras, \textit{notebooks} y \textit{tablets}, que complemente
- las herramientas utilizadas en el hospital. EpilexIA no pretende sustituir a Easy Cadwell III en la etapa de adquisición del EEG, sino incorporar una capa complementaria para las etapas posteriores de carga, visualización, análisis asistido, revisión clínica, elaboración de informes y seguimiento del proceso.
+ las herramientas utilizadas en el hospital. EpilexIA no pretende sustituir a Easy III en la etapa de adquisición del EEG, sino incorporar una capa complementaria para las etapas posteriores de carga, visualización, análisis asistido, revisión clínica, elaboración de informes y seguimiento del proceso.
 
 
 El desarrollo de la propuesta consideró, además, las condiciones del
@@ -96,7 +96,7 @@ mediante el análisis de señales electroencefalográficas (EEG) asistido
 por inteligencia artificial, que permita gestionar pacientes, estudios
 EEG e informes clínicos, así como visualizar las anomalías identificadas
 por el componente de inteligencia artificial integrado, con el propósito
-de complementar el flujo de trabajo existente con Easy Cadwell III en el
+de complementar el flujo de trabajo existente con Easy III en el
 área de Neurología del Hospital Central del Instituto de Previsión Social.
 
 
@@ -108,7 +108,7 @@ de complementar el flujo de trabajo existente con Easy Cadwell III en el
 \begin{enumerate}
     \item Relevar el estado del arte sobre sistemas de información clínica para la epilepsia, la visualización de señales de EEG en entornos web y las herramientas de apoyo al diagnóstico neurológico.
 
-    \item Analizar los requerimientos funcionales y no funcionales del área de Neurología del Hospital Central del IPS, identificando las limitaciones del flujo actual con Easy Cadwell III que el sistema web debe resolver.
+    \item Analizar los requerimientos funcionales y no funcionales del área de Neurología del Hospital Central del IPS, identificando las limitaciones del flujo actual con Easy III que el sistema web debe resolver.
 
     \item Diseñar e implementar una base de datos relacional en PostgreSQL que soporte la gestión de pacientes, estudios de EEG, archivos de señal, informes clínicos, anomalías detectadas y auditoría de actividad.
 
@@ -124,7 +124,7 @@ de complementar el flujo de trabajo existente con Easy Cadwell III en el
 \section{Problema y oportunidad}
 \label{sec:problema-oportunidad}
 
-En el área de Neurología del Hospital Central del Instituto de Previsión Social, la adquisición y revisión de los estudios electroencefalográficos se realizan con el Easy Cadwell III. A partir del relevamiento realizado en el marco del proyecto, se identificaron necesidades relacionadas con el acceso a los estudios, la integración de la información y la trazabilidad de las actividades que forman parte del flujo de trabajo posterior a la adquisición de las señales EEG.
+En el área de Neurología del Hospital Central del Instituto de Previsión Social, la adquisición y revisión de los estudios electroencefalográficos se realizan con el Easy III. A partir del relevamiento realizado en el marco del proyecto, se identificaron necesidades relacionadas con el acceso a los estudios, la integración de la información y la trazabilidad de las actividades que forman parte del flujo de trabajo posterior a la adquisición de las señales EEG.
 
 Una de las necesidades identificadas es el acceso a los registros electroencefalográficos desde distintos dispositivos. La dependencia de equipos con el \textit{software} instalado limita la
 posibilidad de consultar los estudios en un navegador web desde computadoras, \textit{notebooks} o \textit{tablets}, por lo que el acceso a la información queda condicionado a la disponibilidad de los equipos y herramientas utilizados en el flujo de trabajo existente.
