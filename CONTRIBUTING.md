@@ -4,7 +4,7 @@ Somos dos autores editando el mismo documento LaTeX. Estas reglas existen para q
 
 ## 1. Flujo de ramas
 
-- `main` siempre **compila sin errores**. Nadie commitea directo en `main`.
+- `main` siempre **compila sin errores** y es la **última versión aprobada por el tutor**: funciona como respaldo. Nadie commitea directo en `main`.
 - Una rama por tarea, corta y enfocada. Nombre: `<área>/<descripción-corta>`.
 
   | Ejemplo | Para |
@@ -15,6 +15,7 @@ Somos dos autores editando el mismo documento LaTeX. Estas reglas existen para q
   | `fmt/tablas-cap4` | formato / maquetación |
   | `fix/typos-cap1` | correcciones menores |
   | `rev/observaciones-tutor` | cambios pedidos por el tutor |
+  | `version/mejoras-luis-cap-7` | entrega de un conjunto de cambios para revisión del tutor |
 
 - Ciclo de trabajo:
 
@@ -32,6 +33,21 @@ Somos dos autores editando el mismo documento LaTeX. Estas reglas existen para q
   ```bash
   git fetch origin && git rebase origin/main   # o: git merge origin/main
   ```
+
+## 1.1 Revisión del tutor en Overleaf
+
+Tenemos **un solo proyecto de Overleaf** (plan gratuito) y lo usamos solo para que el tutor lea y comente; el texto se edita **siempre en Git**.
+
+1. Se abre el Pull Request de la rama (ej. `version/mejoras-luis-cap-7`) y **no se mergea todavía**.
+2. Se sube esa rama a Overleaf con `make overleaf` siguiendo los pasos del [README](README.md#4-overleaf-revisión-del-tutor). Siempre el **proyecto completo** + **Overwrite**: Overleaf reemplaza carpetas enteras, así que subir solo lo que cambió borra el resto (imágenes incluidas).
+3. El tutor revisa y comenta en Overleaf. Sus observaciones se pasan a mano a la rama (commits nuevos en el mismo PR, o una rama `rev/...`) y se vuelve a subir.
+4. Cuando el tutor aprueba → se mergea el PR a `main`.
+5. Si hay que volver a la versión aprobada anterior: `make overleaf REF=main` y subir de nuevo.
+
+Reglas:
+
+- **Nadie edita en Overleaf** (ni nosotros ni el tutor): lo editado ahí se pierde en la siguiente subida.
+- **Un solo PR "en revisión del tutor" a la vez**, porque Overleaf muestra una sola versión. Si hay que avisar cuál está subida, dejarlo como comentario en el PR.
 
 ## 2. Reglas para minimizar conflictos
 

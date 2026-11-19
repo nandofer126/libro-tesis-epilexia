@@ -1,0 +1,311 @@
+\chapter{Conclusiones y trabajos futuros}
+\label{chap:conclusiones}
+
+\markboth{\hfill \thechapter. Conclusiones y trabajos futuros}{\hfill \thechapter. Conclusiones y trabajos futuros}
+
+Este capítulo presenta las conclusiones derivadas del desarrollo y la evaluación de EpilexIA.
+En primer lugar se exponen las conclusiones generales del trabajo.
+Luego se analiza el cumplimiento de los objetivos definidos en la Sección~\ref{sec:objetivos} y se contrasta la hipótesis formulada en la Sección~\ref{sec:hipotesis} con las evidencias reunidas en el Capítulo~\ref{pruebas_evaluacion}.
+Posteriormente se identifican los principales aportes y las limitaciones del proyecto y, a partir de estas últimas, se proponen las líneas de trabajo futuro.
+
+Las afirmaciones de este capítulo se restringen a lo que las evidencias documentadas permiten sostener.
+En consecuencia, se distingue entre la verificación del funcionamiento del sistema, realizada sobre un conjunto reducido de estudios en condiciones controladas, y una validación clínica de alcance general, que excede el presente trabajo.
+
+
+\section{Conclusiones generales}
+\label{sec:conclusiones-generales}
+
+El presente trabajo se propuso desarrollar un sistema web de apoyo a la detección de crisis epilépticas mediante el análisis de señales EEG asistido por inteligencia artificial, que complementara el flujo de trabajo posterior a la adquisición de los estudios en el área de Neurología del Hospital Central del Instituto de Previsión Social (IPS).
+Como resultado se obtuvo EpilexIA, una plataforma que reúne en un mismo entorno la gestión de pacientes y estudios EEG, la visualización interactiva de las señales, el registro de anomalías, la presentación de las anomalías identificadas por el componente de inteligencia artificial, la elaboración de informes médicos, el control de acceso basado en roles y la auditoría de las operaciones realizadas.
+
+El desarrollo se condujo mediante una adaptación del Modelo V \citep{ForsbergMooz1991}, que permitió mantener la correspondencia entre las necesidades relevadas, las decisiones de diseño, las funcionalidades implementadas y las pruebas destinadas a comprobarlas.
+El relevamiento realizado con profesionales del área dio lugar a 64 requerimientos funcionales, organizados en siete áreas, y a 16 requerimientos no funcionales, que sirvieron de referencia para el diseño presentado en el Capítulo~4 y para la definición de los casos de prueba del Capítulo~\ref{pruebas_evaluacion}.
+La incorporación de ciclos de retroalimentación resultó adecuada para un contexto en el que la disponibilidad de los profesionales condicionaba las instancias de relevamiento y revisión.
+Esto se observó particularmente en el visualizador EEG, cuya definición evolucionó a partir de las observaciones realizadas por la médica especialista durante las sesiones de trabajo semanales (Cuadro~\ref{tab:observaciones-especialista}).
+
+Desde el punto de vista arquitectónico, la decisión de separar la gestión de la información clínica del subsistema de inteligencia artificial, coordinando este último mediante una API específica y una cola persistente de ejecuciones, demostró ser pertinente.
+Esta separación permitió desarrollar y verificar las funcionalidades de gestión y visualización con independencia de la evolución del procesamiento automatizado, e incorporar posteriormente el modelo HGB~2.0 en reemplazo del anterior sin modificar la gestión clínica.
+Asimismo, mantiene diferenciados los resultados producidos por el modelo de las decisiones registradas por el especialista.
+
+Las evidencias obtenidas respaldan el funcionamiento de la plataforma.
+Los quince casos de prueba funcional definidos resultaron aprobados (Cuadro~\ref{tab:sintesis_pruebas_funcionales}).
+Los diecisiete casos de prueba de integración resultaron igualmente aprobados: verificaron la autenticación, la protección de los servicios, la revocación de sesiones, la persistencia de pacientes, estudios y archivos EEG, y el ciclo completo de procesamiento mediante inteligencia artificial (Cuadro~\ref{tab:resumen_pruebas_integracion}).
+La suite automatizada del \textit{frontend}, compuesta por 225 casos, se ejecutó sin fallos (Cuadro~\ref{tab:pruebas-frontend}).
+
+A ello se suma la verificación integral realizada con registros clínicos reales.
+En condiciones controladas, se procesaron en la plataforma seis estudios EEG correspondientes a pacientes del Hospital Central del IPS, cargados en formato EDF tal como los exporta el equipo de adquisición, ejecutando el ciclo completo de análisis: carga del registro, solicitud de procesamiento, ejecución del modelo, persistencia de los resultados y presentación de las anomalías en el visualizador.
+En todos los casos el ciclo se completó y los intervalos identificados por el modelo se presentaron correctamente sobre el registro EEG.
+
+Los resultados del análisis automatizado fueron revisados por la médica especialista en epileptología durante las sesiones de validación realizadas en el hospital.
+La especialista clasificó los intervalos señalados por el modelo y confirmó la mayor parte de ellos como anomalías.
+En uno de los estudios, por ejemplo, de once intervalos señalados la especialista confirmó diez, identificó el restante como un artefacto de movimiento y agregó manualmente una anomalía (Figuras~\ref{fig:ia-revision-listado} y~\ref{fig:ia-revision-manual}).
+Todas las ejecuciones se realizaron con el modelo de detección vigente, denominado HGB~2.0 y basado en \textit{Gradient Boosting} (Sección~\ref{subsec:modelo-vigente-hgb}), que reemplazó al modelo utilizado en las etapas iniciales del proyecto.
+Este modelo opera con un umbral de probabilidad de 0,95 y requiere dos ventanas consecutivas por encima de dicho umbral para señalar un intervalo.
+
+En síntesis, EpilexIA constituye una plataforma operativa que integra la gestión de pacientes y estudios, la visualización de señales, la elaboración de informes y la detección de anomalías asistida por inteligencia artificial, cuyo ciclo completo fue verificado de extremo a extremo con estudios reales y revisado por una especialista del área.
+A la fecha de redacción de este documento, el sistema opera en la infraestructura en la nube provista por BigQ (Sección~\ref{subsec:despliegue-nube}), donde se realizaron las validaciones con la especialista, y se encuentra en proceso de transferencia al IPS para su utilización por los profesionales responsables de la revisión de estudios EEG.
+
+
+\section{Cumplimiento de los objetivos}
+\label{sec:cumplimiento-objetivos}
+
+El Cuadro~\ref{tab:cumplimiento-objetivos} resume el grado de cumplimiento de los objetivos específicos planteados en la Sección~\ref{subsec:objetivos-especificos}, junto con las evidencias que lo sustentan.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{longtable}{|
+>{\raggedright\arraybackslash}p{0.27\textwidth}|
+>{\raggedright\arraybackslash}p{0.43\textwidth}|
+>{\raggedright\arraybackslash}p{0.20\textwidth}|}
+\caption{Cumplimiento de los objetivos específicos de EpilexIA.}
+\label{tab:cumplimiento-objetivos}\\
+\hline
+\textbf{Objetivo específico} &
+\textbf{Evidencia} &
+\textbf{Cumplimiento} \\
+\hline
+\endfirsthead
+
+\multicolumn{3}{c}{\textit{Continuación del Cuadro~\thetable}}\\
+\hline
+\textbf{Objetivo específico} &
+\textbf{Evidencia} &
+\textbf{Cumplimiento} \\
+\hline
+\endhead
+
+1. Relevar el estado del arte. &
+Capítulo~2: revisión de SaMD, electroencefalografía, procesamiento de señales, inteligencia artificial aplicada al EEG y herramientas existentes, con una comparación respecto de EpilexIA (Cuadro~\ref{tab:comparacion-herramientas-eeg}). &
+Cumplido. \\
+\hline
+
+2. Analizar los requerimientos funcionales y no funcionales. &
+Capítulo~4: contexto operativo, actores, 64 requerimientos funcionales y 16 no funcionales derivados del relevamiento en el Hospital Central del IPS. &
+Cumplido. \\
+\hline
+
+3. Diseñar e implementar la base de datos relacional. &
+Capítulos~4 y~5: modelo de datos clínicos y del procesamiento de IA implementado en PostgreSQL.
+Persistencia verificada en las pruebas PI-04 y PI-05. &
+Cumplido. \\
+\hline
+
+4. Desarrollar el \textit{backend} REST con control de acceso e integración con el servicio de IA. &
+Capítulo~5: servicios implementados con Spring Boot.
+Autenticación, autorización y roles verificados en PF-01, PF-02, PF-12 a PF-14 y PI-01 a PI-03.
+Integración con la API de IA verificada en PI-06 a PI-17 y mediante la ejecución del ciclo completo de análisis sobre estudios reales. &
+Cumplido. \\
+\hline
+
+5. Construir el \textit{frontend} web con visualizador EEG, gestión de anomalías, informes y auditoría. &
+Capítulo~5: interfaz implementada con React y TypeScript; 225 pruebas automatizadas aprobadas.
+Funcionalidades verificadas en PF-03 a PF-11 y PF-15.
+La utilización desde \textit{tablets} no fue evaluada de manera sistemática. &
+Cumplido; uso en \textit{tablets} sin evaluación formal. \\
+\hline
+
+6. Evaluar el sistema mediante pruebas funcionales, de usabilidad e integración con registros EEG reales. &
+Capítulo~\ref{pruebas_evaluacion}: pruebas funcionales y de integración; verificación integral con estudios EEG reales del Hospital Central del IPS; sesiones de uso con una médica especialista.
+La usabilidad se evaluó de forma cualitativa y no se realizaron mediciones sistemáticas de rendimiento. &
+Cumplido; usabilidad evaluada cualitativamente. \\
+\hline
+
+\end{longtable}
+\endgroup
+
+Los objetivos específicos 1 y 2 se cumplieron mediante la revisión presentada en el Capítulo~2 y el análisis desarrollado en el Capítulo~4.
+La revisión permitió ubicar a EpilexIA respecto de las herramientas utilizadas en el ámbito clínico y de los antecedentes de detección automatizada de crisis, mientras que el relevamiento identificó las necesidades de acceso, integración de la información y trazabilidad que orientaron el diseño.
+
+Los objetivos 3, 4 y 5, relativos a la construcción de la plataforma, se consideran cumplidos.
+La base de datos, el \textit{backend} y el \textit{frontend} fueron implementados e integrados, y su funcionamiento fue verificado mediante las pruebas funcionales y de integración ejecutadas.
+La integración con el servicio de inteligencia artificial quedó comprobada al completarse el ciclo de análisis sobre estudios reales.
+La única salvedad corresponde a la utilización de la interfaz desde \textit{tablets}, que fue contemplada en el diseño pero no evaluada de forma sistemática.
+
+El objetivo 6 se considera cumplido en cuanto a las pruebas funcionales, las pruebas de integración y la utilización de registros EEG reales del hospital.
+La evaluación de usabilidad se apoyó en las sesiones realizadas con la médica especialista y tuvo carácter cualitativo, sin aplicación de instrumentos estandarizados.
+
+En relación con el objetivo general, se desarrolló un sistema web que permite gestionar pacientes, estudios EEG e informes clínicos, y visualizar las anomalías identificadas por el componente de inteligencia artificial integrado.
+El sistema complementa el flujo de trabajo existente con Easy III, cuyos registros exportados en formato EDF constituyen su información de entrada.
+Por tanto, el objetivo general se considera alcanzado.
+
+
+\section{Contrastación de la hipótesis}
+\label{sec:contrastacion-hipotesis}
+
+La hipótesis del proyecto sostiene que un sistema web integrado, que centralice la gestión de pacientes, estudios EEG e informes clínicos e incorpore la visualización de resultados del procesamiento mediante inteligencia artificial, puede contribuir a mejorar el flujo de trabajo relacionado con el análisis de estudios electroencefalográficos.
+Para contrastarla, resulta conveniente considerar por separado los beneficios que la hipótesis anticipa.
+
+\begin{itemize}
+    \item \textbf{Acceso a los estudios desde diferentes dispositivos.}
+    Durante las sesiones realizadas en el Hospital Central del IPS, la especialista accedió a la plataforma tanto desde su propio equipo portátil como desde los equipos del hospital, mediante un navegador web, sin instalar software adicional y con distintas conexiones de red.
+    Esta evidencia respalda el beneficio previsto para computadoras y \textit{notebooks}.
+    La utilización desde \textit{tablets} no fue evaluada.
+
+    \item \textbf{Trazabilidad de las actividades.}
+    Las pruebas funcionales y de integración verificaron el control de acceso según roles, la restricción de edición y el cierre de los informes, la revocación de sesiones y la consulta del historial de auditoría.
+    Estos resultados respaldan la capacidad del sistema para registrar y delimitar las acciones de los usuarios.
+
+    \item \textbf{Apoyo para la localización y evaluación de segmentos de interés.}
+    En los estudios reales procesados, la plataforma presentó los intervalos identificados por el modelo y permitió navegar directamente hacia ellos.
+    La especialista confirmó como anomalías la mayor parte de los intervalos señalados y complementó los resultados con registros manuales cuando lo consideró necesario.
+    Esta evidencia respalda el beneficio previsto dentro del conjunto de estudios evaluado.
+
+    \item \textbf{Facilitación de la revisión y la elaboración de informes.}
+    La especialista completó en un mismo entorno la carga del estudio, la revisión de las señales, el registro de anomalías y la elaboración del informe.
+    El trabajo no incluyó mediciones de tiempos que permitan cuantificar este beneficio.
+\end{itemize}
+
+A partir de este análisis, la hipótesis se considera \textbf{respaldada dentro del alcance de la evaluación realizada}.
+Las evidencias respaldan que el sistema proporciona acceso, organización y trazabilidad sobre las actividades posteriores a la adquisición del EEG, y que los resultados del procesamiento mediante inteligencia artificial orientaron la revisión de los registros evaluados.
+La magnitud de la mejora sobre el flujo de trabajo y su generalización a un volumen mayor de estudios y de profesionales deberán establecerse durante la etapa de uso productivo.
+En todos los casos, la interpretación de los registros y las decisiones clínicas permanecieron bajo la responsabilidad de la especialista, conforme a lo previsto en la hipótesis.
+
+
+\section{Aportes del trabajo}
+\label{sec:aportes}
+
+Los principales aportes del presente trabajo son los siguientes:
+
+\begin{itemize}
+    \item \textbf{Una plataforma web integrada para el flujo posterior a la adquisición del EEG.}
+    EpilexIA reúne en un único entorno, accesible mediante navegador, funciones que en el flujo relevado se encontraban distribuidas entre distintas herramientas: gestión de pacientes y estudios, revisión de señales, registro de anomalías y elaboración de informes por especialista.
+    La plataforma complementa al sistema de adquisición existente, sin sustituirlo.
+
+    \item \textbf{Un visualizador EEG para entornos web.}
+    El visualizador ofrece en el navegador operaciones propias de la revisión electroencefalográfica, como la selección de montajes, la configuración de los filtros, que se aplican en el \textit{backend}, el ajuste de sensibilidad, la navegación temporal y la reproducción sincronizada de video, e incorpora mecanismos de carga segmentada para el tratamiento de registros extensos.
+
+    \item \textbf{La integración operativa de un modelo de detección en el flujo clínico.}
+    El trabajo lleva un modelo de aprendizaje automático desde su artefacto entrenado hasta su utilización por una especialista sobre estudios reales, y da continuidad a los antecedentes desarrollados en la FP-UNA sobre detección automática de crisis \citep{AyalaBritez2026SeizureDetection,Lezcano2026GradientBoosting}.
+
+    \item \textbf{Una arquitectura desacoplada para el procesamiento mediante inteligencia artificial.}
+    La separación entre el \textit{backend} clínico, la API de IA y el motor de procesamiento, coordinados mediante una cola persistente, permite incorporar o reemplazar modelos sin modificar la gestión clínica.
+
+    \item \textbf{Un diseño que preserva la supervisión profesional.}
+    El sistema mantiene diferenciados los intervalos identificados automáticamente de los hallazgos confirmados por el especialista, asigna la responsabilidad de cada informe a su autor y conserva las anotaciones manuales y las ventanas incorporadas a los informes.
+    Este criterio es consistente con las consideraciones sobre software de apoyo a la decisión clínica revisadas en el Capítulo~2 \citep{IMDRF2013SaMD,FDA2026CDS}, y deja disponibles datos de retroalimentación clínica que pueden emplearse en la mejora posterior de los modelos.
+
+    \item \textbf{Un sistema en condiciones de ser transferido a la institución destinataria.}
+    El resultado del trabajo no se limita a un prototipo: la plataforma fue utilizada con estudios reales en el entorno hospitalario y se encuentra en proceso de transferencia al IPS.
+\end{itemize}
+
+
+\section{Limitaciones}
+\label{sec:limitaciones}
+
+Las conclusiones de este trabajo deben interpretarse considerando las siguientes limitaciones:
+
+\begin{itemize}
+    \item \textbf{Tamaño y condiciones de la verificación con estudios reales.}
+    La verificación del análisis automatizado se realizó sobre un conjunto reducido de estudios, en condiciones controladas y con la revisión de una única especialista.
+    Sus resultados muestran que el sistema funciona de extremo a extremo y que la especialista pudo revisar, confirmar o descartar las detecciones en esos estudios, pero no constituyen una validación clínica ni permiten estimar con significación estadística la sensibilidad o la especificidad del modelo.
+
+    \item \textbf{Alcance respecto del modelo de inteligencia artificial.}
+    El desarrollo y el entrenamiento del modelo no forman parte del alcance del trabajo.
+    Su comportamiento ante otros equipos de adquisición, configuraciones de registro o poblaciones de pacientes no fue evaluado.
+
+    \item \textbf{Evaluación de usabilidad.}
+    La evaluación con usuarios tuvo carácter cualitativo, sin cuestionarios estandarizados ni medición de indicadores de eficacia, eficiencia o satisfacción.
+    Los perfiles Técnico y Administrador no fueron evaluados con usuarios del hospital; su primera utilización por personal del IPS tendrá lugar en las capacitaciones programadas para fines de noviembre de 2026 (Sección~\ref{subsec:actividades-en-curso}).
+
+    \item \textbf{Ausencia de mediciones sistemáticas de rendimiento.}
+    No se documentaron tiempos de respuesta, consumo de recursos ni comportamiento bajo carga concurrente.
+
+    \item \textbf{Privacidad y accesibilidad sin evaluar.}
+    Estos aspectos no fueron evaluados (Cuadro~\ref{tab:sintesis-aspectos}).
+    En particular, el subsistema de inteligencia artificial recibe el número de documento del paciente, que se utiliza para vincular los estudios entre ambas bases de datos.
+
+    \item \textbf{Cobertura de las pruebas.}
+    Las pruebas automatizadas utilizan dependencias simuladas y no existen pruebas automatizadas de extremo a extremo ni medición formal de cobertura.
+    Las pruebas funcionales verificaron el control de acceso, pero no constituyen una evaluación integral de la seguridad del sistema.
+
+    \item \textbf{Compatibilidad con dispositivos.}
+    La utilización desde \textit{tablets}, prevista en los objetivos, no fue evaluada de manera sistemática.
+
+    \item \textbf{Situación respecto del marco de dispositivos médicos.}
+    EpilexIA fue concebido considerando los conceptos de software como dispositivo médico, pero el trabajo no comprendió una categorización formal de riesgo ni un proceso de evaluación de conformidad regulatoria.
+
+    \item \textbf{Contexto de validación.}
+    Los requerimientos y la validación se circunscriben al área de Neurología del Hospital Central del IPS.
+    Su utilización en otros entornos clínicos requeriría nuevos relevamientos y procesos de validación.
+\end{itemize}
+
+
+\section{Trabajos futuros}
+\label{sec:trabajos-futuros}
+
+Concluidas la implementación y la verificación del sistema, la etapa siguiente corresponde a su uso productivo en la institución destinataria.
+Se distinguen las actividades de transferencia que ya se encuentran en curso de las líneas de trabajo que quedan abiertas.
+
+\subsection{Actividades de transferencia en curso}
+\label{subsec:actividades-en-curso}
+
+\begin{itemize}
+    \item \textbf{Transferencia al IPS y uso productivo.}
+    Completar el proceso de transferencia del sistema, actualmente en curso.
+    El IPS dispondrá servidores propios y el equipo de desarrollo, junto con BigQ, realizará el respaldo de la información y el despliegue, en la infraestructura institucional, de la versión validada con la especialista, de modo que pueda ser utilizada por todos los profesionales responsables de la revisión de estudios EEG.
+    En esta etapa se prevé que la especialista utilice la plataforma de manera habitual sobre un volumen creciente de estudios, con una asistencia técnica progresivamente menor por parte del equipo de desarrollo.
+
+    \item \textbf{Capacitación de los usuarios del IPS.}
+    Como parte de la transferencia, las jornadas de capacitación para los dos perfiles que aún no utilizaron el sistema en el hospital están programadas para fines de noviembre de 2026.
+    El equipo de TI del IPS será capacitado en el perfil Administrador: ingreso al sistema, creación de usuarios y restablecimiento de contraseñas de técnicos y especialistas.
+    El personal de enfermería del área de Neurología será capacitado en el perfil Técnico: registro de pacientes y carga de nuevos estudios, de modo que estos queden disponibles para su análisis por los especialistas, conforme al flujo de trabajo para el cual fue diseñado el sistema.
+    Las capacitaciones se apoyan en los manuales entregados para cada perfil.
+
+    \item \textbf{Plan de mantenimiento y soporte.}
+    Establecer un plan de mantenimiento que contemple la atención de incidencias, las correcciones y los ajustes menores que surjan del uso cotidiano, incluidas las observaciones de la especialista aún pendientes (Cuadro~\ref{tab:observaciones-especialista}).
+
+\end{itemize}
+
+\subsection{Líneas de trabajo futuro}
+\label{subsec:lineas-futuras}
+
+Las siguientes líneas atienden las limitaciones identificadas en la Sección~\ref{sec:limitaciones} y los puntos no cubiertos que se detallan en el Cuadro~\ref{tab:sintesis-aspectos}:
+
+\begin{itemize}
+    \item \textbf{Seguimiento del desempeño del modelo en condiciones de uso real.}
+    Aprovechar el uso productivo para ampliar la evaluación del análisis automatizado a un mayor número de estudios y de especialistas, registrando de manera sistemática las detecciones confirmadas, las descartadas y los hallazgos no señalados por el modelo, de modo que puedan estimarse métricas como la sensibilidad, la especificidad y la tasa de falsas detecciones.
+
+    \item \textbf{Mejora continua de los modelos.}
+    Utilizar las anotaciones manuales y las ventanas confirmadas en los informes como datos para el reentrenamiento y la evaluación de nuevas versiones del modelo.
+
+    \item \textbf{Evaluación formal de usabilidad.}
+    Aplicar, durante la adopción del sistema, un protocolo de tareas representativas con los tres perfiles de usuario, midiendo la eficacia, la eficiencia y la satisfacción conforme a la norma ISO~9241-11 \citep{ISO9241-11:2018} e incorporando un instrumento estandarizado como el cuestionario \textit{System Usability Scale} \citep{Brooke1996SUS}.
+
+    \item \textbf{Pruebas de rendimiento y compatibilidad.}
+    Medir tiempos de respuesta y consumo de recursos con registros de larga duración y bajo carga concurrente, y evaluar el comportamiento de la interfaz en \textit{tablets} y en distintos navegadores.
+
+    \item \textbf{Fortalecimiento de la verificación.}
+    Incorporar pruebas automatizadas de extremo a extremo y medición de cobertura, y realizar una evaluación específica de seguridad.
+
+    \item \textbf{Privacidad.}
+    Reemplazar el número de documento del paciente que se transmite al subsistema de inteligencia artificial por un identificador único sin significado.
+
+    \item \textbf{Control de acceso a la auditoría.}
+    Incorporar un permiso específico para la consulta de auditoría, que permita restringirla a determinados perfiles cuando aumente la cantidad de usuarios del sistema.
+
+    \item \textbf{Accesibilidad.}
+    Definir los criterios de accesibilidad aplicables a la interfaz y revisarlos tomando como referencia las pautas WCAG~2.2 \citep{W3C2023WCAG22}.
+
+    \item \textbf{Herramientas de apoyo al desarrollo.}
+    Incorporar, para el desarrollo de funcionalidades futuras, herramientas actuales de desarrollo guiado por pruebas o por especificaciones, que complementen las prácticas de desarrollo asistido por inteligencia artificial descritas en la Sección~\ref{sec:desarrollo-asistido-ia}.
+
+    \item \textbf{Adecuación al marco de dispositivos médicos.}
+    Determinar la categoría de riesgo del sistema según el marco propuesto por el IMDRF \citep{IMDRF2014SaMDRisk}, adoptar un proceso de ciclo de vida del software conforme a la norma IEC~62304 \citep{IEC62304:2006} y analizar los requisitos de la autoridad sanitaria nacional aplicables a este tipo de software.
+
+    \item \textbf{Ampliación del alcance.}
+    Analizar la interoperabilidad con los sistemas de información institucionales y la adaptación del sistema a otros servicios o centros asistenciales, con los relevamientos y validaciones que cada contexto requiera.
+\end{itemize}
+
+
+\section{Consideraciones finales}
+\label{sec:consideraciones-finales}
+
+El desarrollo de EpilexIA muestra que es posible construir, con tecnologías de código abierto y en estrecha relación con los profesionales destinatarios, una plataforma web que integra las actividades posteriores a la adquisición del EEG e incorpora la detección de anomalías asistida por inteligencia artificial como apoyo a la revisión del especialista.
+El sistema fue verificado de extremo a extremo con estudios reales, sus resultados fueron revisados por una médica especialista en su entorno habitual de trabajo y se encuentra en proceso de transferencia a la institución para la cual fue concebido.
+
+El proyecto muestra además el valor de la articulación entre la cooperación internacional, la academia y el sector privado para atender una necesidad de una institución pública de salud.
+
+El trabajo deja, en consecuencia, un sistema funcional y en vías de adopción, junto con un conjunto delimitado de actividades de seguimiento, mantenimiento y evaluación que orientan su continuidad durante la etapa de uso productivo.

@@ -1,5 +1,6 @@
 # --- Salida de compilación (latexmk escribe todo en build/) ---
 build/
+dist/
 Thesis.pdf
 
 # --- Auxiliares de LaTeX (por si alguien compila sin latexmk) ---
@@ -44,3 +45,10 @@ CLAUDE.local.md
 
 # --- Copias sueltas / exportaciones ---
 *.zip
+
+# --- Evidencias de pruebas (registro de trabajo, capturas originales y datos de prueba) ---
+# Las figuras que usa el libro se copian a ChapterN/ChapterNFigs/; esto queda solo local.
+pruebas-pi15-pi16/
+# Registros EEG: pueden contener datos de pacientes en la cabecera y superan los límites de GitHub.
+*.edf
+*.EDF

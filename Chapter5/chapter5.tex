@@ -1,4 +1,4 @@
-\chapter{Implementación del Sistema}
+\chapter{Implementación del sistema}
 \label{cap:implementacion-sistema}
 
 \section{Introducción}
@@ -60,6 +60,9 @@ Asimismo, se utilizaron mecanismos de configuración específicos para los disti
 Estas herramientas proporcionaron una base de trabajo para desarrollar y mantener los distintos componentes de EpilexIA, conservando la separación entre sus entornos tecnológicos y permitiendo realizar tareas de construcción, configuración y verificación de manera independiente.
 
 
+Además del código fuente, cada repositorio contiene los archivos de contexto utilizados por los asistentes de inteligencia artificial (\texttt{CLAUDE.md}, \texttt{AGENTS.md} y las reglas de Cursor) y una carpeta de documentación con los planes y análisis elaborados durante el desarrollo.
+El repositorio del \textit{backend} incluye además la especificación general del sistema.
+La forma en que estos elementos se utilizaron se describe en la Sección~\ref{sec:desarrollo-asistido-ia}.
 
 \subsection{Tecnologías utilizadas}
 
@@ -225,7 +228,7 @@ p{0.45\dimexpr\textwidth-8\tabcolsep-5\arrayrulewidth\relax}|}
 \textit{frontend} & React & 18.3.1 &
 Construcción de la interfaz web \\
 \hline
-\textit{frontend} & TypeScript & No especificada &
+\textit{frontend} & TypeScript & --- &
 Desarrollo tipado de la interfaz \\
 \hline
 \textit{frontend} & Vite & 6.3.5 &
@@ -269,12 +272,11 @@ Ejecución del modelo entrenado \\
 \endgroup
 
 Las versiones indicadas corresponden a las dependencias y
-configuraciones identificadas en los repositorios del proyecto.
+configuraciones de los repositorios del proyecto.
 En los casos en que se especifican rangos de versiones, la
 versión efectiva depende de las dependencias instaladas durante
-la construcción de cada componente. Para TypeScript, no se
-identificó una versión específica declarada en las dependencias
-del \textit{frontend}.
+la construcción de cada componente. Para TypeScript, el proyecto no fija una
+versión propia: la transpilación la realiza Vite.
 
 La combinación de estas tecnologías proporciona los recursos
 necesarios para implementar las funcionalidades de EpilexIA,
@@ -330,12 +332,9 @@ procedentes del \textit{backend} y coordina las operaciones asociadas a
 las ejecuciones de inteligencia artificial.
 
 El motor de inteligencia artificial se ejecuta como un proceso
-independiente, sin exponer un servicio HTTP propio. En la
-modalidad de ejecución mediante cola de tareas, la API registra
-las solicitudes en la base de datos PostgreSQL destinada al
+independiente, sin exponer un servicio HTTP propio. La API registra las solicitudes en la base de datos PostgreSQL destinada al
 subsistema de inteligencia artificial, mientras que el motor
-consulta y procesa las tareas pendientes. Esta modalidad
-permite desacoplar la recepción de solicitudes de la ejecución
+consulta y procesa las tareas pendientes. Este mecanismo permite desacoplar la recepción de solicitudes de la ejecución
 del procesamiento de señales EEG.
 
 La integración también contempla el uso de volúmenes de
@@ -346,12 +345,7 @@ de configuración para establecer sus conexiones y rutas de
 acceso, evitando incorporar estos valores directamente en
 el código de las aplicaciones.
 
-Las configuraciones disponibles permiten establecer entornos
-de ejecución locales y contemplan una propuesta de despliegue
-integrado con servicios y redes diferenciadas. No obstante,
-esta última se encuentra documentada como una configuración
-preliminar, por lo que no se considera evidencia suficiente
-para describir un entorno de producción definitivo.
+Las configuraciones disponibles permiten establecer entornos de ejecución locales y un despliegue integrado con servicios y redes diferenciadas, utilizado en el entorno en la nube que se describe en la Sección~\ref{subsec:despliegue-nube}.
 
 En conjunto, Docker, Docker Compose, Nginx, WildFly y Uvicorn
 proporcionan los mecanismos necesarios para ejecutar e integrar
@@ -398,7 +392,6 @@ datos del subsistema de inteligencia artificial. Se
 presentan las principales decisiones técnicas adoptadas,
 sin reiterar el modelo conceptual y las relaciones ya
 desarrolladas en el capítulo de diseño.
-
 
 
 \subsection{Arquitectura de persistencia}
@@ -653,9 +646,7 @@ recursos requeridos para las operaciones de
 visualización y procesamiento.
 
 El sistema contempla la incorporación de archivos
-de señales electroencefalográficas en formatos
-compatibles con las funcionalidades implementadas,
-entre ellos EDF y CSV. Asimismo, permite asociar
+de señales electroencefalográficas en formato EDF. Asimismo, permite asociar
 archivos de video a los estudios y dispone de
 mecanismos de preparación de determinados formatos
 audiovisuales para su utilización desde la
@@ -719,8 +710,7 @@ registro inicial hasta la finalización del análisis,
 incluyendo las situaciones en las que una ejecución
 no puede completarse correctamente.
 
-En la modalidad de ejecución mediante cola de tareas,
-denominada \texttt{pgqueue}, PostgreSQL también se
+Mediante la cola de tareas denominada \texttt{pgqueue}, PostgreSQL también se
 utiliza como mecanismo de coordinación entre la API
 y el motor de inteligencia artificial. La API registra
 las solicitudes pendientes y el motor consulta la
@@ -767,8 +757,7 @@ funcionalidades destinadas a los especialistas.
 Esta implementación permite mantener un registro
 de las ejecuciones y sus resultados, así como
 coordinar el procesamiento mediante una cola
-persistente cuando se utiliza la modalidad
-\texttt{pgqueue}. La separación de responsabilidades
+persistente (\texttt{pgqueue}). La separación de responsabilidades
 entre la API, el motor y las bases de datos
 contribuye a organizar el tratamiento de la
 información clínica y los datos generados por
@@ -815,7 +804,6 @@ de los servicios REST, las principales reglas
 de negocio y los mecanismos de seguridad,
 integración y auditoría incorporados durante
 el desarrollo.
-
 
 
 \subsection{Organización y estructura del \textit{backend}}
@@ -970,7 +958,6 @@ en el funcionamiento de la aplicación.
 \FloatBarrier
 
 
-
 \subsection{Implementación de los servicios REST}
 
 La comunicación entre la interfaz web y el \textit{backend}
@@ -1053,8 +1040,6 @@ aplicación, manteniendo diferenciadas
 las responsabilidades de recepción de
 solicitudes, validación de información
 y ejecución de las operaciones de negocio.
-
-
 
 
 \subsection{Implementación de la lógica de negocio}
@@ -1196,7 +1181,6 @@ administrar los procesos clínicos
 y técnicos implementados en EpilexIA.
 
 
-
 \Needspace{8\baselineskip}
 \subsection{Implementación de la autenticación y autorización}
 
@@ -1308,7 +1292,6 @@ la generación del \textit{token} JWT, la comprobación
 de la sesión persistente y la evaluación de
 los permisos necesarios para acceder a los
 servicios protegidos.
-
 
 
 % Figura 5.3: Flujo de autenticación y autorización
@@ -1459,7 +1442,7 @@ En cuanto a los recursos audiovisuales, el \textit{backend} permite incorporar a
 
 La integración con el subsistema de inteligencia artificial se establece mediante la comunicación entre el \textit{backend} desarrollado con Spring Boot y una API independiente implementada con FastAPI. El \textit{backend} gestiona las operaciones de aplicación relacionadas con las solicitudes de análisis, mientras que la API de inteligencia artificial recibe las solicitudes correspondientes y coordina su procesamiento con los componentes especializados.
 
-En la modalidad de ejecución mediante cola persistente, la API registra los trabajos de análisis en la base de datos PostgreSQL del subsistema de inteligencia artificial. El motor de procesamiento, ejecutado como componente independiente, consulta los trabajos pendientes y realiza las operaciones necesarias sobre las señales EEG. Esta organización permite mantener separada la recepción de solicitudes de la ejecución de los procesos de análisis.
+La API registra los trabajos de análisis en la base de datos PostgreSQL del subsistema de inteligencia artificial. El motor de procesamiento, ejecutado como componente independiente, consulta los trabajos pendientes y realiza las operaciones necesarias sobre las señales EEG. Esta organización permite mantener separada la recepción de solicitudes de la ejecución de los procesos de análisis.
 
 Los resultados generados por el subsistema de inteligencia artificial se ponen a disposición de los demás componentes de EpilexIA mediante los mecanismos de comunicación establecidos. El \textit{backend} participa en la consulta y presentación de la información asociada al procesamiento, permitiendo que los usuarios autorizados accedan a los resultados desde las funcionalidades correspondientes del sistema.
 
@@ -1504,7 +1487,6 @@ responsabilidades distintas y no deben interpretarse como un
 único sistema de auditoría.
 
 En conjunto, los componentes implementados permiten conservar registros persistentes de las operaciones de negocio incorporadas al catálogo de auditoría de EpilexIA. La separación entre la generación de eventos, la identificación de actores, la persistencia de registros y las funcionalidades de consulta facilita el seguimiento histórico de las actividades auditadas en el sistema.
-
 
 
 \section{Implementación del \textit{frontend}}
@@ -1639,7 +1621,6 @@ gestión del estado y comunicación con los
 servicios del \textit{backend}.
 
 
-
 \subsection{Navegación, autenticación y gestión de interfaces}
 
 La navegación del \textit{frontend} se implementó mediante
@@ -1740,7 +1721,6 @@ componentes a diferentes dimensiones
 de pantalla.
 
 
-
 \subsection{Gestión integrada de pacientes y estudios EEG}
 
 La gestión de pacientes y estudios
@@ -1819,17 +1799,10 @@ La disponibilidad de estas acciones se
 determina considerando tanto las capacidades
 del usuario como el estado del estudio.
 
-La consulta individual de pacientes se
-encuentra disponible mediante una vista
-de detalle. Aunque el proyecto contiene
-componentes destinados a un listado
-independiente de pacientes, dicha pantalla
-no forma parte de las rutas de navegación
-habilitadas actualmente. Por esta razón,
-la gestión operativa de pacientes se
-integra principalmente en el proceso
-de registro de estudios y en la consulta
-de sus datos individuales.
+La gestión de pacientes se integra en el proceso de registro de
+estudios: al crear un estudio, el paciente se busca y, si no existe,
+se registra en ese mismo paso. Sus datos pueden consultarse y editarse
+posteriormente mediante una vista de detalle, accesible desde el estudio.
 
 Esta implementación permite mantener
 relacionadas las operaciones de registro
@@ -1838,7 +1811,6 @@ mismo flujo de trabajo, mientras que
 la persistencia de la información y
 la aplicación de las reglas de negocio
 permanecen a cargo del \textit{backend}.
-
 
 
 \subsection{Carga y seguimiento de archivos EEG y video}
@@ -1897,7 +1869,7 @@ sin bloquear la interfaz durante el
 procesamiento asíncrono de las señales.
 
 El sistema admite la selección de archivos
-EEG en formatos CSV y EDF. Para el material
+EEG en formato EDF. Para el material
 audiovisual se contempla la carga de archivos
 MP4 y conjuntos EZVideo. En el flujo de
 registro, cuando se selecciona un video,
@@ -1993,7 +1965,7 @@ mantienen en los servicios del \textit{backend},
 mientras que el \textit{frontend} administra su
 selección y representación visual.
 
-El visualizador dispone de controles para configurar las frecuencias de corte inferior (\texttt{low cut}) y superior (\texttt{high cut}), así como un filtro de rechazo de banda (\texttt{notch}) de 50 Hz. También incorpora configuraciones
+El visualizador dispone de controles para configurar las frecuencias de corte inferior (\textit{Low cut}) y superior (\textit{High cut}), así como un filtro de rechazo de banda (\texttt{notch}) de 50 Hz. También incorpora configuraciones
 predefinidas y ajustes individuales por
 canal. Antes de enviar los parámetros,
 la interfaz comprueba condiciones como
@@ -2070,8 +2042,6 @@ los componentes responsables de la
 configuración, obtención y representación
 de las señales, así como las herramientas
 de consulta y gestión de anomalías y eventos.
-
-
 
 
 \begin{figure}[htbp]
@@ -2266,7 +2236,6 @@ de los componentes especializados
 del sistema.
 
 
-
 \subsection{Elaboración y consulta de informes médicos}
 
 La elaboración de informes médicos se implementó
@@ -2283,10 +2252,7 @@ el componente \texttt{MedicalReportPanel},
 responsable de presentar los datos del informe
 seleccionado y proporcionar los controles
 necesarios para su elaboración y consulta.
-El formulario contempla información clínica,
-incluyendo diagnóstico, enfermedad,
-indicaciones, prescripción y otros campos
-asociados al contenido del informe médico.
+El formulario contempla el médico solicitante, los datos clínicos, las condiciones técnicas del registro, los hallazgos ictales e interictales, una conclusión breve y las observaciones.
 
 La implementación permite que distintos
 especialistas elaboren informes individuales
@@ -2363,7 +2329,6 @@ contenidos y estados. Asimismo, facilita
 la integración de la información clínica
 con los segmentos electroencefalográficos
 consultados durante el análisis.
-
 
 
 \subsection{Administración de usuarios y consulta de auditoría}
@@ -2474,7 +2439,6 @@ y trazabilidad implementadas
 en el \textit{backend}.
 
 
-
 \subsection{Pruebas automatizadas y limitaciones de la implementación}
 
 La implementación del \textit{frontend} de EpilexIA
@@ -2499,13 +2463,12 @@ operaciones de preparación y limpieza
 para facilitar la ejecución independiente
 de los casos.
 
-Durante la verificación del repositorio
-se identificaron 38 archivos de pruebas
+El \textit{frontend} cuenta con 40 archivos de pruebas
 automatizadas, que comprenden un total
-de 216 casos. La ejecución de la suite
+de 225 casos. La ejecución de la suite
 mediante el comando \texttt{npm test}
 finalizó satisfactoriamente, con
-216 pruebas aprobadas y ninguna fallida.
+225 pruebas aprobadas y ninguna fallida.
 Los resultados se resumen en el
 Cuadro~\ref{tab:pruebas-frontend}.
 
@@ -2518,11 +2481,11 @@ automatizadas del \textit{frontend}}
 \hline
 \textbf{Indicador} & \textbf{Resultado} \\
 \hline
-Archivos de pruebas ejecutados & 38 \\
+Archivos de pruebas ejecutados & 40 \\
 \hline
-Casos de prueba ejecutados & 216 \\
+Casos de prueba ejecutados & 225 \\
 \hline
-Casos aprobados & 216 \\
+Casos aprobados & 225 \\
 \hline
 Casos fallidos & 0 \\
 \hline
@@ -2553,7 +2516,7 @@ segmentos, la precarga y los
 mecanismos de almacenamiento
 temporal en memoria.
 
-También se identificaron pruebas
+También se incluyen pruebas
 relacionadas con la consulta y
 representación de anomalías,
 el inicio y seguimiento de
@@ -2581,10 +2544,9 @@ confirmación y procesamiento
 mediante los servicios reales
 del \textit{backend}.
 
-El relevamiento permitió
-identificar funcionalidades
-con cobertura automatizada
-parcial o sin pruebas directas.
+Algunas funcionalidades tienen
+cobertura automatizada parcial
+o carecen de pruebas directas.
 Entre ellas se encuentran
 la autenticación completa
 y recuperación de sesión,
@@ -2595,7 +2557,7 @@ entre EEG y video y la
 consulta de registros
 de auditoría.
 
-Asimismo, no se identificaron
+Asimismo, no se cuenta con
 pruebas automatizadas de
 extremo a extremo que
 comprueben el funcionamiento
@@ -2779,24 +2741,14 @@ trabajos de las operaciones de análisis de señales.
 
 La coordinación entre la API y el motor se
 implementa mediante una base de datos PostgreSQL
-compartida por ambos componentes. En la modalidad
-de ejecución basada en una cola persistente,
-la API registra las solicitudes de procesamiento
+compartida por ambos componentes. La API registra las solicitudes de procesamiento
+en una cola persistente
 y el motor recupera los trabajos disponibles
 para su ejecución. Los estados y resultados
 se conservan en la misma base de datos, lo que
 permite a la API atender posteriormente las
 consultas realizadas por el \textit{backend} clínico.
 
-La implementación también contempla una modalidad
-de ejecución local, en la cual la propia API
-administra una cola en memoria y coordina
-el procesamiento mediante un subproceso.
-Por tanto, la utilización del motor independiente
-corresponde específicamente a la modalidad
-basada en PostgreSQL. La selección entre
-ambas modalidades depende de la configuración
-del entorno de ejecución.
 
 Los componentes utilizan mecanismos de configuración
 para establecer las conexiones a la base de datos,
@@ -2816,7 +2768,7 @@ y el procesamiento de inteligencia artificial.
 La API proporciona los servicios de interacción
 con el resto del sistema, mientras que el motor
 independiente asume la ejecución de los trabajos
-en la modalidad de cola persistente. Los mecanismos
+mediante la cola persistente. Los mecanismos
 específicos de comunicación, coordinación,
 procesamiento y persistencia se desarrollan
 en los siguientes apartados.
@@ -2824,8 +2776,7 @@ en los siguientes apartados.
 
 La Figura~\ref{fig:arquitectura-componentes-ia}
 presenta la organización de los componentes de
-inteligencia artificial en la modalidad de ejecución
-basada en una cola persistente. El esquema muestra
+inteligencia artificial, basada en una cola persistente. El esquema muestra
 la comunicación entre el \textit{backend} clínico y la API
 de inteligencia artificial, la coordinación de
 trabajos mediante PostgreSQL y el acceso del motor
@@ -2930,7 +2881,7 @@ a los archivos EEG y al modelo de clasificación.
 
     \caption{Arquitectura de los componentes de
 inteligencia artificial del sistema EpilexIA
-en la modalidad de ejecución \texttt{pgqueue}.}
+con la cola persistente \texttt{pgqueue}.}
 
     \label{fig:arquitectura-componentes-ia}
 \end{figure}
@@ -2973,8 +2924,7 @@ el procesamiento. La solicitud incorpora
 la identificación del estudio y los parámetros
 admitidos por el servicio, mientras que
 la ejecución del análisis se desarrolla
-posteriormente de acuerdo con la modalidad
-configurada en el entorno.
+posteriormente, mediante la cola de ejecuciones.
 
 La API también proporciona servicios para
 consultar las ejecuciones registradas y
@@ -3000,8 +2950,6 @@ datos, sin realizar nuevamente la inferencia
 durante las operaciones de consulta.
 
 
-
-
 La implementación incorpora mecanismos de autenticación
 HTTP Basic para proteger los servicios utilizados en la
 comunicación con el \textit{backend} clínico. Las solicitudes se
@@ -3015,7 +2963,6 @@ cuando los servicios se exponen fuera de una red interna
 controlada. Asimismo, se contemplan respuestas HTTP
 para informar sobre solicitudes inválidas, recursos no
 disponibles y errores producidos durante las operaciones.
-
 
 
 Además de la administración de ejecuciones
@@ -3033,8 +2980,7 @@ con mayor detalle en el apartado correspondiente.
 La configuración de la aplicación permite
 establecer los parámetros de conexión a
 PostgreSQL, las rutas de acceso a los recursos
-necesarios y las opciones relacionadas con
-la modalidad de ejecución. Esta configuración
+necesarios y las opciones de ejecución. Esta configuración
 mantiene diferenciados los aspectos propios
 del entorno de despliegue de la lógica
 utilizada para atender las solicitudes.
@@ -3047,9 +2993,7 @@ centraliza la recepción y validación de
 solicitudes, la administración de ejecuciones
 y la exposición de resultados, mientras
 que las tareas de procesamiento EEG e
-inferencia se desarrollan según la modalidad
-de ejecución configurada.
-
+inferencia se desarrollan en el motor independiente.
 
 
 \subsection{Gestión asíncrona de ejecuciones y coordinación con el motor}
@@ -3064,8 +3008,7 @@ que el \textit{backend} clínico deba mantener abierta
 una solicitud HTTP durante todo el procesamiento
 de un estudio electroencefalográfico.
 
-En la modalidad de ejecución \texttt{pgqueue},
-la coordinación entre la API de inteligencia
+La coordinación entre la API de inteligencia
 artificial y el motor independiente se realiza
 mediante una cola persistente implementada
 sobre PostgreSQL. Cuando se solicita el análisis
@@ -3143,21 +3086,8 @@ datos y ponerlos a disposición del
 \textit{backend} clínico mediante sus servicios
 REST. La coordinación se realiza a través
 de PostgreSQL, sin requerir una comunicación
-HTTP directa entre la API y el motor
-en la modalidad \texttt{pgqueue}.
+HTTP directa entre la API y el motor.
 
-Por otra parte, la modalidad
-\texttt{local} contempla una estrategia
-alternativa en la que la propia API
-administra los trabajos mediante una
-cola en memoria y coordina su ejecución
-a través de un subproceso. A diferencia
-de la modalidad basada en PostgreSQL,
-esta alternativa no utiliza al motor
-independiente como trabajador de la
-cola persistente. Ambas modalidades
-responden a configuraciones distintas
-del entorno de ejecución.
 
 En conjunto, estos mecanismos permiten
 organizar el procesamiento de inteligencia
@@ -3172,350 +3102,46 @@ diferenciadas las responsabilidades
 de gestión y procesamiento.
 
 
+\subsection{Integración del modelo de detección}
+\label{subsec:modelo-vigente-hgb}
 
+El modelo de detección y el procedimiento de análisis que lo acompaña fueron desarrollados por el equipo de ciencia de datos del proyecto EpilexIA.
+El presente trabajo no comprende su diseño ni su entrenamiento, sino su integración en el motor y en la plataforma.
+Por ello, esta subsección describe el procedimiento únicamente en el nivel necesario para explicar dicha integración.
 
-\subsection{Preparación y segmentación de las señales EEG}
+Al iniciar una ejecución, el motor recupera la ruta relativa del archivo EEG almacenada en el campo \texttt{edf\_path} de la tabla \texttt{ai\_executions} y la combina con la ruta base del volumen configurado.
+Antes de comenzar el análisis, comprueba la existencia del archivo EDF y del paquete del modelo.
 
-La preparación de las señales electroencefalográficas
-constituye una etapa del procesamiento de inteligencia
-artificial de EpilexIA, destinada a organizar los
-datos de entrada antes de la extracción de
-características y la aplicación del modelo de
-clasificación. Su implementación se encuentra
-principalmente en el módulo de procesamiento
-del motor de inteligencia artificial.
+El modelo vigente, denominado HGB~2.0, es un clasificador de \textit{Gradient Boosting} basado en histogramas, en línea con los antecedentes desarrollados en la FP-UNA \citep{Lezcano2026GradientBoosting}.
+Su procedimiento de análisis comprende las siguientes etapas:
 
-Al iniciar una ejecución, el motor recupera la
-ruta relativa del archivo EEG almacenada en
-el campo \texttt{edf\_path} de la tabla
-\texttt{ai\_executions}. Esta referencia se
-combina con la ruta base del volumen configurado
-para localizar el archivo correspondiente.
-Antes de comenzar el análisis, se comprueba
-la existencia del archivo EEG y del modelo
-de clasificación requerido.
+\begin{itemize}
+    \item \textbf{Lectura y montaje:} el archivo EDF se lee por partes y las señales, remuestreadas a 256~Hz, se adaptan a un montaje bipolar longitudinal de 18 derivaciones, contemplando las equivalencias de nomenclatura entre electrodos.
+    \item \textbf{Filtrado:} se aplica un filtro pasabanda entre 0,5 y 45~Hz, junto con un filtro de rechazo de la frecuencia de red.
+    \item \textbf{Segmentación:} el registro se divide en ventanas consecutivas de 10 segundos, y los tramos en los que la señal permanece plana se excluyen del análisis.
+    \item \textbf{Características:} para cada derivación se calculan 75 características, por lo que cada ventana se representa mediante 1350 valores.
+    \item \textbf{Normalización:} las características se normalizan para cada registro mediante estadísticos robustos calculados sobre los primeros 30 minutos de señal válida, o sobre 10 minutos cuando la duración del registro no lo permite.
+    \item \textbf{Regla de detección:} un intervalo se señala únicamente cuando dos ventanas consecutivas superan un umbral de probabilidad de 0,95, lo que equivale a 20 segundos continuos por encima de dicho umbral.
+\end{itemize}
 
-La lectura de las señales se realiza mediante
-la biblioteca MNE, utilizando la función
-\texttt{mne.io.read\_raw\_edf()}. Por tanto,
-el formato de entrada implementado en el
-motor es EDF. Esta característica debe
-distinguirse de los formatos admitidos
-por otros componentes de EpilexIA, ya
-que el procesamiento de inteligencia
-artificial no incorpora lectores específicos
-para archivos CSV u otros formatos
-electroencefalográficos.
+El motor invoca este procedimiento para cada ejecución, indicando el archivo EDF, el paquete del modelo y el archivo de salida.
+El paquete serializado del modelo incluye la configuración de preprocesamiento con la que fue entrenado.
+Antes de ejecutar la inferencia, el motor verifica que la frecuencia de muestreo, la duración de las ventanas, las derivaciones y las características coincidan con dicha configuración, y aborta la ejecución en caso contrario.
+El umbral y la cantidad de ventanas consecutivas se obtienen del paquete del modelo y pueden establecerse para cada ejecución; el umbral aplicado queda registrado junto con la ejecución.
 
-Una vez abierto el registro, el procedimiento
-identifica la organización de los canales
-para determinar si las señales ya se encuentran
-representadas mediante derivaciones bipolares
-o si requieren una conversión desde una
-configuración referencial. Esta identificación
-se realiza mediante una comprobación de
-los nombres de los canales presentes en
-el archivo, tomando como referencia el
-montaje definido para el procesamiento.
+Como salida, el procedimiento genera un archivo con una fila por cada ventana analizada.
+Los resultados se almacenan por ventana: cada ventana de diez segundos que integra una secuencia señalada se registra como un resultado individual, de modo que una detección de 20 segundos se presenta como dos registros consecutivos.
+La persistencia y la consulta de estos resultados se describen más adelante en esta sección.
 
-El montaje objetivo contempla 23 derivaciones
-bipolares, organizadas según la configuración
-utilizada por el modelo de clasificación.
-Cuando el registro contiene derivaciones
-bipolares reconocidas, el motor selecciona
-los canales disponibles y los organiza
-siguiendo el orden establecido por dicho
-montaje. En esta modalidad, los canales
-ausentes no se generan durante la preparación
-de las señales.
+\subsection{Evolución del modelo de detección}
+\label{subsec:evolucion-modelo}
 
-Cuando el registro presenta una organización
-referencial, el procedimiento identifica
-los electrodos disponibles y construye
-las derivaciones bipolares mediante la
-diferencia entre las señales de los
-electrodos correspondientes. Para facilitar
-la identificación, se contempla la
-equivalencia entre las denominaciones
-T3, T4, T5 y T6 y sus respectivas
-denominaciones T7, T8, P7 y P8.
+La integración se realizó inicialmente con una primera versión del modelo, identificada como MLP, que permitió construir y probar el circuito completo del sistema: la solicitud del análisis, la cola de ejecuciones, el procesamiento y la presentación de los resultados.
+Durante el proyecto, el equipo de ciencia de datos continuó el desarrollo de sus modelos y proporcionó la versión HGB~2.0, que reemplazó a la anterior.
+Todas las pruebas finales documentadas en el Capítulo~\ref{pruebas_evaluacion} se realizaron con este modelo.
 
-En los casos en que no se dispone de
-los electrodos necesarios para construir
-una derivación, la implementación
-referencial utiliza una señal de valores
-cero en la posición correspondiente.
-Este mecanismo permite conservar la
-estructura de 23 derivaciones en dicha
-modalidad, aunque no constituye una
-reconstrucción de la actividad
-electroencefalográfica ausente.
-
-La preparación también contempla la
-adecuación de la frecuencia de muestreo.
-La ejecución habitual del motor utiliza
-una frecuencia objetivo de 256 Hz.
-Cuando la frecuencia original del
-registro difiere de este valor, se
-aplica el procedimiento de remuestreo
-proporcionado por MNE. Por consiguiente,
-el archivo de entrada no necesita
-haber sido adquirido originalmente
-a 256 Hz.
-
-En el código analizado no se identificaron
-operaciones explícitas de filtrado
-pasabanda, eliminación de interferencias
-mediante filtros de rechazo de banda,
-corrección de artefactos o normalización
-de amplitud durante esta etapa. Por
-tanto, estas transformaciones no forman
-parte de la preparación implementada
-en el motor de inferencia.
-
-Una vez obtenidas las señales preparadas,
-el procedimiento las divide en ventanas
-temporales consecutivas de 10 segundos.
-Para determinar la cantidad de muestras
-de cada ventana se utiliza la frecuencia
-de muestreo de la señal. Con la
-configuración habitual de 256 Hz,
-cada ventana contiene 2.560 muestras
-por canal.
-
-La segmentación se realiza sin
-solapamiento entre ventanas. Cada
-intervalo comienza inmediatamente
-después del anterior, y solamente
-se procesan ventanas completas.
-En consecuencia, cuando la duración
-del registro no es múltiplo de
-10 segundos, el intervalo final
-incompleto queda excluido del
-procesamiento.
-
-Para cada ventana se calculan los
-tiempos de inicio y finalización,
-expresados en segundos relativos
-al comienzo de la señal procesada.
-Estas referencias temporales se
-incorporan a los resultados mediante
-los campos \texttt{t\_inicio\_s}
-y \texttt{t\_fin\_s}, permitiendo
-identificar los intervalos del
-registro asociados a las
-detecciones obtenidas.
-
-La preparación y segmentación
-se encuentran diferenciadas
-de las etapas posteriores
-del procesamiento. La primera
-organiza las derivaciones y
-adecua la frecuencia de muestreo,
-mientras que la segunda delimita
-las unidades temporales de análisis.
-La extracción de características
-y la aplicación del modelo
-de clasificación se realizan
-posteriormente sobre las
-ventanas resultantes.
-
-En conjunto, estos procedimientos
-permiten transformar los registros
-EDF admitidos por el motor en
-unidades temporales organizadas
-para su análisis automatizado,
-conservando referencias que
-facilitan la asociación de
-los resultados con los
-intervalos correspondientes
-del estudio EEG.
-
-
-\subsection{Extracción de características electroencefalográficas}
-
-Una vez completada la preparación y segmentación de las señales EEG,
-el motor de inteligencia artificial realiza la extracción de
-características de cada ventana temporal. Esta etapa permite transformar
-las muestras electroencefalográficas en una representación numérica
-estructurada, que posteriormente se utiliza como entrada del modelo
-de clasificación.
-
-La extracción se encuentra implementada principalmente en el módulo
-\texttt{crisis\_detection.py}, mediante la función
-\texttt{extraer\_features()}, que combina dos conjuntos de 25
-características. De esta manera, se calculan 50 valores por cada
-derivación electroencefalográfica procesada.
-
-Las características obtenidas comprenden medidas estadísticas y
-temporales, descriptores de amplitud, parámetros de Hjorth, medidas
-de entropía y estimadores de complejidad de las señales. Entre ellas
-se encuentran la media, varianza, desviación estándar, asimetría,
-curtosis, valor eficaz, parámetros de movilidad y complejidad,
-entropías muestral, de Shannon, de permutación y de dispersión,
-así como dimensiones fractales y medidas relacionadas con la
-regularidad temporal.
-
-El segundo conjunto incorpora otros descriptores de amplitud,
-momentos estadísticos, correlación entre muestras consecutivas,
-pendiente de tendencia lineal, medidas adicionales de entropía,
-análisis de fluctuaciones sin tendencia e información de Fisher.
-En la implementación examinada no se identificaron cálculos
-explícitos de características espectrales, como potencia por bandas
-de frecuencia o coeficientes obtenidos mediante transformadas
-de Fourier.
-
-\begin{table}[htbp]
-\centering
-\caption{Grupos de características extraídas de las señales EEG}
-\label{tab:caracteristicas_ia}
-\small
-\renewcommand{\arraystretch}{1.2}
-
-\begin{tabularx}{\textwidth}{|
-    >{\raggedright\arraybackslash}p{3.5cm}|
-    >{\raggedright\arraybackslash}X|}
-\hline
-
-\textbf{Grupo} &
-\textbf{Características implementadas} \\ \hline
-
-Estadísticas y de amplitud &
-Media, mediana, varianza, desviación estándar, asimetría,
-curtosis, valores extremos, rango intercuartílico,
-momentos estadísticos y valor eficaz. \\ \hline
-
-Temporales y dinámicas &
-Variación absoluta, cambios de signo, correlación entre
-muestras consecutivas, pendiente lineal y parámetros
-de Hjorth. \\ \hline
-
-Entropía e información &
-Entropía muestral, de Shannon, de permutación,
-de dispersión, simbólica, de Tsallis e incremental,
-e información de Fisher. \\ \hline
-
-Complejidad y geometría &
-Dimensiones fractales de Petrosian, Higuchi y Katz,
-y análisis de fluctuaciones sin tendencia. \\ \hline
-
-Energía y otros descriptores &
-Energía tipo Teager, relaciones entre medidas de
-amplitud y otros indicadores derivados de las muestras. \\ \hline
-
-\end{tabularx}
-\end{table}
-
-Para cada ventana, las características se calculan individualmente
-sobre las derivaciones disponibles y posteriormente se concatenan
-en un único vector. La organización mantiene agrupados los 50
-valores correspondientes a cada canal, siguiendo el orden definido
-durante la preparación de las señales.
-
-La configuración del procesamiento contempla 23 derivaciones
-bipolares, con 50 características por derivación. En consecuencia,
-la dimensión objetivo del vector de entrada es de 1.150 atributos,
-resultado de multiplicar ambas cantidades. Esta organización
-establece la estructura numérica esperada para la aplicación
-del modelo de clasificación.
-
-Cuando el número de atributos obtenidos es inferior a la dimensión
-objetivo, el procedimiento completa el vector agregando valores
-cero al final. Este mecanismo permite alcanzar la longitud
-esperada, aunque no garantiza por sí mismo la conservación de
-la posición original de las derivaciones ausentes en registros
-que ya contienen canales bipolares.
-
-Antes de ejecutar la inferencia, el motor aplica un procedimiento
-de saneamiento numérico mediante la función
-\texttt{numpy.nan\_to\_num()}, sustituyendo por cero los valores
-no definidos y los infinitos que pudieran producirse durante
-la extracción. Posteriormente, los atributos se organizan en
-una matriz de una fila, con la estructura requerida para su
-procesamiento por el modelo de clasificación.
-
-En conjunto, esta etapa transforma cada ventana temporal de
-las señales EEG en una representación numérica estructurada.
-Los vectores resultantes constituyen la entrada de la etapa
-de inferencia, descrita en el siguiente apartado.
-
-\subsection{Carga del modelo y ejecución de la inferencia}
-
-Una vez obtenidos los vectores de características correspondientes
-a las ventanas temporales del registro EEG, el motor de inteligencia
-artificial ejecuta la etapa de inferencia mediante un modelo de
-clasificación previamente entrenado. Esta operación permite
-asignar una clasificación a cada ventana procesada, utilizando
-los atributos calculados durante la etapa anterior.
-
-La carga del modelo se realiza mediante la función
-\texttt{joblib.load()}, a partir del archivo de clasificación
-configurado en el entorno de ejecución. La implementación admite
-tanto objetos serializados individuales como diccionarios que
-contienen distintos modelos. En el flujo habitual del motor,
-la selección se realiza mediante la clave \texttt{MLP}.
-
-Sin embargo, esta denominación no permite establecer por sí
-sola la arquitectura concreta del estimador utilizado. Dado
-que el artefacto serializado no forma parte del repositorio
-examinado, no fue posible verificar directamente su estructura
-interna, sus hiperparámetros ni las transformaciones que
-pudiera incorporar.
-
-Para realizar la inferencia, el motor utiliza los vectores
-numéricos generados durante la extracción de características.
-La clasificación de cada ventana se ejecuta mediante el método
-\texttt{predict()} del estimador cargado. El resultado se
-interpreta como una clasificación binaria, en la cual el
-valor 1 corresponde a una detección de crisis y el valor 0
-a una clasificación normal. Esta interpretación responde
-a las convenciones implementadas en el motor.
-
-
-Cuando el estimador proporciona el método
-\texttt{predict\_proba()}, el procedimiento recupera
-las probabilidades asociadas a las clases. La
-implementación interpreta la primera posición como
-la condición normal y la segunda como crisis.
-Esta correspondencia depende del orden de clases
-del estimador cargado y constituye un aspecto
-que requiere verificación para garantizar la
-interpretación correcta de las probabilidades.
-Si el estimador no dispone de este método, pero
-implementa \texttt{decision\_function()}, se obtiene
-alternativamente una puntuación de decisión.
-
-
-La clasificación producida por \texttt{predict()} no depende
-directamente del umbral de probabilidad utilizado para
-conservar los resultados. Dicho umbral se aplica en una
-etapa posterior, durante la persistencia de las detecciones,
-considerando la probabilidad de crisis y el valor configurado
-para la ejecución. Por tanto, el motor no establece de
-manera fija un umbral operativo de 0,80 para determinar
-la clase predicha.
-
-Cada predicción se vincula con la ventana temporal
-correspondiente, conservando sus tiempos de inicio y
-finalización expresados en segundos respecto del comienzo
-del registro EEG. El procedimiento genera un archivo CSV
-con la información de las ventanas procesadas, incluyendo
-las predicciones y, cuando están disponibles, las
-probabilidades o puntuaciones obtenidas.
-
-Las ventanas se clasifican de manera independiente.
-En el código examinado no se identificaron mecanismos
-de suavizado temporal, combinación de predicciones
-consecutivas o agrupación automática de ventanas positivas
-en episodios de mayor duración.
-
-En conjunto, esta implementación permite aplicar un
-modelo de clasificación previamente serializado a las
-representaciones numéricas de las señales EEG. Las
-predicciones obtenidas y sus referencias temporales
-constituyen la información de entrada para los
-procedimientos posteriores de selección, almacenamiento
-y consulta de resultados.
+El reemplazo requirió adaptar el motor al nuevo procedimiento de análisis, sin modificaciones en la comunicación con el \textit{backend} clínico ni en la interfaz web.
+Dado que cada modelo se distribuye como un paquete que incluye su propia configuración, el sistema queda preparado para incorporar las versiones posteriores que resulten de la continuidad de esa línea de trabajo.
 
 \subsection{Persistencia y consulta de los resultados}
 
@@ -3654,7 +3280,7 @@ procedimiento utiliza la referencia original del registro.
 
 Antes del cálculo espectral, las señales seleccionadas
 se someten a un procedimiento de filtrado. Este comprende
-un filtro Butterworth pasa banda de cuarto orden, con
+un filtro Butterworth pasabanda de cuarto orden, con
 frecuencias de corte de 0,5 y 30 Hz, aplicado en ambas
 direcciones mediante \texttt{filtfilt()}. Adicionalmente,
 se contempla un filtro de rechazo de banda de 50 Hz,
@@ -3785,155 +3411,109 @@ de resultados. No obstante, su alcance debe distinguirse de una
 validación integral del procesamiento electroencefalográfico y del
 desempeño clínico del modelo.
 
-El relevamiento de los proyectos \texttt{epilex-ia-api} y
-\texttt{epilex-ia-motor} permitió identificar siete archivos de
-pruebas automatizadas, que contienen un total de 53 métodos de
-prueba. Ambos componentes utilizan el módulo \texttt{unittest} de
-Python y sus mecanismos de simulación de dependencias, entre ellos
-\texttt{MagicMock}, \texttt{AsyncMock} y \texttt{patch}. Las pruebas
-identificadas son predominantemente unitarias y verifican funciones
-o contratos internos de manera aislada.
+Los proyectos \texttt{epilex-ia-api} y \texttt{epilex-ia-motor} cuentan con nueve archivos de pruebas automatizadas, que reúnen 64 casos.
+Ambos utilizan el módulo \texttt{unittest} de Python y sus mecanismos de simulación de dependencias.
+Las pruebas son unitarias y verifican el código de integración, no el desempeño del modelo.
 
-En el proyecto \texttt{epilex-ia-api} se identificaron cinco archivos
-que reúnen 47 métodos de prueba. Estos comprueban aspectos de la
-resolución del modelo activo, la validación de parámetros de ejecución,
-la selección de detecciones según el umbral configurado y la
-transformación de resultados para su consulta. También se incluyen
-pruebas de las funciones numéricas utilizadas en la generación de
-espectrogramas DSA.
-
-Las pruebas relacionadas con los espectrogramas verifican, entre
-otros aspectos, la identificación de canales, el tratamiento de
-señales planas, la evaluación de calidad, el cálculo espectral
-fragmentado, la combinación de canales y la reducción temporal
-mediante medianas. Para estas verificaciones se emplean señales
-sintéticas y matrices numéricas, sin necesidad de abrir registros
-EDF reales.
-
-Por su parte, el proyecto \texttt{epilex-ia-motor} contiene dos
-archivos con seis métodos de prueba. Estos se concentran en el
-tratamiento de canales constantes durante la extracción de
-características y en la selección de detecciones que cumplen
-las condiciones de clasificación y probabilidad establecidas
-para su persistencia. Las pruebas utilizan datos temporales
-y sesiones de base de datos simuladas.
-
-El Cuadro~\ref{tab:pruebas_componentes_ia} resume las pruebas
-automatizadas identificadas en ambos proyectos.
+El Cuadro~\ref{tab:pruebas_componentes_ia} resume las pruebas por grupo y el resultado de su ejecución.
+Se ejecutaron los 64 casos y todos finalizaron satisfactoriamente.
 
 \begin{table}[htbp]
     \centering
-    \caption{Pruebas automatizadas identificadas en los componentes de inteligencia artificial}
+    \caption{Pruebas automatizadas de los componentes de inteligencia artificial y resultado de su ejecución}
     \label{tab:pruebas_componentes_ia}
     \small
     \begin{tabular}{|
-        >{\raggedright\arraybackslash}p{0.23\textwidth}|
-        >{\centering\arraybackslash}p{0.11\textwidth}|
-        >{\centering\arraybackslash}p{0.09\textwidth}|
-        >{\raggedright\arraybackslash}p{0.47\textwidth}|}
+        >{\raggedright\arraybackslash}p{0.15\textwidth}|
+        >{\raggedright\arraybackslash}p{0.19\textwidth}|
+        >{\raggedright\arraybackslash}p{0.29\textwidth}|
+        >{\centering\arraybackslash}p{0.07\textwidth}|
+        >{\centering\arraybackslash}p{0.14\textwidth}|}
         \hline
         \textbf{Componente} &
-        \textbf{Archivos} &
+        \textbf{Grupo de pruebas} &
+        \textbf{Qué verifica} &
         \textbf{Casos} &
-        \textbf{Aspectos contemplados por las pruebas} \\
+        \textbf{Aprobados} \\
         \hline
-
-        API de inteligencia artificial &
-        5 &
-        47 &
-        Modelo activo, contratos internos, umbrales de persistencia
-        y procesamiento numérico DSA. \\
+        API &
+        Modelo activo y ejecución &
+        Resolución del modelo configurado, validación de sus parámetros y registro del umbral en cada ejecución. &
+        21 & 21 \\
         \hline
-
-        Motor de inteligencia artificial &
-        2 &
-        6 &
-        Características de canales constantes y selección de
-        detecciones para persistencia. \\
+        API &
+        Contrato de anomalías &
+        Formato de los resultados que consume la plataforma web. &
+        1 & 1 \\
         \hline
-
+        API &
+        Regla de ventanas consecutivas &
+        Que una ventana aislada no se señale y que una secuencia de ventanas sí. &
+        3 & 3 \\
+        \hline
+        API &
+        Inclusión de resultados en informes &
+        Ventanas confirmadas y anotaciones manuales asociadas a los informes. &
+        8 & 8 \\
+        \hline
+        API &
+        Espectrogramas &
+        Identificación de canales, tratamiento de señales planas, cálculo por partes y reducción temporal. &
+        22 & 22 \\
+        \hline
+        Motor &
+        Canales constantes &
+        Que una señal constante no interrumpa el procesamiento. &
+        4 & 4 \\
+        \hline
+        Motor &
+        Regla de ventanas consecutivas &
+        La misma regla, en el motor. &
+        3 & 3 \\
+        \hline
+        Motor &
+        Selección de resultados &
+        Que solo se registren las ventanas que cumplen el umbral. &
+        2 & 2 \\
+        \hline
         \textbf{Total} &
-        \textbf{7} &
-        \textbf{53} &
-        --- \\
+        &
+        &
+        \textbf{64} &
+        \textbf{64} \\
         \hline
     \end{tabular}
 \end{table}
 
-Durante el relevamiento se intentó ejecutar las pruebas de ambos
-proyectos mediante el mecanismo de descubrimiento de
-\texttt{unittest}. Sin embargo, la ejecución quedó detenida
-durante la importación de los módulos debido a la ausencia de
-dependencias necesarias en el intérprete utilizado, entre ellas
-bibliotecas científicas y componentes de infraestructura.
-
-En consecuencia, no se ejecutaron los 53 métodos identificados
-y no fue posible determinar cuántos habrían finalizado
-satisfactoriamente. Los errores registrados corresponden a la
-preparación del entorno de pruebas y no constituyen evidencia
-de fallos funcionales en los casos implementados.
-
-Asimismo, no se identificó una configuración para medir la
-cobertura de código mediante herramientas especializadas.
-Por esta razón, no resulta posible establecer un porcentaje
-de cobertura de las funciones, líneas o ramas de los
-componentes analizados.
+No se cuenta con una configuración para medir la cobertura de código, por lo que no se informa un porcentaje de cobertura.
 
 En cuanto al alcance de las verificaciones, las pruebas
 existentes no recorren de manera integral el procesamiento
 de un estudio EEG, desde la lectura del archivo EDF hasta
 la carga del modelo, la clasificación de las ventanas
 temporales y el almacenamiento de las detecciones en una
-instancia real de PostgreSQL. Tampoco se identificaron
+instancia real de PostgreSQL. Tampoco se cuenta con
 pruebas automatizadas de concurrencia entre múltiples
 instancias del motor, cancelación de trabajos, control de
 tiempos máximos de ejecución o recuperación ante
 interrupciones.
 
-El análisis del código también permitió identificar
-limitaciones técnicas del procesamiento implementado.
-El motor de clasificación utiliza registros EDF y organiza
-las señales según un conjunto esperado de 23 derivaciones
-bipolares. Cuando determinadas derivaciones no están
-disponibles, se aplican mecanismos de completado con
-valores cero para mantener la estructura numérica
-requerida por el modelo. Sin embargo, estos valores no
-representan actividad electroencefalográfica real.
-
-En particular, cuando un registro ya contiene derivaciones
-bipolares y presenta canales ausentes, el completado del
-vector de características puede realizarse al final de la
-estructura. Esta situación introduce el riesgo de alterar
-la correspondencia posicional entre las características
-calculadas y las esperadas por el modelo, aspecto para el
-cual no se identificaron pruebas automatizadas específicas.
-
-Otra limitación corresponde a la segmentación temporal.
-El motor procesa ventanas consecutivas de diez segundos,
-sin solapamiento, y descarta los intervalos finales que
-no alcanzan la duración completa. Además, las
-predicciones se generan de manera independiente, sin
-incorporar un procedimiento posterior de suavizado o
-agrupación automática de ventanas consecutivas
-clasificadas como crisis.
-
-Respecto de la inferencia, el procedimiento depende de
-la compatibilidad entre el modelo serializado y las
-características extraídas. Aunque la implementación
-genera 50 atributos por canal, no se identificaron
-pruebas que comprueben directamente la correspondencia
-completa de los 1150 valores con la estructura utilizada
-durante el entrenamiento. Tampoco se verificó mediante
-pruebas automatizadas la interpretación de las
-probabilidades a partir del orden de clases del
-estimador cargado.
+Respecto del procesamiento, el motor requiere que el archivo
+EDF contenga los canales necesarios para construir las
+derivaciones del montaje esperado por el modelo. Cuando
+algunas derivaciones no pueden construirse, el procedimiento
+las completa para mantener la estructura requerida, y la
+ejecución se interrumpe si no es posible construir ninguna.
+La compatibilidad entre el paquete del modelo y el
+procedimiento de análisis se verifica al inicio de cada
+ejecución.
 
 El procesamiento de registros extensos presenta
 igualmente consideraciones relacionadas con el consumo
 de memoria. Si bien la lectura de determinadas señales
 se organiza por bloques, los datos transformados pueden
 acumularse y concatenarse para las etapas posteriores.
-No se identificaron pruebas de rendimiento que permitan
+No se cuenta con pruebas de rendimiento que permitan
 establecer límites de memoria o tiempos máximos de
 procesamiento bajo diferentes tamaños de registros.
 
@@ -4040,8 +3620,7 @@ El proyecto \texttt{epilex-ia-motor} contiene el motor de
 procesamiento de inteligencia artificial, implementado
 en Python. A diferencia de los servicios web, este componente
 se ejecuta como un proceso de trabajo independiente, sin
-exponer una interfaz HTTP. En la modalidad de cola persistente,
-consulta la base de datos de inteligencia artificial para
+exponer una interfaz HTTP. Este proceso consulta la base de datos de inteligencia artificial para
 recuperar los trabajos pendientes, ejecutar el análisis
 de las señales EEG y almacenar los resultados obtenidos.
 
@@ -4054,13 +3633,24 @@ organización requiere que determinados recursos, como
 la red y los volúmenes compartidos, estén disponibles
 antes de iniciar los servicios que dependen de ellos.
 
-Aunque existe una configuración conjunta documentada
-para un posible despliegue en la nube, esta se encuentra
-identificada como una propuesta en desarrollo. En
-consecuencia, la implementación relevada corresponde
-a una organización distribuida entre configuraciones
-individuales, sin un procedimiento único de despliegue
-completamente automatizado.
+Además de las configuraciones individuales, existe una configuración conjunta que reúne todos los servicios y que se utiliza en el despliegue en la nube descrito en la subsección siguiente.
+
+\subsection{Entorno de despliegue en la nube}
+\label{subsec:despliegue-nube}
+
+EpilexIA se encuentra desplegado en infraestructura en la nube provista por la empresa BigQ, socio del sector privado del proyecto.
+Sobre este entorno se realizaron las pruebas documentadas en el Capítulo~\ref{pruebas_evaluacion} y las sesiones de validación con la especialista del IPS, quien accede al sistema por internet desde el hospital.
+
+El despliegue reúne en un servidor los componentes descritos en la subsección anterior, ejecutados como contenedores mediante una configuración conjunta de Docker Compose.
+Un servidor Nginx actúa como punto único de entrada: publica la aplicación web y encamina las solicitudes hacia el \textit{backend} clínico.
+Las bases de datos, la API de inteligencia artificial y el motor de procesamiento no se exponen a internet y se comunican únicamente a través de una red interna.
+Los archivos EEG y los modelos entrenados se almacenan en volúmenes compartidos entre los servicios que los requieren.
+
+El acceso de los usuarios se realiza mediante HTTPS, bajo un dominio provisto por la empresa, cuya infraestructura incorpora además mecanismos de protección perimetral.
+De este modo se atiende el requerimiento RNF-SEG-003.
+La administración de estos elementos corresponde al proveedor de infraestructura y no forma parte del alcance de este trabajo.
+
+Este entorno constituye la base operativa del sistema durante el proceso de transferencia al IPS, que prevé su despliegue en servidores propios de la institución.
 
 \subsection{Contenedorización y configuración de servicios}
 
@@ -4116,8 +3706,7 @@ implementados en este componente. El servicio
 HTTP se inicia mediante Uvicorn y utiliza
 parámetros de configuración para establecer
 la conexión con su base de datos PostgreSQL
-y determinar la modalidad de ejecución de los
-trabajos de inteligencia artificial.
+y gestionar la cola de trabajos de inteligencia artificial.
 
 La configuración del proyecto de la API también
 contempla una instancia PostgreSQL 16 destinada
@@ -4132,8 +3721,7 @@ dispone de un entorno contenedorizado basado en
 Python, con las bibliotecas necesarias para
 la lectura de registros EEG, la extracción de
 características y la aplicación del modelo de
-clasificación. En la modalidad de cola persistente,
-el contenedor ejecuta un proceso de trabajo que
+clasificación. El contenedor ejecuta un proceso de trabajo que
 consulta las solicitudes disponibles en PostgreSQL
 y desarrolla el procesamiento correspondiente,
 sin necesidad de publicar un servicio HTTP propio.
@@ -4282,7 +3870,6 @@ separados los archivos de señales de la información
 estructurada almacenada en PostgreSQL.
 
 
-
 En particular, el \textit{backend} clínico administra las operaciones relacionadas con la recepción y el almacenamiento de los archivos de los estudios, mientras que los componentes de inteligencia artificial requieren acceder a los archivos EEG para ejecutar los procedimientos de análisis. Por este motivo, las rutas utilizadas por los distintos servicios deben corresponder con las ubicaciones de almacenamiento disponibles en sus respectivos entornos de ejecución.
 
 
@@ -4371,16 +3958,14 @@ señales EEG.
 La API de inteligencia artificial utiliza su propia
 base de datos PostgreSQL 16 para administrar las
 ejecuciones y conservar los resultados del procesamiento.
-En la modalidad de cola persistente, las solicitudes
-registradas por la API quedan disponibles para el motor
+Las solicitudes registradas por la API quedan disponibles para el motor
 independiente de inteligencia artificial, que recupera
 los trabajos pendientes y ejecuta las operaciones
 correspondientes.
 
 La coordinación entre la API y el motor se realiza
 mediante los registros compartidos en la base de datos
-de inteligencia artificial. Por tanto, en esta modalidad
-no se requiere una comunicación HTTP directa entre ambos
+de inteligencia artificial. Por tanto, no se requiere una comunicación HTTP directa entre ambos
 componentes. El motor consulta los trabajos disponibles,
 actualiza la información de las ejecuciones y registra
 los resultados, mientras que la API proporciona los
@@ -4398,7 +3983,7 @@ en recursos diferenciados, pero accesibles para las
 operaciones que los requieren.
 
 
-La arquitectura contempla la recuperación de los resultados persistidos mediante la API de inteligencia artificial, una vez finalizado el procesamiento. El \textit{backend} clínico utiliza estos servicios para poner la información disponible a disposición de la interfaz web, donde las detecciones pueden relacionarse con los intervalos temporales del estudio EEG. Este mecanismo permite consultar resultados previamente almacenados sin repetir las operaciones de procesamiento e inferencia. La verificación funcional de esta consulta y las limitaciones encontradas durante las pruebas de integración se documentan en el Capítulo 6.
+La arquitectura contempla la recuperación de los resultados persistidos mediante la API de inteligencia artificial, una vez finalizado el procesamiento. El \textit{backend} clínico utiliza estos servicios para poner la información disponible a disposición de la interfaz web, donde las detecciones pueden relacionarse con los intervalos temporales del estudio EEG. Este mecanismo permite consultar resultados previamente almacenados sin repetir las operaciones de procesamiento e inferencia. La verificación de esta consulta y de la ejecución completa del análisis se documenta en el Capítulo~\ref{pruebas_evaluacion}.
 
 
 Por otra parte, la generación de espectrogramas DSA
@@ -4497,10 +4082,9 @@ intercambiar información y utilizar los recursos previstos.
 En particular, la comunicación entre el \textit{backend} clínico
 y la API de inteligencia artificial depende de que las
 direcciones y credenciales configuradas sean compatibles
-con los servicios disponibles. De manera similar, la
-modalidad de ejecución del procesamiento automatizado
-debe corresponder con la configuración utilizada por
-la API y el motor de inteligencia artificial.
+con los servicios disponibles. De manera similar, la API y el motor de inteligencia artificial
+deben compartir la configuración de acceso a la base de datos
+de inteligencia artificial.
 
 La organización mediante proyectos independientes también
 introduce consideraciones relacionadas con el orden de
@@ -4512,15 +4096,9 @@ utilizan. Por consiguiente, el inicio de los contenedores
 no garantiza por sí solo que todas las funcionalidades
 del sistema se encuentren inmediatamente disponibles.
 
-En cuanto a las limitaciones del despliegue, la
-implementación relevada se encuentra distribuida entre
-configuraciones Docker Compose individuales. Aunque existe
-una configuración conjunta documentada como propuesta
-para un posible despliegue en la nube, no se identificó
-un procedimiento único y completamente automatizado
-que abarque la preparación de todos los recursos,
-la inicialización de los servicios y la verificación
-integral de su funcionamiento.
+En cuanto a las limitaciones del despliegue, el despliegue se encuentra distribuido entre
+configuraciones Docker Compose individuales y una configuración conjunta utilizada en la nube.
+No se dispone de un procedimiento único y completamente automatizado que abarque la preparación de todos los recursos, la inicialización de los servicios y la verificación integral de su funcionamiento.
 
 Esta organización requiere coordinar las configuraciones
 de los distintos proyectos y comprobar la disponibilidad
@@ -4547,10 +4125,8 @@ supervisión operativa, recuperación automática ante
 cualquier interrupción o garantía de disponibilidad
 continua de los servicios.
 
-Finalmente, el relevamiento de la configuración de
-despliegue no permite establecer garantías sobre la
-escalabilidad, la tolerancia a fallos o el comportamiento
-del sistema bajo cargas elevadas.
+Finalmente, no se evaluaron la escalabilidad, la tolerancia
+a fallos ni el comportamiento del sistema bajo cargas elevadas.
 La evaluación de estas propiedades requiere pruebas
 específicas y condiciones de ejecución definidas,
 que deben distinguirse de la descripción de los

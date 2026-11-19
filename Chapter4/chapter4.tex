@@ -19,7 +19,7 @@ de la información obtenida durante el análisis para la elaboración del inform
 correspondiente.
 
 El equipamiento utilizado para la adquisición y revisión de los estudios
-incluye el sistema Easy III EEG de Cadwell. Este proporciona las funciones
+incluye el sistema Easy III de Cadwell. Este proporciona las funciones
 necesarias para registrar y revisar las señales electroencefalográficas; sin
 embargo, el proyecto EpilexIA no fue concebido para sustituir el proceso de
 adquisición realizado mediante dicho equipamiento. Su alcance se concentra en
@@ -84,7 +84,7 @@ asociada con cada uno de estos perfiles.
         necesarios para la operación del sistema. \\
         \hline
         Técnico &
-        Gestión de la información necesaria para los pacientes y estudios,
+        Gestión de los datos de los pacientes y estudios,
         incluyendo el registro y la preparación de los estudios EEG para su
         posterior revisión. \\
         \hline
@@ -642,8 +642,6 @@ las acciones registradas y el contexto en el que fueron efectuadas.
 \end{longtable}
 
 
-
-
 \section{Requerimientos no funcionales}
 \label{sec:requerimientos-no-funcionales}
 
@@ -753,7 +751,7 @@ los diferentes perfiles de usuario.
 
     RNF-USA-002 &
     La interfaz deberá adaptarse a diferentes tamaños de pantalla, incluyendo
-    computadoras y tabletas. \\
+    computadoras y tablets. \\
     \hline
 
     RNF-USA-003 &
@@ -876,7 +874,6 @@ desplegar los componentes de EpilexIA en entornos reproducibles.
 \end{longtable}
 
 
-
 \section{Diagramas de secuencia}
 \label{sec:diagramas-secuencia}
 
@@ -919,8 +916,6 @@ las interacciones principales de este proceso.
 \end{figure}
 
 
-
-
 \subsection{Registro y preparación de un estudio EEG}
 \label{subsec:secuencia-registro-estudio}
 
@@ -934,7 +929,7 @@ de las señales electroencefalográficas.
 En la primera etapa, el usuario autorizado selecciona
 un paciente existente o incorpora uno nuevo. Posteriormente,
 completa la información del estudio, selecciona el archivo
-EEG en formato CSV o EDF y, cuando corresponde, identifica
+EEG en formato EDF y, cuando corresponde, identifica
 al Especialista responsable de su revisión. El \textit{backend}
 verifica los datos y registra el estudio con estado inicial
 Pendiente.
@@ -1003,8 +998,6 @@ de la conversión cuando se utiliza el formato EZVideo.
     Elaboración propia.}
     \label{fig:secuencia-carga-video}
 \end{figure}
-
-
 
 
 \subsection{Visualización de señales EEG}
@@ -1150,11 +1143,8 @@ de procesamiento mediante IA.
 
 El procesamiento se desarrolla de manera asíncrona,
 por lo que la aceptación de una solicitud no implica
-que el análisis haya finalizado. La ejecución puede
-realizarse mediante un ejecutor interno de la API de IA
-o a través de un motor independiente que obtiene
-los trabajos desde una cola persistente, según
-la modalidad de ejecución configurada.
+que el análisis haya finalizado. La ejecución se realiza a través de un motor independiente que obtiene
+los trabajos desde una cola persistente.
 
 Durante el procesamiento, la interfaz web consulta
 periódicamente el estado de la ejecución. El \textit{backend}
@@ -1198,7 +1188,6 @@ las anotaciones manuales. Su interpretación
 clínica corresponde al Especialista, por lo
 que el procesamiento automatizado no sustituye
 su criterio profesional.
-
 
 
 \subsection{Elaboración y cierre de informes clínicos}
@@ -1374,13 +1363,13 @@ La Figura~\ref{fig:arquitectura-general} presenta la arquitectura general del si
 
 La persistencia principal comprende los repositorios destinados al almacenamiento de información clínica y administrativa, así como los archivos asociados a los estudios EEG y sus registros de video.
 
-Por su parte, el subsistema de inteligencia artificial dispone de un servicio encargado de recibir y gestionar las solicitudes de análisis, administrar las ejecuciones y proporcionar acceso a los resultados obtenidos. Para la detección automática de crisis epilépticas, este subsistema contempla dos modalidades alternativas de procesamiento: una modalidad local, en la que el análisis se ejecuta mediante un proceso interno del servicio de IA, y una modalidad diferida, en la que las tareas son procesadas por un motor independiente.
+Por su parte, el subsistema de inteligencia artificial dispone de un servicio encargado de recibir y gestionar las solicitudes de análisis, administrar las ejecuciones y proporcionar acceso a los resultados obtenidos. Para la detección automática de crisis epilépticas, las tareas de análisis se registran en una cola persistente y son procesadas por un motor independiente.
 
 
-En la configuración actualmente utilizada, el procesamiento destinado a la detección automática de crisis epilépticas se encuentra asignado al motor independiente. La coordinación entre este componente y el servicio de IA se establece mediante un repositorio compartido, diseñado para administrar las tareas pendientes, registrar los estados de ejecución y almacenar los resultados del análisis. Por otra parte, la arquitectura contempla la generación de espectrogramas DSA directamente en el servicio de IA, independientemente de la modalidad configurada para la detección de crisis.
+En la configuración actualmente utilizada, el procesamiento destinado a la detección automática de crisis epilépticas se encuentra asignado al motor independiente. La coordinación entre este componente y el servicio de IA se establece mediante un repositorio compartido, diseñado para administrar las tareas pendientes, registrar los estados de ejecución y almacenar los resultados del análisis. Por otra parte, la arquitectura contempla la generación de espectrogramas DSA directamente en el servicio de IA, de forma independiente de la detección de crisis.
 
 
-Esta organización establece una separación de responsabilidades entre los componentes del sistema y permite identificar los mecanismos de integración de la plataforma web con los servicios de inteligencia artificial, sin vincular la representación arquitectónica con tecnologías específicas de implementación. En este contexto, el presente trabajo de tesis se centra en el desarrollo de la plataforma web, mientras que los servicios de inteligencia artificial y la infraestructura tecnológica forman parte del proyecto integral EpilexIA.
+Esta organización establece una separación de responsabilidades entre los componentes del sistema y permite identificar los mecanismos de integración de la plataforma web con los servicios de inteligencia artificial, sin vincular la representación arquitectónica con tecnologías específicas de implementación. En este contexto, el presente trabajo de tesis se centra en el desarrollo de la plataforma web y en la integración del subsistema de inteligencia artificial, mientras que el desarrollo y el entrenamiento de los modelos de detección, a cargo del equipo de ciencia de datos, y la infraestructura tecnológica forman parte del proyecto integral EpilexIA.
 
 
 \begin{figure}[H]
@@ -1390,7 +1379,6 @@ Esta organización establece una separación de responsabilidades entre los comp
     Elaboración propia.}
     \label{fig:arquitectura-general}
 \end{figure}
-
 
 
 \subsection{Componentes de la arquitectura}
@@ -1483,30 +1471,18 @@ PostgreSQL destinada a gestionar la información
 relacionada con las ejecuciones de procesamiento
 y sus resultados.
 
-La arquitectura contempla dos modalidades
-alternativas de ejecución, determinadas por la
-configuración del entorno.
-
-En la modalidad local, el procesamiento se realiza
-mediante un ejecutor interno asociado con el
-servicio FastAPI. En la modalidad denominada
-\texttt{pgqueue}, las solicitudes pendientes son
-gestionadas mediante la base de datos de IA
-y atendidas por un motor de procesamiento
-independiente.
+Las solicitudes pendientes se gestionan mediante una cola persistente en la base de datos de IA, denominada \texttt{pgqueue}, y son atendidas por un motor de procesamiento independiente.
 
 
-En ambas modalidades, la arquitectura tiene como propósito facilitar la recuperación y consulta de los resultados obtenidos mediante inteligencia artificial, de manera que puedan utilizarse como información complementaria durante la revisión de los estudios EEG.  La descripción de estas modalidades corresponde al diseño del subsistema; durante las pruebas se verificó la consulta de resultados previamente almacenados, pero no se completó la validación de una nueva ejecución integral del motor de inteligencia artificial.
-
+La arquitectura tiene como propósito facilitar la recuperación y consulta de los resultados obtenidos mediante inteligencia artificial, de manera que puedan utilizarse como información complementaria durante la revisión de los estudios EEG.  La verificación del ciclo completo, desde la solicitud del análisis hasta la presentación de nuevos resultados, se documenta en el Capítulo~\ref{pruebas_evaluacion}.
 
 
 El desarrollo y entrenamiento del modelo de
 inteligencia artificial no forman parte del alcance
-de este trabajo. La participación del proyecto
+de este trabajo, cuya participación
 se concentra en su integración con los componentes
 del sistema y en la presentación de los resultados
 para su revisión por parte del Especialista.
-
 
 
 \subsection{Comunicación entre componentes}
@@ -1562,12 +1538,7 @@ la solicitud al servicio de IA.
 La arquitectura contempla el procesamiento asíncrono de las solicitudes de análisis, de manera que la operación inicial no requiera mantener al usuario esperando hasta la finalización del procesamiento. Para ello, se dispone de mecanismos destinados a consultar el estado de las ejecuciones y recuperar los resultados almacenados cuando estén disponibles.
 
 
-Dentro del subsistema de IA, la coordinación del
-procesamiento depende de la modalidad de ejecución
-configurada. En la modalidad local, el servicio
-FastAPI utiliza un ejecutor interno. En la
-modalidad \texttt{pgqueue}, las ejecuciones
-pendientes son atendidas por un motor independiente
+Dentro del subsistema de IA, las ejecuciones pendientes son atendidas por un motor independiente
 que utiliza la base de datos de IA para gestionar
 los trabajos y registrar sus resultados.
 
@@ -1582,7 +1553,6 @@ destinados al procesamiento automatizado,
 conservando al \textit{backend} principal como punto
 de coordinación de las operaciones solicitadas
 desde la interfaz web.
-
 
 
 \section{Diseño de la base de datos}
@@ -1611,8 +1581,7 @@ Por otra parte, el subsistema de inteligencia artificial
 dispone de una base de datos independiente, destinada
 a gestionar las solicitudes de procesamiento, sus
 estados de ejecución y los resultados obtenidos.
-En la modalidad de ejecución mediante cola, esta
-base de datos permite coordinar las actividades
+Esta base de datos permite coordinar las actividades
 entre la API de inteligencia artificial y el motor
 de procesamiento.
 
@@ -1638,7 +1607,7 @@ ambas entidades es de uno a muchos, dado que un
 paciente puede tener varios estudios EEG, mientras
 que cada estudio corresponde a un único paciente.
 
-La entidad \texttt{study} constituye el núcleo del modelo y mantiene referencias a los usuarios que intervienen en la gestión del estudio. Cada estudio debe estar asociado obligatoriamente a un usuario responsable, cuya pertenencia al rol Especialista se verifica mediante las reglas de negocio del \textit{backend} durante su creación. Asimismo, puede incluir de manera opcional un técnico encargado de su registro. La entidad también conserva información sobre el estado del estudio, su cancelación, reactivación y disponibilidad de video.
+La entidad \texttt{study} constituye el núcleo del modelo y mantiene referencias a los usuarios que intervienen en la gestión del estudio. Cada estudio debe estar asociado obligatoriamente a un usuario responsable, cuya pertenencia al rol Especialista se verifica mediante las reglas de negocio del \textit{backend} durante su creación. Asimismo, puede incluir de manera opcional un técnico encargado de su registro. La entidad también conserva información sobre el estado del estudio, su anulación, reactivación y disponibilidad de video.
 
 Los archivos asociados a cada estudio se representan mediante la entidad
 \texttt{study\_file}, relacionada con el catálogo
@@ -1717,7 +1686,6 @@ para comprender el diseño del sistema.
 \end{figure}
 
 
-
 \subsection{Modelo de datos del procesamiento de inteligencia artificial}
 \label{subsec:modelo-datos-ia}
 
@@ -1735,9 +1703,9 @@ El modelo incorpora mecanismos para conservar la revisión realizada por los esp
 
 Complementariamente, la entidad \texttt{ai\_manual\_annotations} almacena anotaciones realizadas manualmente por los especialistas, incluso cuando no corresponden a intervalos detectados previamente por el modelo. Estas estructuras permiten conservar información de retroalimentación clínica que podría utilizarse en futuros procesos de mejora de los modelos de inteligencia artificial, sin que ello implique la existencia de un mecanismo automático de reentrenamiento en la implementación actual.
 
-La base de datos también contempla la entidad \texttt{ai\_results\_historial}, destinada al almacenamiento histórico de resultados. Aunque esta estructura se encuentra definida en el esquema, la revisión del código no permitió confirmar un mecanismo automático de traslado de registros desde la tabla de resultados activos.
+La base de datos también contempla la entidad \texttt{ai\_results\_historial}, destinada al almacenamiento histórico de resultados. Esta estructura se encuentra definida en el esquema; el traslado automático de registros hacia ella desde la tabla de resultados activos no está implementado en la versión actual.
 
-En la modalidad de ejecución mediante cola persistente, la tabla \texttt{ai\_executions} cumple además una función de coordinación entre la API de inteligencia artificial y el motor de procesamiento independiente. La API registra las solicitudes pendientes y el motor adquiere los trabajos mediante operaciones transaccionales sobre PostgreSQL. Durante la ejecución se actualizan los estados y las señales de actividad del procesamiento, mientras que al finalizar se registran los resultados y el estado correspondiente.
+La tabla \texttt{ai\_executions} cumple además una función de coordinación entre la API de inteligencia artificial y el motor de procesamiento independiente. La API registra las solicitudes pendientes y el motor adquiere los trabajos mediante operaciones transaccionales sobre PostgreSQL. Durante la ejecución se actualizan los estados y las señales de actividad del procesamiento, mientras que al finalizar se registran los resultados y el estado correspondiente.
 
 La vinculación con la base de datos clínica se establece mediante identificadores compartidos a nivel de aplicación. En particular, \texttt{id\_study\_epilex} permite identificar el estudio clínico asociado, mientras que el UUID de la ejecución puede relacionarse con los registros de seguimiento mantenidos por el \textit{backend} principal. Debido a que ambas bases de datos funcionan de manera independiente, estas correspondencias no se implementan mediante claves foráneas entre ellas.
 
@@ -1764,7 +1732,6 @@ de las referencias lógicas gestionadas por la aplicación.
     de inteligencia artificial de EpilexIA.}
     \label{fig:er-subsistema-ia}
 \end{figure}
-
 
 
 \subsection{Integridad y persistencia de los datos}
@@ -1825,8 +1792,6 @@ corresponda, y proporcionan información para el análisis
 de las operaciones del sistema.
 
 
-
-
 \section{Diseño de los servicios e interfaces de integración}
 \label{sec:diseno-servicios-integracion}
 
@@ -1853,8 +1818,7 @@ para solicitar análisis, consultar su estado, recuperar
 resultados y obtener representaciones complementarias
 de las señales EEG, como los espectrogramas.
 
-En la modalidad de procesamiento mediante cola persistente,
-la API de inteligencia artificial y el motor de procesamiento
+La API de inteligencia artificial y el motor de procesamiento
 se coordinan a través de una base de datos PostgreSQL
 compartida por ambos componentes. Esta comunicación permite
 gestionar las solicitudes de análisis sin requerir una
@@ -1865,7 +1829,6 @@ de autenticación, validación de solicitudes y tratamiento
 de errores, con el propósito de controlar el acceso a
 las operaciones y proporcionar respuestas adecuadas
 a los componentes consumidores.
-
 
 
 \subsection{Servicios del \textit{backend} principal}
@@ -1914,7 +1877,7 @@ formatos adecuados a su naturaleza, como
 y respuestas binarias para los documentos generados.
 
 La gestión de los estudios EEG contempla interfaces
-para recibir archivos CSV y EDF mediante carga
+para recibir archivos EDF mediante carga
 fragmentada. Una vez completada la transferencia,
 el \textit{backend} ensambla el archivo y ejecuta su
 procesamiento de manera asíncrona. Como resultado,
@@ -1948,8 +1911,6 @@ ejecuciones, consultar sus estados, recuperar
 resultados y obtener espectrogramas, sin exponer
 directamente al \textit{frontend} las interfaces internas
 de procesamiento.
-
-
 
 
 \begin{table}[H]
@@ -2041,9 +2002,7 @@ junto con las referencias necesarias para localizar
 el archivo que será analizado.
 
 La API de inteligencia artificial recibe la solicitud
-y gestiona el registro de la ejecución. En la modalidad
-de procesamiento mediante cola persistente, las
-solicitudes se almacenan en PostgreSQL para su
+y gestiona el registro de la ejecución. Las solicitudes se almacenan en PostgreSQL para su
 posterior recuperación por el motor de inteligencia
 artificial, que ejecuta el análisis de manera
 independiente de las solicitudes HTTP.
@@ -2095,7 +2054,6 @@ facilitando el intercambio de información y
 la trazabilidad de las ejecuciones realizadas.
 
 
-
 \begin{table}[H]
 \centering
 \caption{Interfaces de integración entre el \textit{backend} principal y FastAPI}
@@ -2145,7 +2103,6 @@ Registrar ventanas de IA confirmadas en el informe. \\ \hline
 \end{table}
 
 
-
 \subsection{Intercambio de datos y archivos EEG}
 \label{subsec:intercambio-datos-archivos-eeg}
 
@@ -2159,7 +2116,7 @@ determinados durante su análisis.
 
 Para incorporar las señales al sistema, el \textit{backend}
 principal dispone de interfaces que permiten
-recibir archivos en formatos CSV y EDF mediante
+recibir archivos en formato EDF mediante
 un mecanismo de carga fragmentada. Este
 procedimiento divide la transferencia en partes
 que se envían sucesivamente desde la aplicación
@@ -2238,7 +2195,6 @@ con el propósito de facilitar la
 gestión de registros EEG y su
 utilización en los procesos de revisión
 clínica y análisis automatizado.
-
 
 
 \subsection{Manejo de respuestas y errores}
@@ -2340,15 +2296,9 @@ constituyen información complementaria para el
 Especialista y no sustituyen su interpretación
 clínica ni representan un diagnóstico definitivo.
 
-El diseño del componente contempla la utilización
-de modelos de aprendizaje automático previamente
-entrenados, incorporados al sistema mediante
-mecanismos de carga y ejecución de inferencias.
-En consecuencia, el alcance de esta integración
-se centra en la preparación de las señales,
-la ejecución del modelo y la gestión de los
-resultados, sin incluir el entrenamiento original
-de los modelos utilizados.
+El diseño del componente contempla la utilización de modelos de aprendizaje automático previamente entrenados, desarrollados por el equipo de ciencia de datos del proyecto e incorporados al sistema mediante mecanismos de carga y ejecución de inferencias.
+En consecuencia, el alcance del presente trabajo comprende la integración del modelo: la gestión de las ejecuciones, la invocación del procesamiento y la gestión de los resultados.
+El diseño interno del modelo y su entrenamiento no forman parte de dicho alcance.
 
 Para organizar estas responsabilidades, el
 subsistema dispone de una API desarrollada
@@ -2356,8 +2306,7 @@ con FastAPI, un mecanismo de gestión de
 ejecuciones, almacenamiento independiente
 en PostgreSQL y un motor de procesamiento
 capaz de aplicar el modelo sobre los archivos
-EEG. La coordinación entre estos componentes
-depende de la modalidad de ejecución configurada.
+EEG. La coordinación entre estos componentes se realiza mediante una cola persistente.
 
 El procesamiento contempla la lectura de
 archivos EEG, la preparación de ventanas
@@ -2410,13 +2359,9 @@ serializados, entre ellos archivos con extensión
 \texttt{.joblib}, que son cargados para producir
 predicciones sin efectuar un nuevo entrenamiento.
 
-La coordinación de las ejecuciones admite dos modalidades.
-En la modalidad \texttt{local}, la API administra la
-ejecución mediante mecanismos locales y pone en marcha
-el proceso de inferencia. En la modalidad \texttt{pgqueue},
-la API registra los trabajos pendientes en PostgreSQL,
-desde donde el motor independiente los obtiene para
-procesarlos. En esta última modalidad, la coordinación
+La coordinación de las ejecuciones se realiza mediante una cola persistente, denominada \texttt{pgqueue}.
+La API registra los trabajos pendientes en PostgreSQL, desde donde el motor independiente los obtiene para procesarlos.
+De este modo, la coordinación
 entre la API y el motor se realiza mediante la base
 de datos, sin requerir una llamada HTTP directa
 entre ambos componentes.
@@ -2440,7 +2385,7 @@ validación por parte del especialista.
 
 La Figura~\ref{fig:organizacion-procesamiento-ia-pgqueue} presenta
 la organización del procesamiento de inteligencia artificial
-mediante la modalidad de cola persistente (\texttt{pgqueue}).
+mediante la cola persistente (\texttt{pgqueue}).
 En este esquema, el \textit{backend} principal envía las solicitudes
 a la API desarrollada con FastAPI, que registra las ejecuciones
 en la base de datos PostgreSQL del subsistema de IA.
@@ -2464,39 +2409,29 @@ HTTP directa entre ambos componentes.
 
 El procesamiento de señales electroencefalográficas mediante inteligencia artificial en EpilexIA parte de archivos digitales en formato EDF. El motor de inferencia accede al archivo asociado con la ejecución solicitada mediante una referencia a su ubicación en el almacenamiento, sin necesidad de transferir la totalidad de las muestras a través de la API de inteligencia artificial. Para interpretar el registro, el procedimiento utiliza la biblioteca MNE de Python.
 
-La preparación de las señales contempla su adaptación a un montaje bipolar basado en la organización de canales CHB-MIT. El procedimiento distingue entre archivos que contienen derivaciones bipolares reconocidas y registros con canales referenciales. En el segundo caso, construye derivaciones mediante la diferencia entre las señales de los electrodos correspondientes. El montaje de referencia utilizado por el motor contempla 23 derivaciones; sin embargo, la disponibilidad efectiva de canales depende del contenido y de la nomenclatura del archivo de entrada.
+El procedimiento de análisis forma parte del modelo de detección provisto por el equipo de ciencia de datos del proyecto, por lo que su diseño interno no integra el alcance del presente trabajo.
+Para integrarlo, el motor considera sus etapas generales: la adaptación de las señales a un montaje bipolar longitudinal de 18 derivaciones, el remuestreo a 256~Hz, el filtrado, la segmentación en ventanas consecutivas de 10 segundos, la extracción de características de cada ventana y su normalización para cada registro.
+La configuración de estas etapas se distribuye junto con el modelo entrenado, de modo que el motor aplica a cada estudio el mismo procedimiento con el que el modelo fue entrenado (Sección~\ref{subsec:modelo-vigente-hgb}).
 
-Cuando corresponde, el motor realiza un remuestreo de la señal. En la ruta de ejecución mediante cola persistente, la frecuencia objetivo efectiva es de 256 Hz, establecida por el valor predeterminado del procedimiento de inferencia. Posteriormente, el registro se divide en ventanas temporales consecutivas de 10 segundos, sin solapamiento. A esa frecuencia, cada ventana completa comprende 2560 muestras por canal. Los fragmentos finales que no alcanzan la duración establecida no se incluyen en el análisis.
-
-Para cada ventana se calculan 50 características por canal, correspondientes a medidas estadísticas, parámetros de Hjorth, indicadores de entropía y otras medidas de complejidad y comportamiento de la señal. Los valores obtenidos se organizan en un vector de características que constituye la entrada del estimador. Con las 23 derivaciones previstas, la representación objetivo contiene 1150 valores. Antes de la inferencia, los valores no finitos resultantes de la extracción de características se sustituyen por ceros.
-
-El procedimiento también contempla mecanismos de sustitución ante la ausencia de determinadas derivaciones. En la conversión desde registros referenciales, las derivaciones que no pueden construirse con los electrodos disponibles pueden representarse mediante señales de ceros. Esta estrategia permite continuar el procesamiento, aunque la correspondencia entre los canales disponibles y la representación esperada por el modelo constituye un aspecto que requiere verificación específica, especialmente cuando se utilizan registros bipolares incompletos.
-
-Una vez preparadas las características, el motor carga mediante la biblioteca \texttt{joblib} el artefacto de aprendizaje automático previamente entrenado y ejecuta las predicciones sobre las ventanas analizadas. El procedimiento utiliza el método \texttt{predict} del estimador y, cuando está disponible, \texttt{predict\_proba} para obtener probabilidades asociadas a las clases consideradas. La preparación de las entradas y la ejecución de inferencias no implican un nuevo entrenamiento del modelo.
-
-La revisión del código del motor no identifica etapas explícitas de filtrado pasa-banda, filtrado de rechazo de frecuencia de red, eliminación automática de artefactos o normalización global de la señal antes de su ingreso al estimador. Algunas características incorporan transformaciones internas para su cálculo, pero estas no equivalen a un preprocesamiento global. Asimismo, al no encontrarse los artefactos entrenados en el repositorio auditado, no es posible determinar a partir de este código si contienen transformaciones adicionales.
-
-En la modalidad de cola persistente, el procesamiento se ejecuta de forma independiente de la navegación del especialista por la interfaz web. El trabajador obtiene las ejecuciones pendientes desde PostgreSQL, inicia el procedimiento de inferencia y actualiza la información de estado y resultados. Los intervalos temporales analizados se expresan en segundos relativos al inicio del registro, lo que permite relacionar las predicciones con las posiciones correspondientes dentro del estudio EEG.
+El procesamiento se ejecuta de forma independiente de la navegación del especialista por la interfaz web. El trabajador obtiene las ejecuciones pendientes desde PostgreSQL, inicia el procedimiento de inferencia y actualiza la información de estado y resultados. Los intervalos temporales analizados se expresan en segundos relativos al inicio del registro, lo que permite relacionar las predicciones con las posiciones correspondientes dentro del estudio EEG.
 
 Es importante distinguir este procedimiento del procesamiento realizado por el \textit{backend} principal para la visualización de señales. Mientras este último prepara segmentos destinados a la recuperación y navegación temporal del registro, el motor de inteligencia artificial construye características de las ventanas y aplica el modelo predictivo para identificar intervalos que podrían requerir revisión clínica.
-
-De esta manera, el diseño del procesamiento de señales en el subsistema de inteligencia artificial establece una secuencia de lectura, adaptación del montaje, remuestreo, segmentación, extracción de características e inferencia. Los resultados obtenidos constituyen información de apoyo para la revisión del estudio y su interpretación permanece bajo la responsabilidad del especialista.
 
 
 \subsection{Generación e interpretación de resultados}
 \label{subsec:generacion-interpretacion-resultados-ia}
 
-Una vez preparadas las ventanas temporales del registro EEG, el motor de inteligencia artificial aplica el modelo previamente entrenado para obtener una predicción por cada intervalo analizado. En el procedimiento implementado, el método \texttt{predict} proporciona la clase estimada y, cuando el estimador dispone del método \texttt{predict\_proba}, se obtienen valores de probabilidad asociados a las clases consideradas. Estos valores constituyen salidas del modelo y no deben interpretarse, por sí solos, como una confirmación clínica de actividad epiléptica.
+Para cada ventana analizada, el modelo entrega una probabilidad de crisis.
+Estos valores constituyen salidas del modelo y no deben interpretarse, por sí solos, como una confirmación clínica de actividad epiléptica.
 
-El procedimiento identifica como predicciones positivas aquellas ventanas para las cuales \texttt{predict} devuelve la clase representada por el valor \texttt{1}. La implementación utiliza la probabilidad correspondiente a la clase considerada como crisis para evaluar posteriormente si una ventana positiva reúne las condiciones necesarias para conservarse como resultado del procesamiento. La correspondencia entre el orden de las probabilidades y las clases del estimador depende del artefacto entrenado utilizado, cuya configuración interna no pudo verificarse a partir del repositorio auditado.
+La decisión de señalar un intervalo combina dos parámetros: un umbral de probabilidad y una cantidad mínima de ventanas consecutivas que deben superarlo.
+Ambos se definen en el paquete del modelo.
+Al registrarse una ejecución, el umbral aplicable se incorpora a sus datos, de manera que el valor utilizado permanece asociado al procesamiento correspondiente aunque la configuración se modifique posteriormente.
+Los valores del modelo vigente se indican en la Sección~\ref{subsec:modelo-vigente-hgb}.
 
-El criterio de selección para la persistencia incorpora el parámetro \texttt{min\_proba\_crisis}. Para que una ventana sea registrada en la base de datos, deben cumplirse simultáneamente tres condiciones: que la predicción sea positiva, que exista un valor de probabilidad de crisis y que dicho valor sea mayor o igual que el umbral asociado a la ejecución. Por tanto, este parámetro actúa como un filtro posterior a la clasificación y no modifica la predicción generada por \texttt{predict}.
+Durante el análisis, el motor genera un archivo temporal con la información de las ventanas procesadas y registra en PostgreSQL únicamente las que integran un intervalo señalado.
 
-El umbral se obtiene de la configuración del subsistema de inteligencia artificial y se incorpora a los datos de cada ejecución cuando esta se registra. De esta manera, el valor aplicado permanece asociado al procesamiento correspondiente, aunque la configuración general sea modificada posteriormente. Si bien las migraciones de la API establecen un valor inicial de \texttt{0.80}, este es configurable y no constituye un valor fijo para todas las ejecuciones.
-
-Durante el análisis, el procedimiento genera un archivo CSV temporal que reúne información sobre las ventanas procesadas, sus intervalos temporales, las predicciones y, cuando están disponibles, las probabilidades y otras medidas de ejecución. En la modalidad de cola persistente, el motor utiliza esa salida para seleccionar los resultados que cumplen el criterio establecido y registrar únicamente dichos intervalos en PostgreSQL. El archivo temporal no equivale, por tanto, al conjunto de resultados persistidos.
-
-Cada resultado conservado se vincula con su ejecución de origen e incluye el tiempo de inicio y fin del intervalo, expresados en segundos respecto del comienzo del registro, así como la probabilidad de crisis utilizada para su selección. La relación con la ejecución permite recuperar el estudio asociado y la información necesaria para identificar el procesamiento que produjo el resultado. Las ventanas elegibles se registran individualmente, sin fusionar automáticamente intervalos positivos consecutivos.
+Cada resultado conservado se vincula con su ejecución de origen e incluye el tiempo de inicio y fin del intervalo, expresados en segundos respecto del comienzo del registro, así como la probabilidad de crisis utilizada para su selección. La relación con la ejecución permite recuperar el estudio asociado y la información necesaria para identificar el procesamiento que produjo el resultado. Las ventanas se registran individualmente, por lo que un intervalo señalado se presenta como una secuencia de registros consecutivos.
 
 La finalización satisfactoria de una ejecución indica que el procedimiento concluyó conforme a su flujo operativo, pero no implica necesariamente la existencia de resultados positivos almacenados. Si ninguna ventana satisface los criterios de selección, el procesamiento puede finalizar con estado exitoso y sin registros de resultados. Asimismo, los estados de ejecución permiten diferenciar los trabajos pendientes o en curso de aquellos que finalizan, fallan, exceden el tiempo permitido o son cancelados.
 
@@ -2543,13 +2478,13 @@ Los siguientes apartados describen los mecanismos de autenticación, la organiza
 La autenticación de usuarios en EpilexIA se realiza a través del \textit{backend} principal y constituye el mecanismo de identificación previo al acceso a los servicios protegidos. El proceso comienza cuando el usuario introduce sus credenciales en la interfaz web. Estas se remiten al servicio de autenticación, que comprueba su validez y las condiciones de acceso de la cuenta antes de establecer una sesión.
 
 Cuando las credenciales son válidas, el \textit{backend} genera un \textit{token} de acceso en formato \textit{JSON Web Token} (JWT).
- El \textit{token} se firma digitalmente e incorpora información que permite identificar al usuario y determinar su periodo de vigencia. Asimismo, contiene un identificador único de \textit{token}, denominado \texttt{jti}, que se utiliza para relacionarlo con un registro de sesión persistido en la base de datos clínica. La respuesta de autenticación proporciona al \textit{frontend} la información necesaria para continuar las operaciones del usuario, incluidos sus permisos.
+ El \textit{token} se firma digitalmente e incorpora información que permite identificar al usuario y determinar su período de vigencia. Asimismo, contiene un identificador único de \textit{token}, denominado \texttt{jti}, que se utiliza para relacionarlo con un registro de sesión persistido en la base de datos clínica. La respuesta de autenticación proporciona al \textit{frontend} la información necesaria para continuar las operaciones del usuario, incluidos sus permisos.
 
 En las solicitudes posteriores, la aplicación web incorpora el \textit{token} mediante el encabezado HTTP \texttt{Authorization}, utilizando el esquema \texttt{Bearer}. Antes de permitir el acceso a los servicios protegidos, el \textit{backend} comprueba la firma y la expiración del JWT, extrae su identificador \texttt{jti} y verifica que exista una sesión vigente asociada. Si alguna de estas condiciones no se cumple, la solicitud no se considera autenticada.
 
 La configuración de seguridad utiliza una política de procesamiento HTTP sin estado, denominada \texttt{stateless}. Esto significa que la autenticación no depende de una sesión HTTP tradicional mantenida entre solicitudes. No obstante, EpilexIA conserva registros de sesiones de usuario en la base de datos, lo que permite controlar la vigencia de los \textit{tokens} emitidos y revocarlos antes de que alcancen su fecha de expiración.
 
-Una vez validado el \textit{token}, el \textit{backend} recupera la información actual del usuario y las autoridades correspondientes a sus permisos. De esta manera, la autenticación establece la identidad del solicitante, mientras que la autorización posterior determina cuáles operaciones puede realizar. La validación de un JWT, por sí sola, no concede acceso indiscriminado a los recursos clínicos del sistema.
+Una vez validado el \textit{token}, el \textit{backend} recupera la información actual del usuario y las autoridades correspondientes a sus permisos. De esta manera, la autenticación establece la identidad del solicitante, mientras que la autorización posterior determina qué operaciones puede realizar. La validación de un JWT, por sí sola, no concede acceso indiscriminado a los recursos clínicos del sistema.
 
 El cierre de sesión dispone de una operación específica que identifica el \textit{token} utilizado y elimina el registro de sesión correspondiente. En consecuencia, aunque el JWT conserve una firma válida y no haya alcanzado su expiración, deja de ser aceptado cuando ya no existe una sesión vigente asociada a su identificador. Asimismo, el procedimiento de restablecimiento de contraseña contempla la invalidación de sesiones para impedir la continuidad de accesos previamente autorizados.
 
@@ -2601,7 +2536,7 @@ En los servicios vinculados a estudios EEG, el control de acceso considera la re
 
 Las operaciones de modificación de los datos del estudio están sujetas a condiciones más restrictivas. De acuerdo con las reglas de acceso implementadas, estas operaciones se habilitan al Administrador o al Especialista responsable, según los permisos correspondientes. La condición de observador permite participar en la revisión del estudio, pero no otorga por sí misma autorización para modificar sus datos generales. Asimismo, el Técnico que registró el estudio no adquiere por ese hecho las facultades de modificación reservadas a otros participantes.
 
-La incorporación de archivos asociados al estudio utiliza una comprobación específica. Además del permiso requerido para la operación, pueden realizar la carga el Administrador, el Especialista responsable y el Técnico creador del estudio. Esta capacidad se encuentra condicionada por el estado del registro: los estudios cancelados no admiten nuevas cargas. De esta manera, la autorización considera tanto la relación del usuario con el estudio como las condiciones de la operación solicitada.
+La incorporación de archivos asociados al estudio utiliza una comprobación específica. Además del permiso requerido para la operación, pueden realizar la carga el Administrador, el Especialista responsable y el Técnico creador del estudio. Esta capacidad se encuentra condicionada por el estado del registro: los estudios anulados no admiten nuevas cargas. De esta manera, la autorización considera tanto la relación del usuario con el estudio como las condiciones de la operación solicitada.
 
 En el visualizador EEG, el acceso a señales, segmentos y otros recursos del estudio se apoya en las reglas de consulta previamente descritas. Por su parte, el registro y la modificación de anomalías y eventos EEG requieren permisos específicos y verificaciones adicionales sobre la participación del usuario. Esta separación evita equiparar la capacidad de observar las señales con la autorización para modificar los hallazgos asociados al estudio.
 
@@ -2610,7 +2545,7 @@ La gestión de informes médicos incorpora un control adicional basado en la aut
 
 La consulta de un informe perteneciente a otro profesional no implica autorización para modificarlo. Cuando un especialista accede a un informe ajeno mediante los servicios vinculados al estudio, la información se presenta en modo de solo lectura. La edición del informe propio requiere, además de los permisos funcionales, que se cumplan las condiciones relativas a su autoría y estado. La creación de nuevos informes también está condicionada por las reglas del proceso, entre ellas la inexistencia de un informe propio previo y las restricciones asociadas al cierre de informes del estudio.
 
-En cuanto a los datos de pacientes, la autorización se organiza principalmente mediante permisos funcionales de consulta, creación y actualización. A diferencia de las comprobaciones contextuales aplicadas a los estudios, las operaciones generales sobre pacientes no deben interpretarse como restringidas automáticamente al Técnico creador o al Especialista asignado. Esta distinción es relevante para describir con precisión el alcance de las verificaciones presentes en cada servicio.
+En cuanto a los datos de pacientes, la autorización se organiza principalmente mediante permisos funcionales de consulta, creación y actualización. A diferencia de las comprobaciones contextuales aplicadas a los estudios, las operaciones generales sobre pacientes no se restringen al Técnico creador ni al Especialista asignado: dependen únicamente de los permisos del usuario. Esta distinción es relevante para describir con precisión el alcance de las verificaciones presentes en cada servicio.
 
 Finalmente, las reglas de acceso contextual se aplican en los servicios que incorporan expresamente dichas comprobaciones. Algunas operaciones generales de búsqueda y exportación utilizan controles basados en permisos sin reproducir necesariamente todas las restricciones de participación de los servicios asociados a un estudio particular. Por ello, el diseño de seguridad debe analizarse considerando conjuntamente las autoridades exigidas por cada interfaz y las verificaciones adicionales realizadas por su lógica de aplicación.
 
@@ -2626,15 +2561,15 @@ En el tratamiento de las credenciales, el sistema distingue las contraseñas uti
 
 La comunicación habitual comienza en el navegador y pasa por el servidor web Nginx, que entrega la aplicación y encamina las solicitudes hacia el \textit{backend} principal. Este último centraliza la autenticación, la autorización y el acceso a los recursos clínicos. La comunicación con el subsistema de inteligencia artificial se realiza mediante una interfaz de servicio diferenciada, que utiliza autenticación HTTP Basic con credenciales configuradas para la integración. En consecuencia, las credenciales del usuario clínico y las empleadas entre servicios cumplen funciones distintas.
 
-El cifrado de las comunicaciones constituye una consideración específica del despliegue. El uso de HTTPS con TLS permite proteger la información transmitida entre el navegador y el punto de entrada del sistema frente a su lectura o alteración durante el transporte. Sin embargo, la configuración operativa documentada incluye accesos HTTP y puertos internos de los contenedores, por lo que no corresponde afirmar que todas las comunicaciones del entorno estén cifradas de manera predeterminada. La habilitación de HTTPS y la configuración de certificados y puntos de exposición deben verificarse en la infraestructura donde se instale EpilexIA.
+El cifrado de las comunicaciones constituye una consideración específica del despliegue. El uso de HTTPS con TLS permite proteger la información transmitida entre el navegador y el punto de entrada del sistema frente a su lectura o alteración durante el transporte. En el entorno de despliegue utilizado, el acceso de los usuarios se realiza mediante HTTPS (Sección~\ref{subsec:despliegue-nube}), mientras que los servicios internos se comunican dentro de la red del propio entorno. La habilitación de HTTPS y la configuración de los certificados forman parte de la instalación en cada infraestructura donde se despliegue EpilexIA.
 
 Los datos estructurados se conservan en bases PostgreSQL diferenciadas: una destinada a los registros clínicos y otra a las ejecuciones y resultados del subsistema de inteligencia artificial. Los archivos EEG y de video se mantienen en almacenamiento persistente separado de las tablas relacionales. De igual manera, los artefactos de los modelos de aprendizaje automático se alojan en recursos de archivos accesibles para los componentes que ejecutan las inferencias. Esta distribución permite administrar por separado los registros, los archivos de gran tamaño y los modelos utilizados.
 
-La persistencia de estos recursos requiere medidas operativas adicionales. El diseño de despliegue mediante contenedores y volúmenes permite conservar la información aunque se detengan o reinicien los servicios, pero no reemplaza la necesidad de realizar copias de seguridad. La documentación técnica identifica como recursos críticos el almacenamiento de EEG y video, la base clínica y la base de inteligencia artificial, cuya conservación y respaldo deben contemplarse en la administración de la infraestructura.
+La persistencia de estos recursos requiere medidas operativas adicionales. El diseño de despliegue mediante contenedores y volúmenes permite conservar la información aunque se detengan o reinicien los servicios, pero no reemplaza la necesidad de realizar copias de seguridad. Los recursos críticos del sistema son el almacenamiento de EEG y video, la base clínica y la base de inteligencia artificial, cuya conservación y respaldo deben contemplarse en la administración de la infraestructura.
 
 La configuración de los servicios también incluye información sensible, como las credenciales de conexión a las bases de datos, la clave utilizada para firmar JWT y las credenciales de integración con la API de inteligencia artificial. Estos valores deben gestionarse en el entorno de operación y no incorporarse al contenido público de la aplicación web ni a la documentación distribuida. La protección efectiva de tales parámetros depende asimismo de las restricciones de acceso al servidor y a su configuración.
 
-En cuanto al seguimiento técnico, EpilexIA dispone de mecanismos de registro que permiten relacionar solicitudes y operaciones mediante identificadores de trazabilidad. La documentación operativa describe el enmascaramiento de contraseñas y \textit{tokens} en los registros estructurados. No obstante, la disponibilidad de estos registros no sustituye la aplicación de controles de acceso a los propios archivos de auditoría ni las políticas de conservación de información clínica.
+En cuanto al seguimiento técnico, EpilexIA dispone de mecanismos de registro que permiten relacionar solicitudes y operaciones mediante identificadores de trazabilidad. Las contraseñas y los \textit{tokens} se enmascaran en los registros estructurados. No obstante, la disponibilidad de estos registros no sustituye la aplicación de controles de acceso a los propios archivos de auditoría ni las políticas de conservación de información clínica.
 
 En síntesis, el diseño de protección de datos y comunicaciones combina autenticación, autorización, separación de componentes, almacenamiento persistente y trazabilidad de operaciones. Su efectividad requiere complementar los controles implementados en la aplicación con una configuración segura de red, cifrado de transporte, gestión de credenciales y procedimientos de respaldo adecuados al entorno institucional de operación.
 
@@ -2779,8 +2714,7 @@ de vida. Este identificador constituye una referencia
 para consultar el estado del procesamiento y recuperar
 los resultados generados.
 
-Cuando se utiliza la modalidad de cola persistente,
-la API de inteligencia artificial registra la ejecución
+La API de inteligencia artificial registra la ejecución
 en su base de datos PostgreSQL. Posteriormente, el motor
 independiente obtiene los trabajos pendientes, realiza
 el procesamiento de las señales EEG y actualiza la
@@ -2851,11 +2785,10 @@ la relación entre las operaciones técnicas y los
 recursos clínicos involucrados.
 
 
-
 \section{Diseño de interfaz de usuario}
 \label{sec:diseno-interfaz-usuario}
 
-El diseño de la interfaz de usuario de EpilexIA se orienta a facilitar la interacción de los distintos perfiles con las funcionalidades del sistema, considerando las necesidades de administración, registro y gestión de estudios electroencefalográficos, identificación de pacientes durante la creación de estudios y revisión clínica.
+El diseño de la interfaz de usuario de EpilexIA se orienta a facilitar la interacción de los distintos perfiles con las funcionalidades del sistema. Para ello, considera las necesidades de administración, de registro y gestión de estudios electroencefalográficos, de identificación de pacientes durante la creación de estudios y de revisión clínica.
 
 La organización de la interfaz contempla los tres
 roles definidos en el sistema: Administrador, Técnico
@@ -2904,7 +2837,6 @@ general de la interfaz, las pantallas destinadas
 a la administración y gestión de estudios, el
 visualizador EEG y los componentes utilizados
 para la revisión clínica y elaboración de informes.
-
 
 
 \subsection{Organización general de la interfaz}
@@ -3008,8 +2940,6 @@ interfaces correspondientes a estos procesos
 se desarrollan en los siguientes apartados.
 
 
-
-
 \subsection{Interfaces de administración y gestión de estudios}
 
 Las interfaces de administración y gestión de estudios de EpilexIA
@@ -3066,8 +2996,7 @@ de información y la opción de creación de nuevos estudios.
 \end{figure}
 
 
-
-El registro de un nuevo estudio se realiza mediante un formulario que permite seleccionar al paciente asociado e incorporar el archivo de señales EEG en formato CSV o EDF. La interfaz presenta diferencias según el perfil del usuario: en el caso del Técnico, se requiere seleccionar al especialista responsable del estudio, mientras que para el perfil Especialista dicho campo no se muestra. Asimismo, el formulario ofrece la posibilidad de adjuntar un video de monitoreo en formato MP4 o mediante archivos correspondientes a una grabación EZVideo.
+El registro de un nuevo estudio se realiza mediante un formulario que permite seleccionar al paciente asociado e incorporar el archivo de señales EEG en formato EDF. La interfaz presenta diferencias según el perfil del usuario: en el caso del Técnico, se requiere seleccionar al especialista responsable del estudio, mientras que para el perfil Especialista dicho campo no se muestra. Asimismo, el formulario ofrece la posibilidad de adjuntar un video de monitoreo en formato MP4 o mediante archivos correspondientes a una grabación EZVideo.
 
 Cuando el paciente requerido no se encuentra disponible en
 el selector, la aplicación permite registrar uno nuevo sin
@@ -3079,12 +3008,12 @@ una funcionalidad complementaria a la creación de estudios
 EEG, sin constituir un módulo independiente de gestión
 de pacientes.
 
-La Figura~\ref{fig:nuevo-estudio-eeg} presenta el formulario de creación de estudios EEG correspondiente al perfil Técnico. En ella se observan los campos de selección del paciente y del especialista responsable, así como los controles para incorporar el archivo EEG y, opcionalmente, un video de monitoreo.
+La Figura~\ref{fig:nuevo-estudio-eeg} presenta el formulario de creación de estudios EEG correspondiente al perfil Especialista. En ella se observan el campo de selección del paciente, así como los controles para incorporar el archivo EEG y, opcionalmente, un video de monitoreo.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{ThesisFigs/nuevo-estudio-eeg.png}
-    \caption{Formulario de creación de estudios EEG correspondiente al perfil Técnico de EpilexIA.}
+    \caption{Formulario de creación de estudios EEG correspondiente al perfil Especialista de EpilexIA.}
     \label{fig:nuevo-estudio-eeg}
 \end{figure}
 
@@ -3118,7 +3047,6 @@ los archivos utilizados durante la revisión clínica. Su
 diseño establece una continuidad entre la administración
 de cuentas, la preparación de estudios y el acceso a las
 herramientas especializadas de análisis electroencefalográfico.
-
 
 
 \subsection{Interfaz de visualización y análisis de señales EEG}
@@ -3174,7 +3102,6 @@ Entre las funcionalidades disponibles se encuentra el registro de anomalías y e
 
 
 Cuando un estudio dispone de resultados de inteligencia artificial previamente almacenados, la interfaz permite consultar los intervalos señalados en dichos registros. Estos resultados se presentan como información complementaria para orientar la revisión del especialista, quien conserva la responsabilidad de examinar las señales y determinar la relevancia clínica de los hallazgos. De esta manera, el sistema integra el apoyo automatizado sin sustituir la interpretación realizada por el profesional.
-
 
 
 La Figura~\ref{fig:panel-anomalias-ia} presenta el panel de anomalías y puntos de interés de EpilexIA, en el que se observan los intervalos identificados mediante inteligencia artificial, sus respectivas referencias temporales y los controles disponibles para su consulta. Asimismo, la interfaz incorpora filtros que permiten distinguir entre los registros generados automáticamente y aquellos incorporados de forma manual.

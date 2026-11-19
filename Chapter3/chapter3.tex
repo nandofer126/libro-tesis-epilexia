@@ -256,6 +256,33 @@ Capítulo~\ref{cap:implementacion-sistema}.
 
 
 
+\section{Desarrollo asistido por inteligencia artificial}
+\label{sec:desarrollo-asistido-ia}
+
+La implementación de EpilexIA se realizó con la asistencia de herramientas de inteligencia artificial para la generación y revisión de código.
+Los integrantes del equipo utilizaron Claude Code, Cursor y Codex, según la elección de cada desarrollador.
+
+El equipo adoptó para los repositorios del sistema un conjunto de prácticas orientadas a mantener el control sobre el código producido:
+
+\begin{itemize}
+    \item \textbf{Contexto explícito por repositorio.}
+    Cada repositorio incluye archivos que describen su arquitectura, sus convenciones y las reglas que deben respetar los asistentes (\texttt{CLAUDE.md}, \texttt{AGENTS.md} y reglas de Cursor).
+    Estos archivos cumplen la función de documento rector del proyecto y permiten que distintos desarrolladores y herramientas trabajen sobre una base común.
+
+    \item \textbf{Especificación y planificación previas.}
+    El sistema cuenta con una especificación general, y los cambios de mayor alcance se elaboraron primero como planes documentados, que se conservan junto al código en la carpeta de documentación de los repositorios.
+
+    \item \textbf{Revisión humana del código.}
+    Los cambios se desarrollaron en ramas derivadas de la rama principal y se integraron mediante solicitudes de integración (\textit{pull requests}), revisadas por el líder técnico del equipo antes de su aprobación.
+
+    \item \textbf{Verificación.}
+    El código se acompañó de pruebas automatizadas y fue sometido a las actividades de verificación y validación que se describen en las secciones siguientes.
+\end{itemize}
+
+Esta forma de trabajo se relaciona con el desarrollo guiado por especificaciones, aunque no se adoptó una metodología formal de ese tipo.
+Dentro del Modelo V, las prácticas descritas corresponden a las etapas de implementación y de verificación de componentes.
+La asistencia de inteligencia artificial intervino en la producción del código, mientras que la definición de los requerimientos, las decisiones de diseño, la aprobación de los cambios y la validación con la especialista permanecieron a cargo del equipo.
+
 \section{Verificación e integración}
 \label{sec:verificacion-integracion}
 
@@ -288,11 +315,7 @@ La integración con el subsistema de inteligencia artificial contempló
 la solicitud de ejecuciones de procesamiento, su identificación y
 seguimiento, la consulta de los estados correspondientes y la
 recuperación de los resultados asociados con los estudios EEG.
-Durante las pruebas funcionales se verificó la consulta y
-presentación de resultados previamente almacenados. Sin embargo,
-no fue posible completar la validación de una nueva ejecución
-integral del motor de inteligencia artificial, debido a las
-limitaciones del entorno de pruebas. Esta situación se documenta en el Capítulo~\ref{pruebas_evaluacion}.
+Estas operaciones se verificaron mediante la ejecución del ciclo completo de procesamiento sobre estudios EEG reales, cuyos resultados se documentan en el Capítulo~\ref{pruebas_evaluacion}.
 
 
 
@@ -324,6 +347,9 @@ contexto de utilización del sistema. Estas actividades permitieron
 contrastar los avances realizados con las necesidades identificadas
 durante el relevamiento y evaluar la adecuación de las
 funcionalidades al flujo de trabajo previsto.
+
+En particular, la validación se realizó con una médica especialista en epileptología del Hospital Central del IPS, mediante sesiones semanales desarrolladas en el hospital durante septiembre y octubre de 2026 sobre estudios EEG reales.
+Las observaciones formuladas en dichas sesiones y su incorporación al sistema se detallan en el Cuadro~\ref{tab:observaciones-especialista}.
 
 
 Durante el desarrollo se presentaron versiones funcionales y avances del
