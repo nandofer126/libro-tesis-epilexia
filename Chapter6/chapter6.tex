@@ -18,7 +18,7 @@ La estrategia contempla los siguientes ámbitos de evaluación:
     \item \textbf{Pruebas de integración:} destinadas a verificar la comunicación y el intercambio de información entre el \textit{frontend}, el \textit{backend}, las bases de datos y los componentes de inteligencia artificial.
 
 
-    \item \textbf{Pruebas de procesamiento y visualización EEG:} enfocadas en evaluar la carga y representación de señales, la configuración de montajes, filtros y sensibilidad, la navegación temporal y el registro de anomalías.
+    \item \textbf{Pruebas de procesamiento y visualización EEG:} enfocadas en evaluar la carga y representación de señales, la configuración de montajes, filtros y sensibilidad, la navegación temporal y el registro de anomalías. Sus resultados se presentan en los casos PF-05 a PF-09 y en la prueba de integración PI-05.
 
     \item \textbf{Pruebas de integración con inteligencia artificial:} dirigidas a comprobar la solicitud de análisis, el seguimiento de las ejecuciones y la recuperación y presentación de los resultados generados.
 
@@ -28,7 +28,7 @@ La estrategia contempla los siguientes ámbitos de evaluación:
 \end{itemize}
 
 
-Para las pruebas funcionales y de integración se utilizaron casos de prueba que especifican la funcionalidad evaluada, las condiciones iniciales, el procedimiento de ejecución, el resultado esperado y el resultado obtenido. Esta estructura permitió documentar los comportamientos observados e identificar posibles diferencias respecto de los requerimientos del sistema.
+Para las pruebas funcionales y de integración se utilizaron casos de prueba que especifican la funcionalidad evaluada, el procedimiento de ejecución y el resultado esperado. Las condiciones de cada ejecución y el resultado obtenido se documentan en la sección correspondiente a cada prueba. Esta estructura permitió documentar los comportamientos observados e identificar posibles diferencias respecto de los requerimientos del sistema.
 
 
 En cuanto al rendimiento, se contemplaron escenarios de medición reproducibles, considerando las características del entorno de ejecución, el tamaño de los archivos procesados y las condiciones de carga. Estas evaluaciones quedaron pendientes de ejecución sistemática, por lo que no se presentan resultados cuantitativos sobre tiempos de respuesta, consumo de recursos o comportamiento bajo carga.
@@ -73,7 +73,7 @@ El Cuadro~\ref{tab:casos_pruebas_funcionales} presenta los casos de prueba propu
 >{\raggedright\arraybackslash}p{\dimexpr0.38\textwidth-2\tabcolsep-1.25\arrayrulewidth\relax}|}
 
 
-\caption{Casos de prueba funcionales propuestos para EpilexIA}
+\caption{Casos de prueba funcionales definidos para EpilexIA.}
 \label{tab:casos_pruebas_funcionales}\\
 \hline
 
@@ -290,19 +290,28 @@ El resultado observado coincidió con el comportamiento esperado para el caso PF
 
 \FloatBarrier
 
-\subsection{Resultados de la prueba de registro de estudios EEG}
+\subsection{Resultados de las pruebas de registro de estudios y carga de archivos EEG}
 
-La prueba funcional PF-04 tuvo como objetivo verificar la creación de un estudio electroencefalográfico y su correcta asociación con un paciente previamente registrado en EpilexIA.
+Las pruebas funcionales PF-04 y PF-05 se ejecutaron de manera conjunta, dado que en EpilexIA el archivo EEG se carga en la misma operación en la que se registra el estudio.
+La prueba PF-04 tuvo como objetivo verificar la creación de un estudio electroencefalográfico y su correcta asociación con un paciente previamente registrado.
+La prueba PF-05 tuvo como objetivo verificar la aceptación de archivos electroencefalográficos en un formato admitido por la plataforma, así como la disponibilidad de información sobre el estado de su carga.
 
-Para ejecutar la prueba, se accedió al formulario de creación de estudios EEG y se seleccionó al paciente ficticio Juan Pérez, registrado durante la prueba PF-03. Posteriormente, se adjuntó un archivo electroencefalográfico en formato EDF, correspondiente a uno de los formatos admitidos por la plataforma. No se incorporó un archivo de video, debido a que este componente es opcional.
+Para ejecutar las pruebas, se accedió al formulario de creación de estudios EEG y se seleccionó al paciente ficticio Juan Pérez, registrado durante la prueba PF-03.
+Posteriormente, se adjuntó un archivo electroencefalográfico en formato EDF.
+No se incorporó un archivo de video, debido a que este componente es opcional.
 
-Antes de confirmar la creación del estudio, el sistema presentó un resumen de validación que indicó la compatibilidad del archivo EEG con el paciente seleccionado y la ausencia de errores bloqueantes. La Figura~\ref{fig:pf04_registro_estudio} muestra la información ingresada y el resultado de las validaciones realizadas.
+Antes de confirmar la creación del estudio, el sistema presentó un resumen de validación que indicó la compatibilidad del archivo EEG con el paciente seleccionado y la ausencia de errores bloqueantes.
+La Figura~\ref{fig:pf04_registro_estudio} muestra la información ingresada y el resultado de las validaciones realizadas.
 
-Una vez ejecutada la operación de creación, se consultó el listado de estudios EEG para verificar el registro generado. El sistema presentó el estudio asociado al paciente Juan Pérez, con la fecha de creación correspondiente y el estado Procesado.
+Una vez iniciada la operación, la plataforma mostró el mensaje ``Subiendo EEG'', acompañado de una barra de progreso que indicaba el porcentaje de transferencia del archivo.
+Este mecanismo permitió observar el avance de la carga mientras la operación se ejecutaba en segundo plano.
 
-La Figura~\ref{fig:pf04_estudio_registrado} presenta el registro del estudio en el listado de la plataforma, donde se identifica al paciente asociado y el estado informado por el sistema.
+Finalizada la carga, se consultó el listado de estudios EEG para verificar el registro generado.
+El sistema presentó el estudio asociado al paciente Juan Pérez, con la fecha de creación correspondiente y el estado Procesado, tal como se observa en la Figura~\ref{fig:pf04_estudio_registrado}.
 
-Los resultados observados coincidieron con el comportamiento esperado para el caso PF-04, por lo que la prueba se clasificó como aprobada. La evaluación permitió comprobar el registro del estudio y su vinculación con el paciente correspondiente. La verificación específica de la carga del archivo EEG y la visualización de las señales se contempla en las pruebas PF-05 y PF-06, respectivamente.
+Los resultados observados coincidieron con el comportamiento esperado para los casos PF-04 y PF-05, por lo que ambas pruebas se clasificaron como aprobadas.
+La evaluación permitió comprobar el registro del estudio y su vinculación con el paciente, la aceptación del archivo, la visualización del progreso de carga y el estado final informado por la plataforma.
+La verificación de la representación gráfica de las señales electroencefalográficas se aborda de manera independiente en el caso PF-06.
 
 
 \begin{figure}[!htbp]
@@ -329,23 +338,6 @@ Los resultados observados coincidieron con el comportamiento esperado para el ca
 \end{figure}
 
 \FloatBarrier
-
-\subsection{Resultados de la prueba de carga de archivos EEG}
-
-La prueba funcional PF-05 tuvo como objetivo verificar la aceptación de archivos electroencefalográficos en un formato admitido por EpilexIA, así como la disponibilidad de información sobre el estado de su carga.
-
-Para ejecutar la prueba, se utilizó el archivo EEG en formato EDF previamente seleccionado durante el registro del estudio correspondiente al caso PF-04. El archivo fue asociado al paciente ficticio Juan Pérez mediante el formulario de creación de estudios EEG.
-
-Antes de iniciar la carga, el sistema presentó un resumen de validación que confirmó la compatibilidad del archivo con el paciente seleccionado y la ausencia de errores bloqueantes.
-
-Una vez iniciada la operación, la plataforma mostró el mensaje ``Subiendo EEG'', acompañado de una barra de progreso que indicaba el porcentaje de transferencia del archivo. Este mecanismo permitió observar el avance de la carga mientras la operación se ejecutaba en segundo plano.
-
-Posteriormente, al consultar el listado de estudios EEG, se verificó que el registro correspondiente al paciente seleccionado presentaba el estado Procesado, lo que permitió comprobar la finalización del procedimiento informado por la plataforma.
-
-La evidencia del archivo seleccionado y su validación inicial se presenta en la Figura~\ref{fig:pf04_registro_estudio}, mientras que el estado final del estudio puede observarse en la Figura~\ref{fig:pf04_estudio_registrado}.
-
-Los resultados observados coincidieron con el comportamiento esperado para el caso PF-05, por lo que la prueba se clasificó como aprobada. La evaluación se limitó a la aceptación del archivo, la visualización del progreso de carga y la consulta del estado final del estudio. La verificación de la representación gráfica de las señales electroencefalográficas se aborda de manera independiente en el caso PF-06.
-
 
 \subsection{Resultados de la prueba de visualización de señales EEG}
 
@@ -436,7 +428,7 @@ Posteriormente, se evaluó el filtro de corte superior (\textit{High cut}), util
 
 Finalmente, se evaluó el filtro de rechazo de banda (\textit{Notch}) de 50 Hz, mediante su activación y desactivación. Con el filtro desactivado se observó una interferencia de alta frecuencia superpuesta a las señales, especialmente notoria en las derivaciones F3-C3, C3-P3 y Fz-Cz, que dejó de apreciarse al activarlo. La Figura~\ref{fig:pf08_notch} presenta ambas configuraciones.
 
-Los resultados observados fueron compatibles con el comportamiento esperado para el caso PF-08, por lo que la comprobación funcional visual se consideró satisfactoria. La evaluación permitió verificar la modificación de los parámetros de filtrado y los cambios correspondientes en la representación de las señales EEG. La prueba se limitó a la verificación funcional del visualizador, sin incluir mediciones cuantitativas de la respuesta frecuencial de los filtros ni una validación clínica de las señales representadas.
+Los resultados observados fueron compatibles con el comportamiento esperado para el caso PF-08, por lo que la comprobación funcional visual se clasificó como aprobada. La evaluación permitió verificar la modificación de los parámetros de filtrado y los cambios correspondientes en la representación de las señales EEG. La prueba se limitó a la verificación funcional del visualizador, sin incluir mediciones cuantitativas de la respuesta frecuencial de los filtros ni una validación clínica de las señales representadas.
 
 
 \begin{figure}[p]
@@ -620,7 +612,7 @@ Los resultados observados coincidieron con el comportamiento esperado para el ca
 
 La prueba funcional PF-12 tuvo como objetivo verificar que EpilexIA restringiera la modificación de informes médicos pertenecientes a otros especialistas, permitiendo su consulta únicamente a los usuarios autorizados.
 
-Para ejecutar la prueba, se utilizó el informe médico número 17, asociado al estudio EEG número 26, elaborado por la profesional María González y almacenado en estado Borrador. Se cerró la sesión de la profesional responsable y posteriormente se inició sesión con otro usuario que contaba con el rol Especialista y acceso al estudio correspondiente.
+Para ejecutar la prueba, se utilizó el informe médico número 17, asociado al estudio EEG número 26, elaborado por la profesional María González y almacenado en estado Borrador. Se cerró la sesión de la profesional responsable y posteriormente se inició sesión con otro usuario que contaba con el perfil Especialista y acceso al estudio correspondiente.
 
 Al ingresar al visualizador EEG y consultar el apartado de informes médicos, se comprobó que el sistema presentaba el informe de María González identificado mediante la etiqueta ``Solo lectura'', manteniendo visible su estado Borrador. Asimismo, se encontraba disponible la opción para crear un informe propio, diferenciando ambas operaciones. La Figura~\ref{fig:pf12_informe_solo_lectura} presenta esta configuración.
 
@@ -697,13 +689,13 @@ Los resultados observados coincidieron con el comportamiento esperado para el ca
 
 La prueba funcional PF-14 tuvo como objetivo verificar que EpilexIA presentara las funcionalidades correspondientes al rol del usuario autenticado y restringiera el acceso a determinados módulos para los perfiles que no contaran con los permisos necesarios.
 
-Para ejecutar la prueba, se utilizaron tres cuentas de usuario con los roles Administrador, Técnico y Especialista. Se inició sesión de manera independiente con cada cuenta y se examinó el panel principal, prestando especial atención a las opciones disponibles en el apartado de accesos rápidos.
+Para ejecutar la prueba, se utilizaron tres cuentas de usuario con los perfiles Administrador, Técnico y Especialista. Se inició sesión de manera independiente con cada cuenta y se examinó el panel de control, prestando especial atención a las opciones disponibles en el apartado de accesos rápidos.
 
 En primer lugar, se inició sesión con una cuenta de Administrador. Se comprobó que el sistema presentaba las opciones de Gestión de Usuarios, Estudios EEG y Reportes, además de los indicadores generales y el apartado de actividad reciente. La Figura~\ref{fig:pf14_rol_administrador} muestra el panel correspondiente a este perfil.
 
-Posteriormente, se inició sesión con el usuario Carlos Fernández, perteneciente al rol Técnico. Durante la evaluación, se observó que el panel únicamente presentaba el acceso rápido a Estudios EEG, sin mostrar las opciones de Gestión de Usuarios ni Reportes. No obstante, permanecían visibles los indicadores generales y la actividad reciente del sistema, como se observa en la Figura~\ref{fig:pf14_rol_tecnico}.
+Posteriormente, se inició sesión con el usuario Carlos Fernández, correspondiente al perfil Técnico. Durante la evaluación, se observó que el panel únicamente presentaba el acceso rápido a Estudios EEG, sin mostrar las opciones de Gestión de Usuarios ni Reportes. No obstante, permanecían visibles los indicadores generales y la actividad reciente del sistema, como se observa en la Figura~\ref{fig:pf14_rol_tecnico}.
 
-A continuación, se inició sesión con la profesional María González, perteneciente al rol Especialista. Se comprobó que el sistema presentaba los accesos rápidos a Estudios EEG y Reportes, mientras que la opción de Gestión de Usuarios no se encontraba disponible. La Figura~\ref{fig:pf14_rol_especialista} muestra la configuración del panel correspondiente a este perfil.
+A continuación, se inició sesión con la profesional María González, correspondiente al perfil Especialista. Se comprobó que el sistema presentaba los accesos rápidos a Estudios EEG y Reportes, mientras que la opción de Gestión de Usuarios no se encontraba disponible. La Figura~\ref{fig:pf14_rol_especialista} muestra la configuración del panel correspondiente a este perfil.
 
 Adicionalmente, se realizaron comprobaciones de acceso directo a rutas restringidas. Con las sesiones de los usuarios Técnico y Especialista, se intentó acceder manualmente a la ruta \texttt{/app/users}, correspondiente al módulo de Gestión de Usuarios. En ambos casos, el sistema impidió la navegación hacia dicho módulo y redirigió automáticamente al usuario a la ruta \texttt{/app/dashboard}.
 
@@ -741,7 +733,7 @@ Los resultados observados coincidieron con el comportamiento esperado para el ca
 
 La prueba funcional PF-15 tuvo como objetivo verificar que EpilexIA permitiera consultar los registros de auditoría generados durante la utilización de la plataforma, de acuerdo con los permisos establecidos para los usuarios autenticados.
 
-Para ejecutar la prueba, se inició sesión con una cuenta de Administrador y se accedió al módulo de auditoría mediante la opción \textit{Ver todas las auditorías}, disponible en el panel principal. Se comprobó que el sistema presentaba un historial de operaciones con información sobre la fecha y hora, el tipo de evento, el actor responsable, su rol y el contexto asociado a cada registro.
+Para ejecutar la prueba, se inició sesión con una cuenta de Administrador y se accedió al módulo de auditoría mediante la opción \textit{Ver todas las auditorías}, disponible en el panel de control. Se comprobó que el sistema presentaba un historial de operaciones con información sobre la fecha y hora, el tipo de evento, el actor responsable, su rol y el contexto asociado a cada registro.
 
 Entre las operaciones identificadas se encontraban la creación y actualización de informes médicos, el cierre de informes, la creación de estudios EEG y las ejecuciones de análisis mediante inteligencia artificial. Asimismo, se observaron registros correspondientes a las pruebas funcionales realizadas anteriormente, incluyendo el cierre del informe médico número 17, asociado al estudio EEG número 26. La Figura~\ref{fig:pf15_historial_auditoria} presenta la consulta general del historial de auditoría.
 
@@ -751,7 +743,7 @@ A continuación, se utilizó el filtro por evento, introduciendo el texto \texti
 
 Adicionalmente, se comprobaron los filtros por actor y rol. Al introducir el nombre María en el campo correspondiente al actor, se visualizaron operaciones asociadas a la profesional María González. Posteriormente, al seleccionar el rol Especialista, manteniendo el filtro por actor, los registros presentados correspondían a los criterios establecidos.
 
-Finalmente, se realizaron comprobaciones de acceso utilizando cuentas correspondientes a los roles Técnico y Especialista. En ambos casos, el sistema permitió acceder al módulo de auditoría y consultar registros generados por diferentes usuarios y procesos. En la versión evaluada, la consulta de auditoría está disponible para los tres perfiles, de modo que técnicos y especialistas pueden conocer las acciones realizadas por otros usuarios, como mecanismo de control cruzado. Los registros describen acciones, con su tipo, actor, rol, fecha e identificadores de contexto, y no incluyen el contenido clínico de las anomalías ni de los informes. Esta consulta es independiente del módulo de informes médicos, cuyo acceso se restringe según el perfil (PF-14). La Figura~\ref{fig:pf15_auditoria_tecnico} presenta la consulta realizada desde una cuenta con rol Técnico.
+Finalmente, se realizaron comprobaciones de acceso utilizando cuentas correspondientes a los perfiles Técnico y Especialista. En ambos casos, el sistema permitió acceder al módulo de auditoría y consultar registros generados por diferentes usuarios y procesos. En la versión evaluada, la consulta de auditoría está disponible para los tres perfiles, de modo que técnicos y especialistas pueden conocer las acciones realizadas por otros usuarios, como mecanismo de control cruzado. Los registros describen acciones, con su tipo, actor, rol, fecha e identificadores de contexto, y no incluyen el contenido clínico de las anomalías ni de los informes. Esta consulta es independiente del módulo de informes médicos, cuyo acceso se restringe según el perfil (PF-14). La Figura~\ref{fig:pf15_auditoria_tecnico} presenta la consulta realizada desde una cuenta con perfil Técnico.
 
 Los resultados observados coincidieron con el comportamiento esperado para el caso PF-15, por lo que la prueba funcional se clasificó como aprobada. La evaluación permitió verificar la disponibilidad del historial de auditoría, la identificación de las operaciones registradas, el funcionamiento de los filtros de consulta y el acceso al módulo desde los tres roles definidos en EpilexIA. La prueba se limitó a comprobar el comportamiento funcional de la interfaz, sin incluir una evaluación de la integridad de los registros almacenados ni pruebas directas de autorización sobre los servicios del \textit{backend}.
 
@@ -780,11 +772,11 @@ Los resultados observados coincidieron con el comportamiento esperado para el ca
     \label{fig:pf15_filtro_evento}
 \end{figure}
 
-% Figura 6.31 - Auditoría con rol Técnico
+% Figura 6.31 - Auditoría con perfil Técnico
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{Chapter6/Chapter6Figs/pf15_auditoria_tecnico.png}
-    \caption{Consulta del historial de auditoría desde una cuenta con rol Técnico en EpilexIA.}
+    \caption{Consulta del historial de auditoría desde una cuenta con perfil Técnico en EpilexIA.}
     \label{fig:pf15_auditoria_tecnico}
 \end{figure}
 
@@ -853,7 +845,7 @@ En conjunto, los resultados proporcionan evidencia del funcionamiento de las pri
 
 Las pruebas de integración tienen como propósito verificar la comunicación y el intercambio de información entre los componentes que conforman la arquitectura de EpilexIA. A diferencia de las pruebas funcionales, orientadas a comprobar el comportamiento de operaciones específicas desde la perspectiva del usuario, estas pruebas se centran en las interacciones entre los distintos servicios de la plataforma.
 
-La evaluación comprende los mecanismos de comunicación, persistencia y coordinación entre los componentes del sistema, incluyendo la interfaz web, el servidor principal, las bases de datos y los servicios encargados del procesamiento mediante inteligencia artificial.
+La evaluación comprende los mecanismos de comunicación, persistencia y coordinación entre los componentes del sistema, incluyendo la interfaz web, el \textit{backend} clínico, las bases de datos y los servicios encargados del procesamiento mediante inteligencia artificial.
 
 En los siguientes apartados se describen el objetivo y alcance de la evaluación, los mecanismos de comunicación identificados y los casos de prueba definidos para verificar las integraciones implementadas.
 
@@ -864,7 +856,7 @@ En los siguientes apartados se describen el objetivo y alcance de la evaluación
 
 El objetivo de las pruebas de integración es comprobar que los componentes de EpilexIA intercambian información de manera consistente y permiten completar las operaciones que requieren la participación de varios servicios. Para ello, se consideran tanto las solicitudes realizadas desde la interfaz web como las operaciones internas de persistencia, coordinación y consulta de resultados.
 
-El alcance de la evaluación comprende la autenticación y la gestión de sesiones, la comunicación entre la interfaz web y el servidor principal, el almacenamiento y la recuperación de información clínica, así como la asociación entre los archivos EEG y sus respectivos registros en la base de datos. También se incluyen las interacciones necesarias para iniciar y supervisar los procesos de análisis mediante inteligencia artificial.
+El alcance de la evaluación comprende la autenticación y la gestión de sesiones, la comunicación entre la interfaz web y el \textit{backend} clínico, el almacenamiento y la recuperación de información clínica, así como la asociación entre los archivos EEG y sus respectivos registros en la base de datos. También se incluyen las interacciones necesarias para iniciar y supervisar los procesos de análisis mediante inteligencia artificial.
 
 En relación con el procesamiento asíncrono, se contempla la verificación del registro de solicitudes, la recuperación de trabajos pendientes por parte del motor de inteligencia artificial, la actualización de sus estados y la disponibilidad de los resultados para su consulta desde la plataforma. Asimismo, se consideran los mecanismos de auditoría y el tratamiento de determinadas condiciones de error durante la comunicación entre servicios.
 
@@ -882,10 +874,10 @@ La evaluación se limita a los mecanismos de interoperabilidad, persistencia y c
 La arquitectura de EpilexIA está organizada en componentes que interactúan mediante servicios HTTP, conexiones a bases de datos y volúmenes de almacenamiento compartidos. Esta organización permite separar las responsabilidades de presentación, gestión de información clínica y procesamiento de señales electroencefalográficas.
 
 
-La interfaz web está desarrollada con React y TypeScript. En el entorno de despliegue mediante contenedores, los archivos estáticos son servidos por Nginx, que también actúa como intermediario para las solicitudes dirigidas al servidor principal. La comunicación con Spring Boot se realiza mediante solicitudes HTTP y respuestas en formato JSON. Para las operaciones protegidas, el cliente incorpora un \textit{token} de autenticación JWT, que permite identificar al usuario y verificar sus permisos.
+La interfaz web está desarrollada con React y TypeScript. En el entorno de despliegue mediante contenedores, los archivos estáticos son servidos por Nginx, que también actúa como intermediario para las solicitudes dirigidas al \textit{backend} clínico. La comunicación con Spring Boot se realiza mediante solicitudes HTTP y respuestas en formato JSON. Para las operaciones protegidas, el cliente incorpora un \textit{token} de autenticación JWT, que permite identificar al usuario y verificar sus permisos.
 
 
-El servidor principal está implementado con Spring Boot y desplegado sobre WildFly. Este componente concentra las reglas de negocio, los mecanismos de autorización y las operaciones relacionadas con pacientes, estudios EEG, informes médicos y auditoría. La persistencia se realiza mediante Spring Data JPA e Hibernate, utilizando una base de datos PostgreSQL cuyo esquema principal se denomina \texttt{epilexia}.
+El \textit{backend} clínico está implementado con Spring Boot y desplegado sobre WildFly. Este componente concentra las reglas de negocio, los mecanismos de autorización y las operaciones relacionadas con pacientes, estudios EEG, informes médicos y auditoría. La persistencia se realiza mediante Spring Data JPA e Hibernate, utilizando una base de datos PostgreSQL cuyo esquema principal se denomina \texttt{epilexia}.
 
 Los archivos de señales EEG se almacenan físicamente en un volumen compartido, mientras que sus rutas y metadatos se registran en la base de datos principal. De esta manera, los componentes que participan en el procesamiento pueden acceder a los archivos sin necesidad de transferir su contenido completo mediante solicitudes HTTP.
 
@@ -895,7 +887,7 @@ Mediante el mecanismo denominado \texttt{pgqueue}, FastAPI utiliza una segunda b
 
 La coordinación entre FastAPI y el motor se realiza mediante esta base de datos compartida, sin establecer una comunicación HTTP directa entre ambos componentes. Los resultados del análisis se almacenan principalmente en la tabla \texttt{ai\_results}, desde donde pueden ser recuperados posteriormente por el servicio FastAPI.
 
-Durante el procesamiento, Spring Boot mantiene una referencia local de cada ejecución y consulta su estado mediante FastAPI. Por su parte, la interfaz web realiza consultas periódicas al servidor principal para actualizar la información presentada al usuario. Este mecanismo permite supervisar el avance de las ejecuciones asíncronas y consultar los resultados una vez finalizado el análisis.
+Durante el procesamiento, Spring Boot mantiene una referencia local de cada ejecución y consulta su estado mediante FastAPI. Por su parte, la interfaz web realiza consultas periódicas al \textit{backend} clínico para actualizar la información presentada al usuario. Este mecanismo permite supervisar el avance de las ejecuciones asíncronas y consultar los resultados una vez finalizado el análisis.
 
 En conjunto, estos mecanismos permiten identificar las principales interfaces de integración de EpilexIA y establecer los casos de prueba necesarios para verificar la comunicación, la persistencia de información y la coordinación entre los componentes del sistema.
 
@@ -917,7 +909,7 @@ En el Cuadro~\ref{tab:casos_pruebas_integracion} se presentan los casos definido
 >{\raggedright\arraybackslash}p{3.5cm}|
 >{\raggedright\arraybackslash}p{3.5cm}|
 >{\raggedright\arraybackslash}p{5.0cm}|}
-\caption{Casos de prueba de integración definidos para EpilexIA}
+\caption{Casos de prueba de integración definidos para EpilexIA.}
 \label{tab:casos_pruebas_integracion}\\
 \hline
 \textbf{ID} &
@@ -1041,7 +1033,7 @@ Las anotaciones manuales y las ventanas confirmadas se transmiten y registran me
 \end{longtable}
 
 
-Los casos PI-01 a PI-05 se orientan a verificar la integración entre la interfaz web, el servidor principal y los mecanismos de persistencia. Estas pruebas permiten evaluar la autenticación, la gestión de sesiones y la consistencia de la información registrada durante las operaciones sobre pacientes y estudios EEG.
+Los casos PI-01 a PI-05 se orientan a verificar la integración entre la interfaz web, el \textit{backend} clínico y los mecanismos de persistencia. Estas pruebas permiten evaluar la autenticación, la gestión de sesiones y la consistencia de la información registrada durante las operaciones sobre pacientes y estudios EEG.
 
 Los casos PI-06 a PI-13 se centran en las comunicaciones relacionadas con el procesamiento mediante inteligencia artificial. Comprenden el inicio de ejecuciones, la coordinación de trabajos mediante la base de datos de IA, la actualización de estados y la recuperación de resultados. También incluyen la generación de espectrogramas mediante el servicio FastAPI.
 
@@ -1057,7 +1049,7 @@ La definición de estos casos establece los criterios de verificación de las pr
 
 La prueba de integración PI-01 tuvo como objetivo verificar la comunicación entre la interfaz web desarrollada en React, el \textit{backend} implementado con Spring Boot y la base de datos PostgreSQL durante el proceso de autenticación de usuarios.
 
-Para su ejecución, se utilizó una cuenta de prueba correspondiente a una usuaria con el rol de Especialista. Se realizó el inicio de sesión desde la interfaz web de EpilexIA y se comprobó el acceso satisfactorio al panel de control del sistema, donde se visualizaron los indicadores y las funcionalidades disponibles para dicho rol.
+Para su ejecución, se utilizó una cuenta de prueba correspondiente a una usuaria con el perfil de Especialista. Se realizó el inicio de sesión desde la interfaz web de EpilexIA y se comprobó el acceso satisfactorio al panel de control del sistema, donde se visualizaron los indicadores y las funcionalidades disponibles para dicho rol.
 
 Posteriormente, mediante las herramientas de desarrollo del navegador, se inspeccionaron las solicitudes HTTP realizadas por el \textit{frontend}. Se verificó que la petición \texttt{GET /app/epilexia/api/dashboard/stats} incluía un \textit{token} JWT mediante el encabezado \texttt{Authorization: Bearer}, obteniéndose una respuesta HTTP \texttt{200 OK}. Este resultado permitió comprobar la comunicación entre la interfaz web y el \textit{backend} durante el acceso a un recurso protegido.
 
@@ -1067,7 +1059,7 @@ El Cuadro~\ref{tab:pi01_resultados} presenta los resultados obtenidos durante la
 
 \begin{table}[htbp]
     \centering
-    \caption{Resultados de la prueba de integración PI-01}
+    \caption{Resultados de la prueba de integración PI-01.}
     \label{tab:pi01_resultados}
     \small
     \begin{tabular}{|p{0.48\textwidth}|p{0.36\textwidth}|}
@@ -1141,7 +1133,7 @@ a la usuaria autenticada.
 \FloatBarrier
 
 \Needspace{8\baselineskip}
-\noindent\textbf{Resultado de la prueba:} Satisfactorio.
+\noindent\textbf{Resultado de la prueba:} Aprobada.
 
 Se comprobó el funcionamiento integrado de los componentes React, Spring Boot y PostgreSQL en el escenario de autenticación con credenciales válidas. Los resultados evidenciaron el acceso al panel de control, la utilización de un \textit{token} JWT para acceder a un recurso protegido y el registro de la sesión correspondiente en la base de datos.
 
@@ -1166,7 +1158,7 @@ El Cuadro~\ref{tab:pi02_resultados} presenta los resultados obtenidos durante am
 
 \begin{table}[htbp]
     \centering
-    \caption{Resultados de la prueba de integración PI-02}
+    \caption{Resultados de la prueba de integración PI-02.}
     \label{tab:pi02_resultados}
     \small
     \begin{tabular}{|p{0.48\textwidth}|p{0.36\textwidth}|}
@@ -1179,9 +1171,9 @@ El Cuadro~\ref{tab:pi02_resultados} presenta los resultados obtenidos durante am
         \hline
         Mensaje de autenticación requerida & Confirmado \\
         \hline
-        Entrega de estadísticas del \textit{dashboard} & No se entregaron \\
+        Entrega de estadísticas del panel de control & No se entregaron \\
         \hline
-        Acceso directo al \textit{dashboard} sin sesión & Redirigido al inicio de sesión \\
+        Acceso directo al panel de control sin sesión & Redirigido al inicio de sesión \\
         \hline
         Visualización del panel protegido & Impedida \\
         \hline
@@ -1216,7 +1208,7 @@ Por su parte, la Figura~\ref{fig:pi02_redireccion} presenta la redirección al f
 \FloatBarrier
 
 \Needspace{8\baselineskip}
-\noindent\textbf{Resultado de la prueba:} Satisfactorio.
+\noindent\textbf{Resultado de la prueba:} Aprobada.
 
 Se comprobó que el \textit{backend} de EpilexIA rechazó una solicitud HTTP sin credenciales mediante el código \textit{401 Unauthorized}, sin proporcionar información del recurso protegido. Asimismo, se verificó que la interfaz web redirigió al formulario de inicio de sesión cuando se intentó acceder directamente al panel de control sin autenticación.
 
@@ -1260,7 +1252,7 @@ El Cuadro~\ref{tab:pi03_resultados} presenta los resultados obtenidos durante la
 
 \begin{table}[htbp]
     \centering
-    \caption{Resultados de la prueba de integración PI-03}
+    \caption{Resultados de la prueba de integración PI-03.}
     \label{tab:pi03_resultados}
     \small
     \begin{tabular}{|p{0.48\textwidth}|p{0.36\textwidth}|}
@@ -1323,7 +1315,7 @@ Por su parte, la Figura~\ref{fig:pi03_postgresql} muestra los registros históri
 
 \clearpage
 
-\noindent\textbf{Resultado de la prueba:} Satisfactorio.
+\noindent\textbf{Resultado de la prueba:} Aprobada.
 
 Se comprobó que el \textit{backend} de EpilexIA aceptó inicialmente una solicitud HTTP autenticada mediante el código 200 OK y rechazó una segunda solicitud realizada inmediatamente después del cierre de sesión, utilizando el mismo \textit{token} JWT, mediante el código \textit{401 Unauthorized}.
 
@@ -1375,7 +1367,7 @@ La Figura~\ref{fig:pi04-persistencia-postgresql} presenta el resultado de la con
 \end{figure}
 \FloatBarrier
 
-Los resultados obtenidos fueron satisfactorios. El sistema permitió registrar correctamente al paciente ficticio, confirmó la operación mediante la interfaz web y conservó la información en PostgreSQL, desde donde fue posible recuperarla y verificar su correspondencia con los datos ingresados.
+La prueba se clasificó como aprobada. El sistema permitió registrar correctamente al paciente ficticio, confirmó la operación mediante la interfaz web y conservó la información en PostgreSQL, desde donde fue posible recuperarla y verificar su correspondencia con los datos ingresados.
 
 Por consiguiente, la prueba PI-04 se considera aprobada, al comprobarse satisfactoriamente el registro y la persistencia de los datos del paciente en la base de datos del sistema.
 
@@ -1434,10 +1426,12 @@ Asimismo, se comprobó el almacenamiento de los metadatos del archivo EEG, inclu
 \end{figure}
 \FloatBarrier
 
-Los resultados obtenidos fueron satisfactorios. El sistema permitió registrar un estudio EEG asociado a un paciente existente, cargar y procesar un archivo en formato EDF, presentar el estado final de la operación y visualizar las señales electroencefalográficas correspondientes. Adicionalmente, la consulta a PostgreSQL confirmó la persistencia del registro del estudio y de los metadatos del archivo asociado.
+La prueba PI-05 se clasificó como aprobada.
+El sistema permitió registrar un estudio EEG asociado a un paciente existente, cargar y procesar un archivo en formato EDF, presentar el estado final de la operación y visualizar las señales electroencefalográficas correspondientes.
+Adicionalmente, la consulta a PostgreSQL confirmó la persistencia del registro del estudio y de los metadatos del archivo asociado.
 
-Por consiguiente, la prueba PI-05 se considera aprobada, al comprobarse satisfactoriamente la integración entre la interfaz web, los componentes responsables del registro y procesamiento de archivos EEG y la base de datos PostgreSQL, dentro del alcance de las verificaciones realizadas.
-
+Estas verificaciones comprueban la integración entre la interfaz web, los componentes responsables del registro y procesamiento de archivos EEG y la base de datos, así como la recuperación y la representación gráfica de las señales.
+No constituyen una evaluación exhaustiva de todos los formatos, configuraciones de adquisición o condiciones de procesamiento posibles, ni evalúan la exactitud diagnóstica de la interpretación de las señales.
 
 \subsubsection{Ejecución de la prueba PI-15: Indisponibilidad del servicio de IA}
 \label{subsubsec:ejecucion-pi15}
@@ -1572,7 +1566,7 @@ componentes involucrados.
 
 \begin{table}[htbp]
 \centering
-\caption{Resumen de las pruebas de integración PI-06 a PI-17}
+\caption{Resumen de las pruebas de integración PI-06 a PI-17.}
 \label{tab:resumen_pruebas_integracion}
 \small
 \begin{tabular}{|p{1.5cm}|p{4cm}|p{6cm}|}
@@ -1624,35 +1618,6 @@ Asimismo, se comprobó la persistencia de la información de pacientes y estudio
 En relación con el subsistema de inteligencia artificial, las verificaciones realizadas permitieron comprobar la disponibilidad del servicio FastAPI, la preparación de la base de datos especializada y el ciclo integral de procesamiento, desde la solicitud de análisis hasta la generación y recuperación de nuevos resultados.
 
 En consecuencia, las evidencias obtenidas permiten considerar satisfactorias las integraciones entre los componentes de EpilexIA, incluida la integración completa del subsistema de inteligencia artificial.
-
-
-\section{Pruebas del procesamiento y visualización de señales EEG}
-
-Las pruebas de procesamiento y visualización de
-señales electroencefalográficas tuvieron como
-finalidad comprobar la capacidad de EpilexIA para
-registrar, almacenar, recuperar y representar
-gráficamente los datos de un estudio EEG.
-
-Para ello, se utilizó un archivo en formato EDF,
-incorporado al sistema mediante el módulo de
-registro de estudios. Posteriormente, se verificó
-que el archivo quedara asociado al estudio
-correspondiente y que sus señales pudieran
-recuperarse desde el visualizador web.
-
-
-Durante la evaluación se comprobó la presentación de los canales electroencefalográficos y la disponibilidad de los controles de navegación y análisis de señales. Estas verificaciones permitieron constatar la integración entre el almacenamiento del archivo EEG, los servicios del sistema y su representación gráfica en la interfaz web. La prueba se centró en comprobar el funcionamiento de estas herramientas, sin evaluar la exactitud diagnóstica de la interpretación de las señales.
-
-
-Los resultados obtenidos fueron satisfactorios para el escenario evaluado, dado que el archivo EDF pudo registrarse y sus señales fueron visualizadas correctamente. La evidencia gráfica correspondiente se presenta en la Figura~\ref{fig:pi05-visualizador-eeg}, obtenida durante la ejecución de la prueba de integración PI-05.
-
-
-Cabe señalar que estas verificaciones se centraron
-en la recuperación y visualización de señales EEG,
-sin constituir una evaluación exhaustiva de todos
-los formatos, configuraciones de adquisición o
-condiciones de procesamiento posibles.
 
 
 \section{Pruebas de integración con el servicio de IA}

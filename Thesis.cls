@@ -307,14 +307,15 @@
           \@mkboth{\MakeUppercase\listfigurename}
                   {\MakeUppercase\listfigurename}}
         \@starttoc{lof}
+        \par\vspace{1.5em}\noindent{\small\textit{Nota: las figuras y los cuadros que no indican su fuente son de elaboración propia.}}\par
         \if@restonecol\twocolumn\fi
         \cleardoublepage
     }\end{spacing}
 }
 
 \renewcommand\listoftables{
-    \btypeout{Lista de Tablas}
-    \addtotoc{Lista de Tablas}
+    \btypeout{Lista de Cuadros}
+    \addtotoc{Lista de Cuadros}
     \begin{spacing}{1}{
         \setlength{\parskip}{1pt}
         \if@twocolumn

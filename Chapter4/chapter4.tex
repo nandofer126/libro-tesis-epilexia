@@ -28,7 +28,7 @@ se encuentran disponibles para su incorporación al sistema.
 
 Dentro de este contexto se identificó la necesidad de disponer de una
 plataforma web que permitiera centralizar diferentes actividades asociadas con
-los estudios. Entre ellas se encuentran el registro y la consulta de la información necesaria para identificar a los pacientes y sus estudios, la incorporación de los archivos correspondientes, la visualización de las señales EEG y la elaboración de informes clínicos por parte de los profesionales responsables de su revisión.
+los estudios. Entre ellas se encuentran el registro y la consulta de la información necesaria para identificar a los pacientes y sus estudios, la incorporación de los archivos correspondientes, la visualización de las señales EEG y la elaboración de informes médicos por parte de los profesionales responsables de su revisión.
 
 A estas necesidades se incorporó la posibilidad de utilizar procesamiento
 automatizado mediante inteligencia artificial como apoyo durante el análisis.
@@ -91,7 +91,7 @@ asociada con cada uno de estos perfiles.
         Especialista &
         Revisión y análisis de los estudios EEG, utilización de las
         herramientas de visualización, revisión de los resultados asociados
-        al estudio y elaboración de informes clínicos. \\
+        al estudio y elaboración de informes médicos. \\
         \hline
     \end{tabular}
 \end{table}
@@ -116,7 +116,7 @@ examinar las señales electroencefalográficas, utilizar las herramientas de
 análisis disponibles, revisar la información asociada con eventos y anomalías
 y trabajar con los resultados provenientes del procesamiento mediante
 inteligencia artificial. Asimismo, puede elaborar y gestionar los informes
-clínicos asociados con los estudios y utilizar los mecanismos de colaboración
+médicos asociados con los estudios y utilizar los mecanismos de colaboración
 habilitados por el sistema.
 
 La separación entre estos perfiles responde al principio de asignar las
@@ -140,7 +140,7 @@ Con el propósito de facilitar su organización y mantener una separación
 clara entre las distintas responsabilidades funcionales, los requerimientos
 se agruparon en siete áreas: administración y acceso, gestión de pacientes,
 gestión de estudios EEG, visualización y análisis EEG, procesamiento mediante
-inteligencia artificial, informes clínicos y auditoría y trazabilidad.
+inteligencia artificial, informes médicos y auditoría y trazabilidad.
 
 Cada requerimiento se identifica mediante un código compuesto por el prefijo
 RF, seguido de la abreviatura correspondiente al área funcional y un número
@@ -513,16 +513,16 @@ parte del alcance de este trabajo.
 \end{longtable}
 
 
-\subsection{Informes clínicos}
+\subsection{Informes médicos}
 \label{subsec:rf-informes}
 
-Los requerimientos relacionados con los informes clínicos comprenden la
+Los requerimientos relacionados con los informes médicos comprenden la
 creación, consulta, edición y cierre de los informes elaborados por los
 Especialistas, así como la incorporación de información obtenida durante la
 revisión de las señales EEG.
 
 \begin{longtable}{|p{0.19\textwidth}|p{0.72\textwidth}|}
-    \caption{Requerimientos funcionales de informes clínicos.}
+    \caption{Requerimientos funcionales de informes médicos.}
     \label{tab:rf-inf}\\
     \hline
     \textbf{Código} & \textbf{Requerimiento funcional} \\
@@ -535,7 +535,7 @@ revisión de las señales EEG.
     \endhead
 
     RF-INF-001 &
-    El sistema deberá permitir consultar los informes clínicos asociados a un
+    El sistema deberá permitir consultar los informes médicos asociados a un
     estudio EEG. \\
     \hline
 
@@ -547,7 +547,7 @@ revisión de las señales EEG.
 
     RF-INF-003 &
     El sistema deberá permitir que un Especialista autorizado cree su propio
-    informe clínico para un estudio EEG. \\
+    informe médico para un estudio EEG. \\
     \hline
 
     RF-INF-004 &
@@ -578,12 +578,12 @@ revisión de las señales EEG.
     \hline
 
     RF-INF-009 &
-    El sistema deberá permitir al propietario cerrar su informe clínico y
+    El sistema deberá permitir al propietario cerrar su informe médico y
     restringir posteriores modificaciones mediante el flujo ordinario. \\
     \hline
 
     RF-INF-010 &
-    El sistema deberá permitir generar el informe clínico en formato PDF. \\
+    El sistema deberá permitir generar el informe médico en formato PDF. \\
     \hline
 \end{longtable}
 
@@ -630,7 +630,7 @@ las acciones registradas y el contexto en el que fueron efectuadas.
     \hline
 
     RF-AUD-005 &
-    El sistema deberá presentar en el \textit{Dashboard} la actividad reciente
+    El sistema deberá presentar en el panel de control la actividad reciente
     registrada en la auditoría. \\
     \hline
 
@@ -910,8 +910,7 @@ las interacciones principales de este proceso.
     \includegraphics[width=0.95\textwidth]
     {ThesisFigs/secuencia_autenticacion.png}
     \caption{Diagrama de secuencia del proceso de
-    autenticación de usuario en EpilexIA.
-    Elaboración propia.}
+    autenticación de usuario en EpilexIA.}
     \label{fig:secuencia-autenticacion}
 \end{figure}
 
@@ -945,8 +944,7 @@ las principales interacciones de esta primera etapa.
         keepaspectratio
     ]{ThesisFigs/secuencia_registro_estudio.png}
     \caption{Diagrama de secuencia del registro del paciente
-    y creación del estudio EEG en EpilexIA.
-    Elaboración propia.}
+    y creación del estudio EEG en EpilexIA.}
     \label{fig:secuencia-registro-estudio}
 \end{figure}
 
@@ -969,8 +967,7 @@ el seguimiento de su estado.
         keepaspectratio
     ]{ThesisFigs/secuencia_carga_procesamiento_eeg.png}
     \caption{Diagrama de secuencia de la carga y
-    procesamiento del archivo EEG en EpilexIA.
-    Elaboración propia.}
+    procesamiento del archivo EEG en EpilexIA.}
     \label{fig:secuencia-preparacion-eeg}
 \end{figure}
 
@@ -978,7 +975,8 @@ Cuando el procesamiento del EEG finaliza correctamente,
 el sistema permite continuar con la incorporación
 de un video asociado, si corresponde. Los archivos
 MP4 se gestionan mediante un procedimiento de carga
-y almacenamiento, mientras que los archivos EZVideo
+y almacenamiento, mientras que los archivos EZVideo,
+formato de video propio del equipo Easy III,
 requieren un proceso adicional de conversión a MP4.
 
 La Figura~\ref{fig:secuencia-carga-video} muestra
@@ -994,8 +992,7 @@ de la conversión cuando se utiliza el formato EZVideo.
         keepaspectratio
     ]{ThesisFigs/secuencia_carga_video.png}
     \caption{Diagrama de secuencia de la carga y
-    preparación del video asociado a un estudio EEG.
-    Elaboración propia.}
+    preparación del video asociado a un estudio EEG.}
     \label{fig:secuencia-carga-video}
 \end{figure}
 
@@ -1036,8 +1033,7 @@ la carga inicial de las señales EEG.
         keepaspectratio
     ]{ThesisFigs/secuencia_inicializacion_visualizador_eeg.png}
     \caption{Diagrama de secuencia de la inicialización
-    y carga del visualizador EEG en EpilexIA.
-    Elaboración propia.}
+    y carga del visualizador EEG en EpilexIA.}
     \label{fig:secuencia-inicializacion-visualizador-eeg}
 \end{figure}
 
@@ -1090,8 +1086,7 @@ ajustes de filtros y sensibilidad.
         keepaspectratio
     ]{ThesisFigs/secuencia_interacciones_visualizador_eeg.png}
     \caption{Diagrama de secuencia de las interacciones
-    del visualizador EEG en EpilexIA.
-    Elaboración propia.}
+    del visualizador EEG en EpilexIA.}
     \label{fig:secuencia-interacciones-visualizador-eeg}
 \end{figure}
 
@@ -1108,7 +1103,7 @@ resultados obtenidos mediante el servicio de IA
 integrado en EpilexIA.
 
 La solicitud se origina en la interfaz web y es
-recibida por el \textit{backend} principal, que verifica
+recibida por el \textit{backend} clínico, que verifica
 los permisos del usuario, las condiciones del
 estudio y la disponibilidad del archivo EEG.
 Cuando se cumplen las condiciones necesarias,
@@ -1137,7 +1132,7 @@ de procesamiento mediante IA.
     ]{ThesisFigs/secuencia_solicitud_ia.png}
     \caption{Diagrama de secuencia de la solicitud
     de procesamiento mediante inteligencia artificial
-    en EpilexIA. Elaboración propia.}
+    en EpilexIA.}
     \label{fig:secuencia-solicitud-ia}
 \end{figure}
 
@@ -1177,7 +1172,7 @@ obtenidos mediante inteligencia artificial.
     ]{ThesisFigs/secuencia_resultados_ia.png}
     \caption{Diagrama de secuencia del seguimiento
     y consulta de resultados de inteligencia
-    artificial en EpilexIA. Elaboración propia.}
+    artificial en EpilexIA.}
     \label{fig:secuencia-resultados-ia}
 \end{figure}
 
@@ -1190,10 +1185,10 @@ que el procesamiento automatizado no sustituye
 su criterio profesional.
 
 
-\subsection{Elaboración y cierre de informes clínicos}
+\subsection{Elaboración y cierre de informes médicos}
 \label{subsec:secuencia-informes-clinicos}
 
-La elaboración de informes clínicos constituye una
+La elaboración de informes médicos constituye una
 de las actividades principales realizadas por los
 Especialistas durante la revisión de los estudios
 electroencefalográficos. EpilexIA permite asociar
@@ -1211,7 +1206,7 @@ a informes elaborados por otros profesionales.
 
 La Figura~\ref{fig:secuencia-creacion-informe}
 presenta las interacciones involucradas en la
-consulta y creación de informes clínicos.
+consulta y creación de informes médicos.
 
 \begin{figure}[H]
     \centering
@@ -1221,8 +1216,7 @@ consulta y creación de informes clínicos.
         keepaspectratio
     ]{ThesisFigs/secuencia_creacion_informe.png}
     \caption{Diagrama de secuencia de la consulta
-    y creación de informes clínicos en EpilexIA.
-    Elaboración propia.}
+    y creación de informes médicos en EpilexIA.}
     \label{fig:secuencia-creacion-informe}
 \end{figure}
 
@@ -1245,7 +1239,7 @@ profesionales.
 
 La Figura~\ref{fig:secuencia-edicion-informe}
 representa las principales interacciones relacionadas
-con la edición y actualización de informes clínicos.
+con la edición y actualización de informes médicos.
 
 \begin{figure}[H]
     \centering
@@ -1255,8 +1249,7 @@ con la edición y actualización de informes clínicos.
         keepaspectratio
     ]{ThesisFigs/secuencia_edicion_informe.png}
     \caption{Diagrama de secuencia de la edición
-    y actualización de informes clínicos en EpilexIA.
-    Elaboración propia.}
+    y actualización de informes médicos en EpilexIA.}
     \label{fig:secuencia-edicion-informe}
 \end{figure}
 
@@ -1278,7 +1271,7 @@ sin modificar el contenido del documento almacenado.
 
 La Figura~\ref{fig:secuencia-cierre-informe}
 presenta las interacciones correspondientes al
-cierre y posterior consulta de informes clínicos.
+cierre y posterior consulta de informes médicos.
 
 \begin{figure}[H]
     \centering
@@ -1288,8 +1281,7 @@ cierre y posterior consulta de informes clínicos.
         keepaspectratio
     ]{ThesisFigs/secuencia_cierre_informe.png}
     \caption{Diagrama de secuencia del cierre
-    y consulta de informes clínicos en EpilexIA.
-    Elaboración propia.}
+    y consulta de informes médicos en EpilexIA.}
     \label{fig:secuencia-cierre-informe}
 \end{figure}
 
@@ -1335,10 +1327,10 @@ La interfaz web constituye el punto de acceso de los usuarios
 autorizados. Desde ella se realizan las operaciones relacionadas
 con la administración del sistema, la gestión de estudios, la
 visualización de señales electroencefalográficas y la elaboración
-de informes clínicos.
+de informes médicos.
 
 Las solicitudes realizadas desde la interfaz son atendidas por
-el \textit{backend} principal, encargado de aplicar las reglas de negocio,
+el \textit{backend} clínico, encargado de aplicar las reglas de negocio,
 verificar las condiciones de acceso y coordinar las operaciones
 necesarias para consultar o modificar la información almacenada.
 
@@ -1359,7 +1351,7 @@ computacionales requeridas para el análisis automatizado.
 %La Figura~\ref{fig:arquitectura-general} presenta la
 %organización general de estos componentes y sus principales
 %relaciones.
-La Figura~\ref{fig:arquitectura-general} presenta la arquitectura general del sistema EpilexIA, organizada en componentes con responsabilidades diferenciadas. La capa de presentación proporciona la interfaz mediante la cual los usuarios autorizados interactúan con el sistema, mientras que la capa de aplicación concentra las reglas de negocio y coordina las operaciones relacionadas con la gestión de pacientes, estudios electroencefalográficos e informes clínicos.
+La Figura~\ref{fig:arquitectura-general} presenta la arquitectura general del sistema EpilexIA, organizada en componentes con responsabilidades diferenciadas. La capa de presentación proporciona la interfaz mediante la cual los usuarios autorizados interactúan con el sistema, mientras que la capa de aplicación concentra las reglas de negocio y coordina las operaciones relacionadas con la gestión de pacientes, estudios electroencefalográficos e informes médicos.
 
 La persistencia principal comprende los repositorios destinados al almacenamiento de información clínica y administrativa, así como los archivos asociados a los estudios EEG y sus registros de video.
 
@@ -1375,8 +1367,7 @@ Esta organización establece una separación de responsabilidades entre los comp
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{ThesisFigs/arquitectura_general_epilexia.png}
-    \caption{Arquitectura general del sistema EpilexIA.
-    Elaboración propia.}
+    \caption{Arquitectura general del sistema EpilexIA.}
     \label{fig:arquitectura-general}
 \end{figure}
 
@@ -1404,20 +1395,20 @@ desarrollada con React y TypeScript. Constituye el punto
 de interacción entre los usuarios autorizados y las
 funcionalidades disponibles en EpilexIA.
 
-Este componente permite acceder a las operaciones de administración, gestionar la información de pacientes en el contexto de los estudios EEG, visualizar las señales electroencefalográficas, consultar los resultados del procesamiento mediante inteligencia artificial y elaborar informes clínicos.
+Este componente permite acceder a las operaciones de administración, gestionar la información de pacientes en el contexto de los estudios EEG, visualizar las señales electroencefalográficas, consultar los resultados del procesamiento mediante inteligencia artificial y elaborar informes médicos.
 
 La interfaz organiza las funcionalidades disponibles de
 acuerdo con los permisos del usuario autenticado y
-se comunica con el \textit{backend} principal mediante solicitudes
+se comunica con el \textit{backend} clínico mediante solicitudes
 a una API REST.
 
 \subsubsection{Capa de aplicación}
 
-La capa de aplicación está representada por el \textit{backend} principal, desarrollado en Java mediante Spring Boot y preparado para su despliegue como una aplicación WAR sobre el servidor de aplicaciones WildFly.
+La capa de aplicación está representada por el \textit{backend} clínico, desarrollado en Java mediante Spring Boot y preparado para su despliegue como una aplicación WAR sobre el servidor de aplicaciones WildFly.
 
 Este componente concentra las reglas de negocio
 relacionadas con la gestión de usuarios, pacientes,
-estudios EEG, informes clínicos y eventos de auditoría.
+estudios EEG, informes médicos y eventos de auditoría.
 Asimismo, verifica las condiciones de autorización
 necesarias para ejecutar las operaciones solicitadas
 desde la interfaz web.
@@ -1440,7 +1431,7 @@ estudios EEG.
 
 La base de datos principal, implementada mediante
 PostgreSQL, almacena la información correspondiente
-a usuarios, pacientes, estudios, informes clínicos,
+a usuarios, pacientes, estudios, informes médicos,
 permisos y registros de auditoría, así como las
 relaciones necesarias entre estas entidades.
 
@@ -1463,7 +1454,7 @@ permiten incorporar el procesamiento automatizado
 de señales EEG al funcionamiento de EpilexIA.
 
 
-La comunicación con este subsistema se realiza mediante una API desarrollada con FastAPI, que recibe las solicitudes provenientes del \textit{backend} principal y proporciona los mecanismos necesarios para consultar el estado de las ejecuciones y recuperar los resultados almacenados. La arquitectura contempla, además, la ejecución de nuevas tareas de procesamiento mediante los componentes especializados del subsistema.
+La comunicación con este subsistema se realiza mediante una API desarrollada con FastAPI, que recibe las solicitudes provenientes del \textit{backend} clínico y proporciona los mecanismos necesarios para consultar el estado de las ejecuciones y recuperar los resultados almacenados. La arquitectura contempla, además, la ejecución de nuevas tareas de procesamiento mediante los componentes especializados del subsistema.
 
 
 El subsistema dispone de una base de datos
@@ -1491,7 +1482,7 @@ para su revisión por parte del Especialista.
 La comunicación entre los componentes de EpilexIA se
 organiza a partir de las solicitudes realizadas por
 los usuarios mediante la interfaz web. Estas solicitudes
-son atendidas por el \textit{backend} principal, que coordina
+son atendidas por el \textit{backend} clínico, que coordina
 las operaciones necesarias y establece la comunicación
 con los mecanismos de persistencia y los servicios
 especializados del sistema.
@@ -1502,7 +1493,7 @@ A través de esta interfaz, el \textit{frontend} envía las
 solicitudes relacionadas con la autenticación,
 la gestión de pacientes y estudios EEG, la consulta
 de señales electroencefalográficas y la elaboración
-de informes clínicos.
+de informes médicos.
 
 El \textit{backend} recibe estas solicitudes, verifica las
 condiciones de acceso correspondientes y ejecuta
@@ -1530,7 +1521,7 @@ datos principal.
 La comunicación con el subsistema de inteligencia
 artificial se establece mediante la API desarrollada
 con FastAPI. Cuando se solicita el procesamiento
-automatizado de un estudio, el \textit{backend} principal
+automatizado de un estudio, el \textit{backend} clínico
 verifica las condiciones necesarias y transmite
 la solicitud al servicio de IA.
 
@@ -1543,14 +1534,14 @@ que utiliza la base de datos de IA para gestionar
 los trabajos y registrar sus resultados.
 
 
-Los resultados de inteligencia artificial almacenados pueden recuperarse mediante la comunicación entre el \textit{backend} principal y la API de IA. Posteriormente, la interfaz web permite presentarlos en el contexto del estudio correspondiente, de manera que el Especialista pueda examinarlos junto con las señales EEG. Este mecanismo contempla tanto la consulta de resultados existentes como la recuperación de nuevos resultados cuando finalicen las ejecuciones de procesamiento.
+Los resultados de inteligencia artificial almacenados pueden recuperarse mediante la comunicación entre el \textit{backend} clínico y la API de IA. Posteriormente, la interfaz web permite presentarlos en el contexto del estudio correspondiente, de manera que el Especialista pueda examinarlos junto con las señales EEG. Este mecanismo contempla tanto la consulta de resultados existentes como la recuperación de nuevos resultados cuando finalicen las ejecuciones de procesamiento.
 
 
 Esta organización permite mantener una
 comunicación diferenciada entre los componentes
 encargados de la gestión del sistema y aquellos
 destinados al procesamiento automatizado,
-conservando al \textit{backend} principal como punto
+conservando al \textit{backend} clínico como punto
 de coordinación de las operaciones solicitadas
 desde la interfaz web.
 
@@ -1607,7 +1598,7 @@ ambas entidades es de uno a muchos, dado que un
 paciente puede tener varios estudios EEG, mientras
 que cada estudio corresponde a un único paciente.
 
-La entidad \texttt{study} constituye el núcleo del modelo y mantiene referencias a los usuarios que intervienen en la gestión del estudio. Cada estudio debe estar asociado obligatoriamente a un usuario responsable, cuya pertenencia al rol Especialista se verifica mediante las reglas de negocio del \textit{backend} durante su creación. Asimismo, puede incluir de manera opcional un técnico encargado de su registro. La entidad también conserva información sobre el estado del estudio, su anulación, reactivación y disponibilidad de video.
+La entidad \texttt{study} constituye el núcleo del modelo y mantiene referencias a los usuarios que intervienen en la gestión del estudio. Cada estudio debe estar asociado obligatoriamente a un usuario responsable, cuya pertenencia al perfil Especialista se verifica mediante las reglas de negocio del \textit{backend} durante su creación. Asimismo, puede incluir de manera opcional un técnico encargado de su registro. La entidad también conserva información sobre el estado del estudio, su anulación, reactivación y disponibilidad de video.
 
 Los archivos asociados a cada estudio se representan mediante la entidad
 \texttt{study\_file}, relacionada con el catálogo
@@ -1662,7 +1653,7 @@ y las configuraciones de montaje EEG.
 Por su parte, la Figura~\ref{fig:er-informes-anomalias}
 representa las relaciones entre los estudios,
 las anomalías, los eventos EEG y los informes
-clínicos elaborados por los especialistas.
+médicos elaborados por los especialistas.
 Ambas figuras constituyen vistas simplificadas
 del modelo relacional, en las que se priorizan
 las entidades y asociaciones más relevantes
@@ -1681,7 +1672,7 @@ para comprender el diseño del sistema.
     \centering
     \includegraphics[width=\textwidth]{ThesisFigs/er_informes_anomalias.png}
     \caption{Modelo entidad-relación de anomalías,
-    eventos e informes clínicos de EpilexIA.}
+    eventos e informes médicos de EpilexIA.}
     \label{fig:er-informes-anomalias}
 \end{figure}
 
@@ -1699,7 +1690,7 @@ La configuración del modelo activo se administra mediante la entidad \texttt{ai
 
 Los resultados del análisis se representan mediante la entidad \texttt{ai\_results}, relacionada con \texttt{ai\_executions} mediante una clave foránea. Cada registro corresponde a un intervalo temporal identificado por el procesamiento de inteligencia artificial y conserva su instante inicial, instante final y probabilidad estimada de crisis. El sistema almacena únicamente las ventanas clasificadas positivamente que cumplen el umbral mínimo configurado. Por consiguiente, una ejecución finalizada correctamente puede no generar registros de resultados cuando no se identifican intervalos que satisfagan dicho criterio.
 
-El modelo incorpora mecanismos para conservar la revisión realizada por los especialistas. La entidad \texttt{ai\_results} dispone de atributos destinados a registrar la validación médica de los intervalos detectados. Por su parte, \texttt{ai\_report\_window\_inclusions} permite asociar los resultados de inteligencia artificial con los informes clínicos en los que fueron incluidos, conservando información descriptiva y de clasificación aportada por el profesional.
+El modelo incorpora mecanismos para conservar la revisión realizada por los especialistas. La entidad \texttt{ai\_results} dispone de atributos destinados a registrar la validación médica de los intervalos detectados. Por su parte, \texttt{ai\_report\_window\_inclusions} permite asociar los resultados de inteligencia artificial con los informes médicos en los que fueron incluidos, conservando información descriptiva y de clasificación aportada por el profesional.
 
 Complementariamente, la entidad \texttt{ai\_manual\_annotations} almacena anotaciones realizadas manualmente por los especialistas, incluso cuando no corresponden a intervalos detectados previamente por el modelo. Estas estructuras permiten conservar información de retroalimentación clínica que podría utilizarse en futuros procesos de mejora de los modelos de inteligencia artificial, sin que ello implique la existencia de un mecanismo automático de reentrenamiento en la implementación actual.
 
@@ -1707,7 +1698,7 @@ La base de datos también contempla la entidad \texttt{ai\_results\_historial}, 
 
 La tabla \texttt{ai\_executions} cumple además una función de coordinación entre la API de inteligencia artificial y el motor de procesamiento independiente. La API registra las solicitudes pendientes y el motor adquiere los trabajos mediante operaciones transaccionales sobre PostgreSQL. Durante la ejecución se actualizan los estados y las señales de actividad del procesamiento, mientras que al finalizar se registran los resultados y el estado correspondiente.
 
-La vinculación con la base de datos clínica se establece mediante identificadores compartidos a nivel de aplicación. En particular, \texttt{id\_study\_epilex} permite identificar el estudio clínico asociado, mientras que el UUID de la ejecución puede relacionarse con los registros de seguimiento mantenidos por el \textit{backend} principal. Debido a que ambas bases de datos funcionan de manera independiente, estas correspondencias no se implementan mediante claves foráneas entre ellas.
+La vinculación con la base de datos clínica se establece mediante identificadores compartidos a nivel de aplicación. En particular, \texttt{id\_study\_epilex} permite identificar el estudio clínico asociado, mientras que el UUID de la ejecución puede relacionarse con los registros de seguimiento mantenidos por el \textit{backend} clínico. Debido a que ambas bases de datos funcionan de manera independiente, estas correspondencias no se implementan mediante claves foráneas entre ellas.
 
 Finalmente, los archivos EEG, los modelos entrenados y los archivos temporales generados durante el procesamiento se conservan en almacenamiento de archivos. Esta separación permite mantener en PostgreSQL los datos estructurados necesarios para la gestión, consulta y trazabilidad de las ejecuciones, sin incorporar directamente los archivos de señales ni los artefactos del modelo.
 
@@ -1717,7 +1708,7 @@ una vista simplificada del modelo entidad-relación
 del subsistema de inteligencia artificial de EpilexIA.
 Se destacan las relaciones entre las ejecuciones
 de procesamiento, los resultados generados y las
-ventanas incorporadas a informes clínicos.
+ventanas incorporadas a informes médicos.
 Asimismo, se representan las estructuras destinadas
 a la configuración del modelo, las anotaciones
 manuales y el almacenamiento histórico, diferenciando
@@ -1760,7 +1751,7 @@ En la base de datos del subsistema de inteligencia artificial,
 la integridad referencial se aplica principalmente a las
 relaciones entre las ejecuciones de procesamiento, los
 resultados obtenidos y los registros de inclusión de ventanas
-en informes clínicos. Cada resultado se vincula con la
+en informes médicos. Cada resultado se vincula con la
 ejecución que lo generó, permitiendo identificar su origen
 y conservar la trazabilidad de los intervalos detectados
 por el modelo.
@@ -1797,14 +1788,14 @@ de las operaciones del sistema.
 
 La integración de los componentes de EpilexIA se organiza
 mediante interfaces de comunicación que permiten intercambiar
-información entre la aplicación web, el \textit{backend} principal y
+información entre la aplicación web, el \textit{backend} clínico y
 el subsistema de inteligencia artificial. Esta organización
 establece responsabilidades diferenciadas para la gestión
 clínica, el acceso a los estudios electroencefalográficos
 y la ejecución de los procesos de análisis automatizado.
 
 La interfaz web, desarrollada con React, consume los servicios
-REST expuestos por el \textit{backend} principal, implementado con
+REST expuestos por el \textit{backend} clínico, implementado con
 Spring Boot y ejecutado sobre WildFly. Este componente
 centraliza las operaciones relacionadas con usuarios,
 pacientes, estudios EEG, informes médicos y auditoría,
@@ -1813,7 +1804,7 @@ de inteligencia artificial.
 
 La integración con el subsistema de inteligencia artificial
 se realiza mediante una API independiente desarrollada
-con FastAPI. El \textit{backend} principal utiliza esta interfaz
+con FastAPI. El \textit{backend} clínico utiliza esta interfaz
 para solicitar análisis, consultar su estado, recuperar
 resultados y obtener representaciones complementarias
 de las señales EEG, como los espectrogramas.
@@ -1831,10 +1822,10 @@ las operaciones y proporcionar respuestas adecuadas
 a los componentes consumidores.
 
 
-\subsection{Servicios del \textit{backend} principal}
+\subsection{Servicios del \textit{backend} clínico}
 \label{subsec:servicios-backend-principal}
 
-El \textit{backend} principal de EpilexIA constituye la capa
+El \textit{backend} clínico de EpilexIA constituye la capa
 encargada de gestionar las operaciones del sistema y
 coordinar el intercambio de información entre la interfaz
 web, la base de datos clínica, el almacenamiento de
@@ -1903,7 +1894,10 @@ acceso no depende únicamente del permiso funcional,
 sino también de las condiciones particulares de
 cada estudio o informe médico.
 
-Finalmente, el \textit{backend} principal actúa como
+Las rutas del Cuadro~\ref{tab:interfaces-rest-backend} se expresan de forma relativa al \textit{backend} clínico.
+En el despliegue, este se publica bajo el contexto \texttt{/epilexia} y la interfaz web accede a él con el prefijo \texttt{/app/epilexia}, por lo que en las evidencias del Capítulo~\ref{pruebas_evaluacion} las mismas operaciones figuran con dichos prefijos.
+
+Finalmente, el \textit{backend} clínico actúa como
 intermediario entre la aplicación web y el
 subsistema de inteligencia artificial. Para ello,
 dispone de servicios que permiten solicitar
@@ -1915,7 +1909,7 @@ de procesamiento.
 
 \begin{table}[H]
 \centering
-\caption{Interfaces REST representativas del \textit{backend} principal}
+\caption{Interfaces REST representativas del \textit{backend} clínico.}
 \label{tab:interfaces-rest-backend}
 
 \small
@@ -1981,7 +1975,7 @@ servicios independientes, que permite separar las
 operaciones de gestión clínica de las tareas de
 procesamiento automatizado de señales EEG.
 
-El \textit{backend} principal actúa como intermediario entre
+El \textit{backend} clínico actúa como intermediario entre
 la interfaz web y la API de inteligencia artificial,
 desarrollada con FastAPI. Esta comunicación se
 establece mediante solicitudes HTTP, utilizando
@@ -1989,7 +1983,7 @@ un cliente REST configurado con una dirección base,
 tiempos de espera y mecanismos de autenticación
 específicos para el intercambio entre servicios.
 
-A diferencia de las solicitudes autenticadas realizadas desde la interfaz web, que utilizan \textit{tokens} JWT, la comunicación entre el \textit{backend} principal y los servicios funcionales de la API de inteligencia artificial emplea autenticación HTTP Basic. Esta separación permite distinguir las credenciales de acceso de los usuarios de aquellas utilizadas para la integración entre componentes internos.
+A diferencia de las solicitudes autenticadas realizadas desde la interfaz web, que utilizan \textit{tokens} JWT, la comunicación entre el \textit{backend} clínico y los servicios funcionales de la API de inteligencia artificial emplea autenticación HTTP Basic. Esta separación permite distinguir las credenciales de acceso de los usuarios de aquellas utilizadas para la integración entre componentes internos.
 
 Cuando un Especialista solicita el procesamiento
 de un estudio, el \textit{backend} verifica las condiciones
@@ -2056,7 +2050,7 @@ la trazabilidad de las ejecuciones realizadas.
 
 \begin{table}[H]
 \centering
-\caption{Interfaces de integración entre el \textit{backend} principal y FastAPI}
+\caption{Interfaces de integración entre el \textit{backend} clínico y FastAPI.}
 \label{tab:interfaces-integracion-ia}
 
 \small
@@ -2115,7 +2109,7 @@ EEG y la necesidad de acceder a intervalos
 determinados durante su análisis.
 
 Para incorporar las señales al sistema, el \textit{backend}
-principal dispone de interfaces que permiten
+clínico dispone de interfaces que permiten
 recibir archivos en formato EDF mediante
 un mecanismo de carga fragmentada. Este
 procedimiento divide la transferencia en partes
@@ -2209,7 +2203,7 @@ diferenciar las solicitudes procesadas correctamente
 de aquellas que requieren una acción adicional
 por parte del usuario o del sistema.
 
-Las interfaces REST del \textit{backend} principal utilizan
+Las interfaces REST del \textit{backend} clínico utilizan
 códigos de estado HTTP para indicar el resultado
 de las solicitudes. Las operaciones exitosas
 devuelven respuestas acordes con el recurso
@@ -2316,7 +2310,7 @@ obtener predicciones y probabilidades
 asociadas a los intervalos analizados.
 Posteriormente, los resultados que cumplen
 los criterios establecidos son registrados
-y puestos a disposición del \textit{backend} principal
+y puestos a disposición del \textit{backend} clínico
 para su presentación en la interfaz clínica.
 
 El diseño también considera el seguimiento
@@ -2339,11 +2333,11 @@ ejecuciones, el procesamiento de señales EEG y la
 persistencia de resultados. Esta separación permite
 integrar el análisis automatizado con las operaciones
 clínicas del sistema sin incorporar la inferencia
-directamente en el \textit{backend} principal.
+directamente en el \textit{backend} clínico.
 
 La API de inteligencia artificial, desarrollada con
 FastAPI, constituye la interfaz de entrada al subsistema.
-Recibe las solicitudes remitidas por el \textit{backend} principal,
+Recibe las solicitudes remitidas por el \textit{backend} clínico,
 registra las ejecuciones y proporciona operaciones para
 consultar sus estados y recuperar los resultados. También
 interviene en el intercambio de anotaciones y ventanas
@@ -2386,7 +2380,7 @@ validación por parte del especialista.
 La Figura~\ref{fig:organizacion-procesamiento-ia-pgqueue} presenta
 la organización del procesamiento de inteligencia artificial
 mediante la cola persistente (\texttt{pgqueue}).
-En este esquema, el \textit{backend} principal envía las solicitudes
+En este esquema, el \textit{backend} clínico envía las solicitudes
 a la API desarrollada con FastAPI, que registra las ejecuciones
 en la base de datos PostgreSQL del subsistema de IA.
 El motor independiente obtiene los trabajos pendientes desde
@@ -2415,7 +2409,7 @@ La configuración de estas etapas se distribuye junto con el modelo entrenado, d
 
 El procesamiento se ejecuta de forma independiente de la navegación del especialista por la interfaz web. El trabajador obtiene las ejecuciones pendientes desde PostgreSQL, inicia el procedimiento de inferencia y actualiza la información de estado y resultados. Los intervalos temporales analizados se expresan en segundos relativos al inicio del registro, lo que permite relacionar las predicciones con las posiciones correspondientes dentro del estudio EEG.
 
-Es importante distinguir este procedimiento del procesamiento realizado por el \textit{backend} principal para la visualización de señales. Mientras este último prepara segmentos destinados a la recuperación y navegación temporal del registro, el motor de inteligencia artificial construye características de las ventanas y aplica el modelo predictivo para identificar intervalos que podrían requerir revisión clínica.
+Es importante distinguir este procedimiento del procesamiento realizado por el \textit{backend} clínico para la visualización de señales. Mientras este último prepara segmentos destinados a la recuperación y navegación temporal del registro, el motor de inteligencia artificial construye características de las ventanas y aplica el modelo predictivo para identificar intervalos que podrían requerir revisión clínica.
 
 
 \subsection{Generación e interpretación de resultados}
@@ -2441,9 +2435,9 @@ En consecuencia, los intervalos generados por el subsistema de inteligencia arti
 \subsection{Integración de resultados en la revisión clínica}
 \label{subsec:integracion-resultados-revision-clinica}
 
-La integración de los resultados de inteligencia artificial en EpilexIA tiene como propósito facilitar que el especialista examine los intervalos identificados durante el procesamiento automatizado en el contexto del estudio electroencefalográfico. Para ello, el sistema relaciona cada ejecución con el estudio clínico correspondiente y permite recuperar los resultados mediante los servicios de integración entre el \textit{backend} principal y la API de inteligencia artificial.
+La integración de los resultados de inteligencia artificial en EpilexIA tiene como propósito facilitar que el especialista examine los intervalos identificados durante el procesamiento automatizado en el contexto del estudio electroencefalográfico. Para ello, el sistema relaciona cada ejecución con el estudio clínico correspondiente y permite recuperar los resultados mediante los servicios de integración entre el \textit{backend} clínico y la API de inteligencia artificial.
 
-Una vez concluida la ejecución, el \textit{backend} principal puede consultar las ventanas que cumplen los criterios de detección y obtener sus límites temporales. Estos intervalos se expresan en segundos respecto del inicio del registro EEG, lo que permite relacionarlos con la posición correspondiente en las señales visualizadas. De este modo, los resultados automatizados funcionan como referencias temporales para orientar la inspección del registro, sin sustituir la observación directa de las señales.
+Una vez concluida la ejecución, el \textit{backend} clínico puede consultar las ventanas que cumplen los criterios de detección y obtener sus límites temporales. Estos intervalos se expresan en segundos respecto del inicio del registro EEG, lo que permite relacionarlos con la posición correspondiente en las señales visualizadas. De este modo, los resultados automatizados funcionan como referencias temporales para orientar la inspección del registro, sin sustituir la observación directa de las señales.
 
 La revisión clínica conserva una separación entre los resultados producidos por el modelo y las decisiones del especialista. La identificación automática de un intervalo no implica que este haya sido confirmado como un evento epiléptico. Su relevancia debe determinarse mediante el análisis de la actividad electroencefalográfica y de la información clínica disponible para el estudio.
 
@@ -2455,15 +2449,15 @@ La información de retroalimentación clínica se conserva en estructuras espec�
 
 La organización de los informes mantiene la responsabilidad de cada especialista sobre el contenido clínico que elabora. Así, la consulta de resultados automatizados y la selección de ventanas para un informe se integran al flujo de trabajo médico sin convertir las predicciones en conclusiones diagnósticas obligatorias. La interpretación final y la elaboración del informe corresponden al profesional responsable.
 
-En síntesis, la integración de resultados vincula las ejecuciones de inteligencia artificial con la navegación temporal del EEG, la documentación de hallazgos y la elaboración de informes clínicos. El componente automatizado aporta referencias para la revisión, mientras que la valoración de su significado clínico permanece bajo el criterio del especialista.
+En síntesis, la integración de resultados vincula las ejecuciones de inteligencia artificial con la navegación temporal del EEG, la documentación de hallazgos y la elaboración de informes médicos. El componente automatizado aporta referencias para la revisión, mientras que la valoración de su significado clínico permanece bajo el criterio del especialista.
 
 
 \section{Diseño de seguridad y control de acceso}
 \label{sec:seguridad-control-acceso}
 
-El diseño de seguridad de EpilexIA contempla mecanismos destinados a controlar el acceso a las funcionalidades del sistema y a la información asociada con los pacientes, los estudios electroencefalográficos y los informes clínicos. Dada la naturaleza de estos datos, el acceso se organiza mediante la identificación de los usuarios, la asignación de permisos y la verificación de las condiciones necesarias para realizar cada operación.
+El diseño de seguridad de EpilexIA contempla mecanismos destinados a controlar el acceso a las funcionalidades del sistema y a la información asociada con los pacientes, los estudios electroencefalográficos y los informes médicos. Dada la naturaleza de estos datos, el acceso se organiza mediante la identificación de los usuarios, la asignación de permisos y la verificación de las condiciones necesarias para realizar cada operación.
 
-La autenticación se realiza a través del \textit{backend} principal, que emite un \textit{token} de acceso para las sesiones válidas. Las solicitudes posteriores a los servicios protegidos incorporan dicho \textit{token}, cuya validez se comprueba antes de permitir el procesamiento de la operación. Este mecanismo se complementa con el registro de sesiones, lo que permite controlar la vigencia de los accesos autenticados.
+La autenticación se realiza a través del \textit{backend} clínico, que emite un \textit{token} de acceso para las sesiones válidas. Las solicitudes posteriores a los servicios protegidos incorporan dicho \textit{token}, cuya validez se comprueba antes de permitir el procesamiento de la operación. Este mecanismo se complementa con el registro de sesiones, lo que permite controlar la vigencia de los accesos autenticados.
 
 La autorización combina permisos asociados a los roles del sistema con verificaciones adicionales sobre los recursos clínicos. Por ello, disponer de un permiso general para consultar o modificar estudios no implica necesariamente poder acceder a cualquier registro: determinadas operaciones también dependen de la relación del usuario con el estudio o el informe correspondiente.
 
@@ -2475,7 +2469,7 @@ Los siguientes apartados describen los mecanismos de autenticación, la organiza
 \subsection{Autenticación de usuarios}
 \label{subsec:autenticacion-usuarios}
 
-La autenticación de usuarios en EpilexIA se realiza a través del \textit{backend} principal y constituye el mecanismo de identificación previo al acceso a los servicios protegidos. El proceso comienza cuando el usuario introduce sus credenciales en la interfaz web. Estas se remiten al servicio de autenticación, que comprueba su validez y las condiciones de acceso de la cuenta antes de establecer una sesión.
+La autenticación de usuarios en EpilexIA se realiza a través del \textit{backend} clínico y constituye el mecanismo de identificación previo al acceso a los servicios protegidos. El proceso comienza cuando el usuario introduce sus credenciales en la interfaz web. Estas se remiten al servicio de autenticación, que comprueba su validez y las condiciones de acceso de la cuenta antes de establecer una sesión.
 
 Cuando las credenciales son válidas, el \textit{backend} genera un \textit{token} de acceso en formato \textit{JSON Web Token} (JWT).
  El \textit{token} se firma digitalmente e incorpora información que permite identificar al usuario y determinar su período de vigencia. Asimismo, contiene un identificador único de \textit{token}, denominado \texttt{jti}, que se utiliza para relacionarlo con un registro de sesión persistido en la base de datos clínica. La respuesta de autenticación proporciona al \textit{frontend} la información necesaria para continuar las operaciones del usuario, incluidos sus permisos.
@@ -2512,7 +2506,7 @@ El Cuadro~\ref{tab:roles-permisos-epilexia} resume las responsabilidades princip
 \textbf{Rol} & \textbf{Responsabilidades principales} \\ \hline
 Administrador & Gestión de usuarios, roles y permisos; acceso administrativo y supervisión de los recursos del sistema conforme a las autorizaciones disponibles. \\ \hline
 Técnico & Registro y actualización de información de pacientes, creación de estudios EEG e incorporación de archivos asociados a los estudios en los que participa. \\ \hline
-Especialista & Consulta y revisión de estudios EEG, análisis de señales, registro de anomalías y eventos, y creación y gestión de informes clínicos conforme a los permisos y reglas de acceso aplicables. \\ \hline
+Especialista & Consulta y revisión de estudios EEG, análisis de señales, registro de anomalías y eventos, y creación y gestión de informes médicos conforme a los permisos y reglas de acceso aplicables. \\ \hline
 \end{tabular}
 \end{table}
 
@@ -2520,7 +2514,7 @@ Los permisos se representan mediante identificadores asociados a recursos y acci
 
 La relación entre roles y permisos se mantiene en la base de datos clínica. Al autenticarse, el usuario recibe información sobre sus permisos, que la aplicación web utiliza para habilitar rutas y presentar las acciones correspondientes. En el \textit{backend}, los permisos se traducen en autoridades de seguridad y se verifican en los servicios protegidos antes de ejecutar las operaciones solicitadas.
 
-La asignación de permisos puede administrarse mediante las funcionalidades destinadas a la gestión de roles. Por ello, el conjunto de acciones disponible para un usuario depende de las autorizaciones efectivamente asociadas a su rol, y no únicamente de la denominación de este. Las asignaciones iniciales previstas en los scripts de base de datos constituyen una configuración de referencia que puede diferir de la existente en una instalación administrada.
+La asignación de permisos puede administrarse mediante las funcionalidades destinadas a la gestión de roles. Por ello, el conjunto de acciones disponible para un usuario depende de las autorizaciones efectivamente asociadas a su rol, y no únicamente de la denominación de este. Las asignaciones iniciales previstas en los \textit{scripts} de base de datos constituyen una configuración de referencia que puede diferir de la existente en una instalación administrada.
 
 Es importante distinguir los permisos funcionales de las condiciones de acceso a un registro particular. Por ejemplo, disponer de autorización para consultar estudios no implica necesariamente poder visualizar cualquier estudio EEG. El sistema aplica comprobaciones adicionales según la participación del usuario y su relación con el recurso solicitado. Estas reglas de autorización contextual se desarrollan en el apartado siguiente.
 
@@ -2530,7 +2524,7 @@ De esta manera, la organización por roles y permisos proporciona un mecanismo p
 \subsection{Autorización sobre recursos clínicos}
 \label{subsec:autorizacion-recursos-clinicos}
 
-La autorización sobre recursos clínicos en EpilexIA complementa los permisos asociados a los roles mediante verificaciones relacionadas con el registro solicitado. Este mecanismo permite distinguir entre disponer de autorización para ejecutar una operación y estar habilitado para realizarla sobre un paciente, estudio electroencefalográfico o informe determinado. Las comprobaciones se efectúan en el \textit{backend} principal, de manera que la presentación de acciones en la interfaz web no constituye por sí sola una autorización suficiente.
+La autorización sobre recursos clínicos en EpilexIA complementa los permisos asociados a los roles mediante verificaciones relacionadas con el registro solicitado. Este mecanismo permite distinguir entre disponer de autorización para ejecutar una operación y estar habilitado para realizarla sobre un paciente, estudio electroencefalográfico o informe determinado. Las comprobaciones se efectúan en el \textit{backend} clínico, de manera que la presentación de acciones en la interfaz web no constituye por sí sola una autorización suficiente.
 
 En los servicios vinculados a estudios EEG, el control de acceso considera la relación del usuario con cada estudio. La consulta se permite al Administrador, al Técnico que registró el estudio, al Especialista responsable y a los especialistas incorporados como observadores, siempre que dispongan también de los permisos funcionales requeridos. Por el contrario, un Especialista que no mantiene una relación autorizada con el estudio no adquiere acceso únicamente por pertenecer al mismo rol clínico.
 
@@ -2559,7 +2553,7 @@ La protección de la información en EpilexIA comprende tanto los datos clínico
 
 En el tratamiento de las credenciales, el sistema distingue las contraseñas utilizadas para autenticar a los usuarios de los \textit{tokens} de acceso emitidos para las sesiones. La creación y recuperación de cuentas se realizan mediante procedimientos específicos de activación y restablecimiento de contraseña. Por su parte, las solicitudes autenticadas utilizan \textit{tokens} JWT, cuya validación y revocación se describieron en el apartado~\ref{subsec:autenticacion-usuarios}. Estos mecanismos evitan que la autorización de las operaciones clínicas dependa únicamente de los controles visibles en la interfaz web.
 
-La comunicación habitual comienza en el navegador y pasa por el servidor web Nginx, que entrega la aplicación y encamina las solicitudes hacia el \textit{backend} principal. Este último centraliza la autenticación, la autorización y el acceso a los recursos clínicos. La comunicación con el subsistema de inteligencia artificial se realiza mediante una interfaz de servicio diferenciada, que utiliza autenticación HTTP Basic con credenciales configuradas para la integración. En consecuencia, las credenciales del usuario clínico y las empleadas entre servicios cumplen funciones distintas.
+La comunicación habitual comienza en el navegador y pasa por el servidor web Nginx, que entrega la aplicación y encamina las solicitudes hacia el \textit{backend} clínico. Este último centraliza la autenticación, la autorización y el acceso a los recursos clínicos. La comunicación con el subsistema de inteligencia artificial se realiza mediante una interfaz de servicio diferenciada, que utiliza autenticación HTTP Basic con credenciales configuradas para la integración. En consecuencia, las credenciales del usuario clínico y las empleadas entre servicios cumplen funciones distintas.
 
 El cifrado de las comunicaciones constituye una consideración específica del despliegue. El uso de HTTPS con TLS permite proteger la información transmitida entre el navegador y el punto de entrada del sistema frente a su lectura o alteración durante el transporte. En el entorno de despliegue utilizado, el acceso de los usuarios se realiza mediante HTTPS (Sección~\ref{subsec:despliegue-nube}), mientras que los servicios internos se comunican dentro de la red del propio entorno. La habilitación de HTTPS y la configuración de los certificados forman parte de la instalación en cada infraestructura donde se despliegue EpilexIA.
 
@@ -2576,11 +2570,11 @@ En síntesis, el diseño de protección de datos y comunicaciones combina autent
 \section{Diseño de auditoría y trazabilidad}
 \label{sec:diseno-auditoria-trazabilidad}
 
-El diseño de auditoría y trazabilidad de EpilexIA contempla mecanismos para registrar operaciones relevantes del sistema y facilitar el seguimiento de las actividades realizadas sobre sus recursos. Dado que la plataforma administra información de pacientes, estudios electroencefalográficos e informes clínicos, resulta necesario disponer de registros que permitan reconocer las acciones efectuadas y el contexto en el que se produjeron.
+El diseño de auditoría y trazabilidad de EpilexIA contempla mecanismos para registrar operaciones relevantes del sistema y facilitar el seguimiento de las actividades realizadas sobre sus recursos. Dado que la plataforma administra información de pacientes, estudios electroencefalográficos e informes médicos, resulta necesario disponer de registros que permitan reconocer las acciones efectuadas y el contexto en el que se produjeron.
 
 La auditoría funcional se apoya en eventos persistidos en la base de datos clínica. Estos registros permiten identificar operaciones de negocio seleccionadas y conservar información sobre el actor, la acción realizada y los datos de contexto correspondientes. Su consulta proporciona una visión histórica de las actividades registradas, sin que ello implique que todas las solicitudes HTTP o todos los cambios internos generen necesariamente un evento de auditoría persistente.
 
-Para facilitar la revisión de esta información, EpilexIA incorpora una vista de actividad reciente en el panel principal y una interfaz de consulta de auditorías. Esta última permite explorar los registros mediante paginación, ordenamiento cronológico y filtros combinables, de acuerdo con las autorizaciones exigidas por los servicios del \textit{backend}.
+Para facilitar la revisión de esta información, EpilexIA incorpora una vista de actividad reciente en el panel de control y una interfaz de consulta de auditorías. Esta última permite explorar los registros mediante paginación, ordenamiento cronológico y filtros combinables, de acuerdo con las autorizaciones exigidas por los servicios del \textit{backend}.
 
 De manera complementaria, los componentes de aplicación producen registros técnicos que permiten seguir solicitudes y diagnosticar incidencias. Estos registros utilizan identificadores de trazabilidad para relacionar las etapas de una operación. En el subsistema de inteligencia artificial, el identificador de ejecución permite además vincular el seguimiento técnico con los estados y resultados del procesamiento asíncrono.
 
@@ -2593,7 +2587,7 @@ Por tanto, el diseño distingue entre los eventos de auditoría conservados para
 El registro de operaciones y eventos en EpilexIA tiene como finalidad conservar información sobre determinadas actividades realizadas dentro del sistema, permitiendo identificar las acciones ejecutadas y el contexto en el que se produjeron. Este mecanismo constituye una parte de la auditoría funcional y proporciona información para la revisión posterior de las operaciones relacionadas con los recursos administrados por la plataforma.
 
 La implementación de auditoría se encuentra integrada en el \textit{backend}
-principal. Para identificar las operaciones de negocio que generan
+clínico. Para identificar las operaciones de negocio que generan
 eventos de auditoría persistentes, el sistema utiliza la enumeración
 \texttt{AuditEventType}. Estos eventos son publicados por los servicios
 de aplicación y procesados mediante componentes específicos que
@@ -2626,7 +2620,7 @@ En conjunto, el registro de operaciones y eventos proporciona una base persisten
 
 La consulta de auditorías en EpilexIA permite recuperar y examinar las operaciones registradas por el sistema, proporcionando información sobre las actividades realizadas y su contexto. Esta funcionalidad complementa el mecanismo de registro de eventos descrito anteriormente y facilita la revisión de las acciones ejecutadas sobre los recursos de la plataforma.
 
-El sistema dispone de una vista de actividad reciente integrada en el panel principal, destinada a presentar un resumen de las operaciones registradas. Esta visualización permite identificar acontecimientos recientes sin necesidad de acceder inicialmente a la consulta completa de auditorías.
+El sistema dispone de una vista de actividad reciente integrada en el panel de control, destinada a presentar un resumen de las operaciones registradas. Esta visualización permite identificar acontecimientos recientes sin necesidad de acceder inicialmente a la consulta completa de auditorías.
 
 
 La Figura~\ref{fig:actividad-reciente} ilustra esta funcionalidad mediante una lista de operaciones registradas, acompañadas de sus respectivas fechas y horas. Asimismo, se observa el acceso a la consulta completa de auditorías.
@@ -2634,7 +2628,7 @@ La Figura~\ref{fig:actividad-reciente} ilustra esta funcionalidad mediante una l
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.90\textwidth]{ThesisFigs/actividad_reciente_epilexia.png}
-    \caption{Vista de actividad reciente en el panel principal de EpilexIA.}
+    \caption{Vista de actividad reciente en el panel de control de EpilexIA.}
     \label{fig:actividad-reciente}
 \end{figure}
 
@@ -2665,7 +2659,7 @@ filtrado y paginación disponibles.
 \end{figure}
 
 
-La recuperación de la información se realiza mediante servicios REST del \textit{backend} principal. Estos servicios reciben los parámetros de búsqueda y paginación, consultan los registros disponibles y devuelven los resultados correspondientes a la aplicación web. El procesamiento de los criterios de consulta en el servidor permite mantener una separación entre la presentación de los datos y la lógica encargada de recuperarlos.
+La recuperación de la información se realiza mediante servicios REST del \textit{backend} clínico. Estos servicios reciben los parámetros de búsqueda y paginación, consultan los registros disponibles y devuelven los resultados correspondientes a la aplicación web. El procesamiento de los criterios de consulta en el servidor permite mantener una separación entre la presentación de los datos y la lógica encargada de recuperarlos.
 
 El acceso a las funcionalidades de auditoría se encuentra sujeto a los permisos definidos para los usuarios del sistema. La interfaz web presenta las opciones correspondientes a las autorizaciones disponibles, mientras que el \textit{backend} verifica los permisos requeridos antes de responder a las solicitudes de consulta.
 
@@ -2694,7 +2688,7 @@ relevante en los procedimientos que involucran varias etapas
 de procesamiento o requieren comunicación entre servicios
 independientes.
 
-En el \textit{backend} principal, los registros técnicos permiten
+En el \textit{backend} clínico, los registros técnicos permiten
 conservar información sobre el procesamiento de solicitudes
 y las incidencias que pueden producirse durante su ejecución.
 Para facilitar su seguimiento, se utilizan identificadores
@@ -2738,7 +2732,7 @@ del análisis automatizado.
 
 La relación entre los componentes también se apoya
 en los identificadores de los estudios clínicos.
-El \textit{backend} principal conserva la información del
+El \textit{backend} clínico conserva la información del
 estudio EEG, mientras que el subsistema de inteligencia
 artificial registra las ejecuciones y los resultados
 asociados mediante referencias lógicas. Dado que
@@ -2859,7 +2853,7 @@ a su cuenta. Esta organización permite diferenciar
 las opciones disponibles sin requerir interfaces
 completamente independientes para cada perfil.
 
-El panel principal constituye el punto de entrada
+El panel de control constituye el punto de entrada
 a las funcionalidades del sistema. Su contenido
 se organiza mediante elementos de resumen y accesos
 a las operaciones habituales del usuario. De acuerdo
@@ -2871,7 +2865,7 @@ así como accesos a las secciones habilitadas.
 
 
 La Figura~\ref{fig:panel-principal-especialista}
-presenta la organización del panel principal de
+presenta la organización del panel de control de
 EpilexIA correspondiente al perfil Especialista.
 En ella se observan los indicadores de resumen,
 los accesos rápidos a las funcionalidades
@@ -2881,7 +2875,7 @@ disponibles y la sección de actividad reciente.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{ThesisFigs/panel_principal_especialista.png}
-    \caption{Organización del panel principal de EpilexIA
+    \caption{Organización del panel de control de EpilexIA
     correspondiente al perfil Especialista.}
     \label{fig:panel-principal-especialista}
 \end{figure}
@@ -2895,7 +2889,7 @@ las operaciones administrativas se orientan al
 perfil Administrador, las actividades de registro
 y preparación de estudios corresponden principalmente
 al Técnico, y las herramientas de análisis e
-informes clínicos se destinan al Especialista.
+informes médicos se destinan al Especialista.
 Esta diferenciación se refleja en los accesos,
 controles y operaciones disponibles en cada pantalla.
 

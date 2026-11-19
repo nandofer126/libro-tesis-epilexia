@@ -16,14 +16,14 @@ La epilepsia es una enfermedad cerebral crónica no transmisible que afecta a pe
 
 
 % - contexto del Hospital Central del IPS
-En el área de Neurología del Hospital Central del Instituto de Previsión Social (IPS), la adquisición y la revisión de las señales EEG se realizan mediante el \textit{software} Easy III, de Cadwell. Esta herramienta permite la captura y visualización de los registros electroencefalográficos. No obstante, a partir del relevamiento realizado en el contexto del proyecto se identificaron necesidades relacionadas con la integración del flujo de trabajo posterior a la adquisición, entre ellas el acceso mediante navegador web, la gestión centralizada de pacientes, estudios e informes clínicos y una mayor trazabilidad de las actividades realizadas durante el proceso de análisis.
+En el área de Neurología del Hospital Central del Instituto de Previsión Social (IPS), la adquisición y la revisión de las señales EEG se realizan mediante el \textit{software} Easy III, de Cadwell. Esta herramienta permite la captura y visualización de los registros electroencefalográficos. No obstante, a partir del relevamiento realizado en el contexto del proyecto se identificaron necesidades relacionadas con la integración del flujo de trabajo posterior a la adquisición, entre ellas el acceso mediante navegador web, la gestión centralizada de pacientes, estudios e informes médicos y una mayor trazabilidad de las actividades realizadas durante el proceso de análisis.
 
 % - flujo de trabajo actual
 En el flujo de trabajo relevado, la especialista revisa los estudios en la misma computadora en la que está instalado el \textit{software} de adquisición, conectada al equipo de registro. Los informes se redactan en esa computadora mediante un procesador de textos, a partir de una plantilla, y se imprimen para su entrega al paciente. Tanto los estudios como los informes permanecen almacenados en ese equipo, por lo que su consulta depende del acceso a dicha computadora. A ello se suma la posibilidad de incorporar técnicas automatizadas de análisis de señales que permitan presentar información de apoyo al profesional médico, manteniendo la interpretación clínica y la toma de decisiones bajo la responsabilidad del especialista.
 
 % - presentación de EpilexIA
 
-En el marco del proyecto EpilexIA, el presente trabajo se centra en el desarrollo de una plataforma web concebida como \textit{software} de apoyo para el ámbito médico, orientada a complementar el flujo de trabajo existente en el área de Neurología del Hospital Central del IPS. La plataforma busca centralizar la gestión de pacientes, los estudios de EEG y los informes clínicos, permitir la visualización interactiva de señales electroencefalográficas y presentar las anomalías identificadas por los servicios de inteligencia artificial integrados al proyecto. Asimismo, incorpora mecanismos de control de acceso basados en roles y funciones de auditoría destinadas a favorecer la trazabilidad de las operaciones realizadas.
+En el marco del proyecto EpilexIA, el presente trabajo se centra en el desarrollo de una plataforma web concebida como \textit{software} de apoyo para el ámbito médico, orientada a complementar el flujo de trabajo existente en el área de Neurología del Hospital Central del IPS. La plataforma busca centralizar la gestión de pacientes, los estudios de EEG y los informes médicos, permitir la visualización interactiva de señales electroencefalográficas y presentar las anomalías identificadas por los servicios de inteligencia artificial integrados al proyecto. Asimismo, incorpora mecanismos de control de acceso basados en roles y funciones de auditoría destinadas a favorecer la trazabilidad de las operaciones realizadas.
 %CORREGIDO FIN:
 
 
@@ -63,7 +63,7 @@ El desarrollo de herramientas computacionales ha permitido complementar el anál
 
 La investigación en este campo también se ha beneficiado de la disponibilidad de conjuntos de datos de EEG utilizados para el desarrollo y la evaluación de métodos computacionales. Un ejemplo es la CHB-MIT Scalp EEG Database, publicada en PhysioNet, que contiene registros de pacientes pediátricos con crisis epilépticas y anotaciones asociadas a dichos eventos \citep{Guttag2010CHBMIT}. Estos recursos han favorecido el estudio de métodos orientados al procesamiento y a la detección automatizada de eventos en señales de EEG.
 
-Estos antecedentes evidencian la incorporación progresiva de herramientas computacionales como apoyo al procesamiento y al análisis de registros electroencefalográficos. Sin embargo, la identificación automatizada de eventos constituye solo una parte del proceso de análisis. Para su utilización en un entorno clínico, los resultados obtenidos deben presentarse de manera que el profesional pueda acceder al estudio, visualizar las señales, revisar la información generada por los métodos automatizados y utilizarla como elemento de apoyo durante la evaluación y la elaboración del informe clínico.
+Estos antecedentes evidencian la incorporación progresiva de herramientas computacionales como apoyo al procesamiento y al análisis de registros electroencefalográficos. Sin embargo, la identificación automatizada de eventos constituye solo una parte del proceso de análisis. Para su utilización en un entorno clínico, los resultados obtenidos deben presentarse de manera que el profesional pueda acceder al estudio, visualizar las señales, revisar la información generada por los métodos automatizados y utilizarla como elemento de apoyo durante la evaluación y la elaboración del informe médico.
 
 
 
@@ -81,7 +81,7 @@ con mayor profundidad en el marco teórico y en el estado del arte
 presentados en el Capítulo~2.
 
 
-Dentro de este contexto, EpilexIA se plantea como una plataforma web que reúne la gestión de pacientes y estudios de EEG, la visualización de señales electroencefalográficas, la presentación de anomalías registradas a partir de un servicio de inteligencia artificial integrado y la elaboración de informes clínicos. De esta manera, el proyecto no se limita al análisis automatizado de las señales, sino que busca incorporar sus resultados en un entorno que apoye el flujo de trabajo del profesional especialista.
+Dentro de este contexto, EpilexIA se plantea como una plataforma web que reúne la gestión de pacientes y estudios de EEG, la visualización de señales electroencefalográficas, la presentación de anomalías registradas a partir de un servicio de inteligencia artificial integrado y la elaboración de informes médicos. De esta manera, el proyecto no se limita al análisis automatizado de las señales, sino que busca incorporar sus resultados en un entorno que apoye el flujo de trabajo del profesional especialista.
 
 
 \section{Objetivos}
@@ -94,7 +94,7 @@ Dentro de este contexto, EpilexIA se plantea como una plataforma web que reúne 
 Desarrollar un sistema web de apoyo a la detección de crisis epilépticas
 mediante el análisis de señales electroencefalográficas (EEG) asistido
 por inteligencia artificial, que permita gestionar pacientes, estudios
-EEG e informes clínicos, así como visualizar las anomalías identificadas
+EEG e informes médicos, así como visualizar las anomalías identificadas
 por el componente de inteligencia artificial integrado, con el propósito
 de complementar el flujo de trabajo existente con Easy III en el
 área de Neurología del Hospital Central del Instituto de Previsión Social.
@@ -110,11 +110,11 @@ de complementar el flujo de trabajo existente con Easy III en el
 
     \item Analizar los requerimientos funcionales y no funcionales del área de Neurología del Hospital Central del IPS, identificando las limitaciones del flujo actual con Easy III que el sistema web debe resolver.
 
-    \item Diseñar e implementar una base de datos relacional en PostgreSQL que soporte la gestión de pacientes, estudios de EEG, archivos de señal, informes clínicos, anomalías detectadas y auditoría de actividad.
+    \item Diseñar e implementar una base de datos relacional en PostgreSQL que soporte la gestión de pacientes, estudios de EEG, archivos de señal, informes médicos, anomalías detectadas y auditoría de actividad.
 
     \item Desarrollar un \textit{backend} REST (Java/Spring Boot) con control de acceso basado en roles para especialistas, técnicos y administradores, que gestione los datos clínicos y se integre con el servicio de inteligencia artificial mediante su API.
 
-    \item Construir un \textit{frontend} web adaptable (\textit{responsive}) con React y TypeScript, que incluya un visualizador interactivo de señales EEG, un módulo de gestión de anomalías provenientes del servicio de IA, un editor de informes clínicos y un panel de auditoría, accesible desde computadoras, \textit{notebooks} y \textit{tablets}.
+    \item Construir un \textit{frontend} web adaptable (\textit{responsive}) con React y TypeScript, que incluya un visualizador interactivo de señales EEG, un módulo de gestión de anomalías provenientes del servicio de IA, un editor de informes médicos y un panel de auditoría, accesible desde computadoras, \textit{notebooks} y \textit{tablets}.
 
 
     \item Evaluar el sistema mediante pruebas funcionales, de usabilidad e integración con registros EEG reales del Hospital Central del IPS.
@@ -130,7 +130,7 @@ Una de las necesidades identificadas es el acceso a los registros electroencefal
 posibilidad de consultar los estudios en un navegador web desde computadoras, \textit{notebooks} o \textit{tablets}, por lo que el acceso a la información queda condicionado a la disponibilidad de los equipos y herramientas utilizados en el flujo de trabajo existente.
 
 
-Asimismo, la información relacionada con pacientes, estudios EEG e informes clínicos puede encontrarse distribuida entre las herramientas utilizadas en las diferentes etapas del proceso.
+Asimismo, la información relacionada con pacientes, estudios EEG e informes médicos puede encontrarse distribuida entre las herramientas utilizadas en las diferentes etapas del proceso.
  Esta situación dificulta contar con un entorno unificado que reúna la información necesaria para la revisión del estudio y el seguimiento de las actividades realizadas al respecto.
 
 Otra necesidad se refiere a la trazabilidad de las operaciones y al control de acceso. El manejo de información asociada a pacientes, estudios e informes requiere mecanismos que permitan registrar las acciones efectuadas por los usuarios y establecer permisos de acuerdo con las responsabilidades de los distintos perfiles que intervienen en el proceso.
@@ -151,7 +151,7 @@ su acceso desde diferentes dispositivos. En este contexto, EpilexIA
 propone integrar en un mismo entorno la gestión de pacientes y estudios,
 la visualización de señales EEG, la presentación de resultados
 provenientes del procesamiento mediante inteligencia artificial,
-la elaboración de informes clínicos, el control de acceso y la
+la elaboración de informes médicos, el control de acceso y la
 auditoría de las actividades realizadas. De esta manera, se plantea
 una solución unificada de apoyo al trabajo de los profesionales del
 área de Neurología.
@@ -170,7 +170,7 @@ durante el trabajo de los profesionales del área.
 
 
 Desde el punto de vista operativo, la centralización de pacientes, estudios
-EEG e informes clínicos permite organizar y relacionar la información
+EEG e informes médicos permite organizar y relacionar la información
 correspondiente a las distintas etapas del proceso. A ello se suman
 mecanismos de control de acceso y auditoría, mediante los cuales es posible
 establecer permisos de acuerdo con las responsabilidades de cada perfil de
@@ -215,7 +215,7 @@ Hospital Central del Instituto de Previsión Social. El sistema busca
 centralizar en un único entorno las principales actividades posteriores a la
 adquisición del EEG, proporcionando herramientas para la gestión de pacientes
 y estudios, la visualización de señales, la revisión de anomalías y la
-elaboración de informes clínicos.
+elaboración de informes médicos.
 
 La plataforma contempla la gestión de la información necesaria para asociar
 cada estudio EEG con el paciente correspondiente y mantener organizados los
@@ -237,7 +237,7 @@ responsabilidad del profesional especialista.
 
 
 Como parte del flujo de revisión, el sistema permite elaborar y gestionar
-informes clínicos asociados con los estudios EEG. De esta manera, la visualización de las señales, la consulta de anomalías registradas en la plataforma y la elaboración del informe
+informes médicos asociados con los estudios EEG. De esta manera, la visualización de las señales, la consulta de anomalías registradas en la plataforma y la elaboración del informe
 pueden realizarse dentro de un mismo entorno, manteniendo la relación entre la información correspondiente a cada estudio.
 
 
@@ -278,7 +278,7 @@ abarca la información necesaria para identificar a los pacientes y asociarlos
 con sus respectivos estudios, la incorporación y gestión de archivos de
 señales EEG, su visualización interactiva, la presentación de resultados
 provenientes del procesamiento mediante inteligencia artificial y la
-elaboración de informes clínicos asociados con los estudios.
+elaboración de informes médicos asociados con los estudios.
 
 La plataforma contempla además mecanismos de autenticación y autorización
 para controlar el acceso a las diferentes funcionalidades según el perfil
@@ -328,7 +328,7 @@ y procesos de validación específicos.
 \label{sec:hipotesis}
 
 La implementación de un sistema web integrado que centralice la gestión de
-pacientes, estudios EEG e informes clínicos, e incorpore la visualización de
+pacientes, estudios EEG e informes médicos, e incorpore la visualización de
 resultados provenientes del procesamiento mediante inteligencia artificial,
 puede contribuir a mejorar el flujo de trabajo relacionado con el análisis
 de estudios electroencefalográficos en el área de Neurología del Hospital
@@ -341,7 +341,7 @@ herramientas de apoyo para la localización y evaluación de segmentos de
 interés dentro de registros EEG extensos. La integración de estas
 funcionalidades en un mismo entorno podría contribuir además a facilitar
 determinadas etapas del proceso de revisión y elaboración de informes
-clínicos, complementando el flujo de trabajo existente.
+médicos, complementando el flujo de trabajo existente.
 
 
 La hipótesis considera el procesamiento mediante inteligencia artificial como
@@ -365,7 +365,7 @@ y adaptable a los diferentes dispositivos contemplados dentro del alcance
 del proyecto.
 
 Se espera que el sistema permita gestionar la información necesaria de los
-pacientes y asociarla con sus respectivos estudios EEG e informes clínicos,
+pacientes y asociarla con sus respectivos estudios EEG e informes médicos,
 manteniendo organizados los datos generados durante las diferentes etapas
 del proceso. Asimismo, se espera disponer de mecanismos de autenticación,
 control de acceso y auditoría que permitan gestionar las responsabilidades
@@ -383,7 +383,7 @@ señales EEG dentro del mismo entorno de trabajo.
 
 
 Se espera además que la plataforma permita elaborar y gestionar informes
-clínicos asociados con los estudios EEG, integrando esta actividad con la
+médicos asociados con los estudios EEG, integrando esta actividad con la
 visualización de las señales y la revisión de los resultados del análisis
 automatizado. Esta integración busca proporcionar continuidad entre las
 diferentes etapas posteriores a la adquisición del estudio y mantener
@@ -498,7 +498,7 @@ principales componentes de la plataforma. Se presentan la implementación de la
 base de datos, el \textit{backend} y el \textit{frontend}, la gestión de pacientes y estudios
 EEG, el procesamiento y visualización de las señales, la integración con el
 servicio de inteligencia artificial, la gestión de anomalías e informes
-clínicos, el control de acceso, la auditoría y el despliegue de los componentes
+médicos, el control de acceso, la auditoría y el despliegue de los componentes
 del sistema.
 
 El Capítulo 6 presenta las pruebas y verificaciones realizadas sobre

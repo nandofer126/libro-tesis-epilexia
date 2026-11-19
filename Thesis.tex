@@ -140,6 +140,12 @@
 \newcommand{\grad}{$^{\circ}$ }
 
 % INICIO DEL DOCUMENTO -----------------------------------------------------------
+% Reserva espacio suficiente para los números de página de tres cifras en los índices
+\makeatletter
+\renewcommand{\@pnumwidth}{2.2em}
+\renewcommand{\@tocrmarg}{3.4em}
+\makeatother
+
 \begin{document}
 \maketitle
 \setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
@@ -163,17 +169,17 @@
 \clearpage  % End of the Acknowledgements
 %% --------------- FIN AGRADECIMIENTOS --------------------------------
 
-%% --------------- INICIO ABSTRACT ---------------------------------------
-\addtotoc{Abstract}  % Add the "Abstract" page entry to the Contents
-\include{Abstract/abstract}
-\clearpage  % Abstract ended, start a new page
-%% --------------- FIN ABSTRACT ---------------------------------------
-
 %% --------------- INICIO RESUMEN ---------------------------------------
 \addtotoc{Resumen}  % Add the "Resumen" page entry to the Contents
 \input{Resumen/resumen}
 \clearpage  % Abstract ended, start a new page
 %% --------------- FIN RESUMEN ---------------------------------------
+
+%% --------------- INICIO ABSTRACT ---------------------------------------
+\addtotoc{Abstract}  % Add the "Abstract" page entry to the Contents
+\include{Abstract/abstract}
+\clearpage  % Abstract ended, start a new page
+%% --------------- FIN ABSTRACT ---------------------------------------
 
 \pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
 
@@ -199,8 +205,8 @@
 %% --------------- FIN LISTA DE SIMBOLOS ------------------------------
 
 %% --------------- INICIO LISTA DE TABLAS --------------------------------
- \lhead{\emph{Lista de Tablas}}  % Set the left side page header to "List of Tables"
- \renewcommand\listtablename{Lista de Tablas}
+ \lhead{\emph{Lista de Cuadros}}  % Set the left side page header to "List of Tables"
+ \renewcommand\listtablename{Lista de Cuadros}
  \listoftables  % Write out the List of Tables
 %% --------------- FIN LISTA DE TABLAS --------------------------------
  
@@ -211,29 +217,38 @@
 % Include the chapters of the thesis, as separate files
 % Just uncomment the lines as you write the chapters
 
-\linenumbers
+% Números de línea: útiles en etapa de revisión. Para reactivarlos, descomentar la línea siguiente.
+%\linenumbers
 \lhead{\emph{Introducción}} 
 \renewcommand\chaptername{Capítulo}
 \input{Chapter1/chapter1} % Introduction
 
+\clearpage
 \lhead{\emph{Marco teórico y estado del arte}}
 \input{Chapter2/chapter2}
 
+\clearpage
 \lhead{\emph{Metodología de desarrollo}}
 \input{Chapter3/chapter3}
 
+\clearpage
 \lhead{\emph{Análisis de requerimientos y diseño}}
 \input{Chapter4/chapter4}
 
+\clearpage
 \lhead{\emph{Implementación del sistema}}
 \input{Chapter5/chapter5}
 
+\clearpage
 \lhead{\emph{Pruebas y evaluación}}
 \input{Chapter6/chapter6}
 
+\clearpage
 \lhead{\emph{Conclusiones y trabajos futuros}}
 \input{Chapter7/chapter7}
 
+\clearpage
+\lhead{\emph{Referencias}}
 \bibliographystyle{apacite}
 \bibliography{References/references}
 \end{document}

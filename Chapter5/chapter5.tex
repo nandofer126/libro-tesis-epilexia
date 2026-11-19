@@ -141,13 +141,13 @@ las elecciones realizadas.
 \textbf{Criterio de selección} \\
 \hline
 
-\textit{frontend} &
+\textit{Frontend} &
 React &
 Angular, Vue.js &
 Componentes reutilizables y visualización interactiva. \\
 \hline
 
-\textit{backend} &
+\textit{Backend} &
 Spring Boot &
 Django, ASP.NET Core &
 Servicios REST, modularidad e integración con Java. \\
@@ -225,13 +225,13 @@ p{0.45\dimexpr\textwidth-8\tabcolsep-5\arrayrulewidth\relax}|}
 \hline
 \endhead
 
-\textit{frontend} & React & 18.3.1 &
+\textit{Frontend} & React & 18.3.1 &
 Construcción de la interfaz web \\
 \hline
-\textit{frontend} & TypeScript & --- &
+\textit{Frontend} & TypeScript & --- &
 Desarrollo tipado de la interfaz \\
 \hline
-\textit{frontend} & Vite & 6.3.5 &
+\textit{Frontend} & Vite & 6.3.5 &
 Desarrollo y construcción \\
 \hline
 \textit{Backend} & Java & 21 &
@@ -264,7 +264,7 @@ Lectura y procesamiento de señales EEG \\
 Motor de IA & joblib & $\geq$\,\texttt{1.3.0} &
 Carga de modelos serializados \\
 \hline
-Motor de IA & scikit-learn & 1.6.1 &
+Motor de IA & scikit-learn & 1.8.0 &
 Ejecución del modelo entrenado \\
 \hline
 
@@ -367,7 +367,7 @@ integran el sistema.
 La base de datos clínica almacena la información relacionada
 con usuarios, pacientes, estudios electroencefalográficos,
 archivos asociados, anomalías, informes médicos y registros
-de auditoría. Su estructura se implementó mediante scripts
+de auditoría. Su estructura se implementó mediante \textit{scripts}
 SQL y se integra con el \textit{backend} desarrollado en Spring Boot
 a través de Spring Data JPA e Hibernate.
 
@@ -548,7 +548,7 @@ anomalías, eventos, informes médicos y registros de
 auditoría.
 
 La definición inicial de las estructuras se realizó
-mediante scripts SQL que establecen las tablas, los tipos
+mediante \textit{scripts} SQL que establecen las tablas, los tipos
 de datos, las claves primarias y foráneas, así como las
 restricciones necesarias para mantener la integridad de
 los registros. La implementación también contempla
@@ -603,9 +603,9 @@ complementan con las comprobaciones realizadas
 durante la ejecución de las operaciones de negocio.
 
 La creación inicial de la base de datos clínica se
-realiza mediante scripts SQL, mientras que las
+realiza mediante \textit{scripts} SQL, mientras que las
 modificaciones posteriores se incorporan mediante
-scripts de actualización específicos. Este mecanismo
+\textit{scripts} de actualización específicos. Este mecanismo
 permite introducir cambios en las estructuras
 persistentes y en los datos de configuración
 necesarios para la evolución del sistema.
@@ -1650,7 +1650,7 @@ a la pantalla de inicio de sesión cuando no
 se dispone de ella. Adicionalmente,
 \texttt{RequirePermission} comprueba los
 permisos requeridos por determinadas rutas
-y redirige al panel principal cuando el
+y redirige al panel de control cuando el
 usuario no cuenta con la autorización
 correspondiente.
 
@@ -1664,7 +1664,7 @@ navegador (\texttt{localStorage}). Este mecanismo
 permite recuperar la sesión al volver a cargar la
 aplicación. No obstante, el almacenamiento de \textit{tokens}
 en este medio requiere considerar los riesgos asociados
-a la ejecución de scripts maliciosos en el navegador,
+a la ejecución de \textit{scripts} maliciosos en el navegador,
 por lo que constituye un aspecto de seguridad
 susceptible de revisión en futuras versiones del sistema.
 
@@ -1684,7 +1684,7 @@ del \textit{backend} antes de limpiar el estado local.
 
 La presentación de las opciones de navegación
 también considera los permisos del usuario.
-En el panel principal, las tarjetas de acceso
+En el panel de control, las tarjetas de acceso
 a determinadas funcionalidades se muestran
 mediante comprobaciones realizadas con
 \texttt{hasPermission}. De esta manera,
@@ -1770,7 +1770,7 @@ La creación de estudios contempla la
 asociación con un paciente y la identificación
 del especialista responsable. Cuando el
 usuario que registra el estudio no posee
-el rol de Especialista, la interfaz requiere
+el perfil de Especialista, la interfaz requiere
 seleccionar uno de los profesionales
 disponibles. El formulario también permite
 incorporar el archivo EEG correspondiente
@@ -1987,7 +1987,7 @@ general como individual para los canales
 que admiten esta configuración.
 
 Para facilitar la inspección de las
-señales, se implementó un modo maximizado
+señales, se implementó un modo de pantalla completa
 que amplía el área disponible para el
 visualizador y reorganiza los elementos
 de la interfaz. Esta funcionalidad
@@ -2145,7 +2145,7 @@ proporciona los controles necesarios
 para iniciar, pausar y desplazar la
 reproducción. El \textit{frontend} obtiene el
 recurso audiovisual mediante los
-servicios del backend y administra
+servicios del \textit{backend} y administra
 su presentación dentro de la interfaz
 de análisis del estudio.
 
@@ -2475,7 +2475,7 @@ Cuadro~\ref{tab:pruebas-frontend}.
 \begin{table}[htbp]
 \centering
 \caption{Resultados de las pruebas
-automatizadas del \textit{frontend}}
+automatizadas del \textit{frontend}.}
 \label{tab:pruebas-frontend}
 \begin{tabular}{|l|c|}
 \hline
@@ -2509,7 +2509,7 @@ Se verifican mecanismos relacionados
 con la representación de señales,
 escalas gráficas, ejes temporales,
 montajes, filtros, sensibilidad,
-navegación y modo maximizado.
+navegación y modo de pantalla completa.
 Asimismo, existen casos destinados
 a comprobar la administración de
 segmentos, la precarga y los
@@ -3112,7 +3112,7 @@ Por ello, esta subsección describe el procedimiento únicamente en el nivel nec
 Al iniciar una ejecución, el motor recupera la ruta relativa del archivo EEG almacenada en el campo \texttt{edf\_path} de la tabla \texttt{ai\_executions} y la combina con la ruta base del volumen configurado.
 Antes de comenzar el análisis, comprueba la existencia del archivo EDF y del paquete del modelo.
 
-El modelo vigente, denominado HGB~2.0, es un clasificador de \textit{Gradient Boosting} basado en histogramas, en línea con los antecedentes desarrollados en la FP-UNA \citep{Lezcano2026GradientBoosting}.
+El modelo vigente, denominado HGB~2.0, es un clasificador de \textit{Gradient Boosting} basado en histogramas (\textit{Histogram-based Gradient Boosting}, HGB), en línea con los antecedentes desarrollados en la FP-UNA \citep{Lezcano2026GradientBoosting}.
 Su procedimiento de análisis comprende las siguientes etapas:
 
 \begin{itemize}
@@ -3231,7 +3231,7 @@ con la visualización y el análisis de las señales EEG.
 \subsection{Generación de espectrogramas DSA}
 
 La implementación de EpilexIA incorpora la generación de
-espectrogramas DSA (\textit{Density Spectral Array}) como
+espectrogramas DSA como
 una herramienta complementaria para la visualización y el
 análisis de las señales electroencefalográficas. Esta
 funcionalidad permite representar la evolución temporal
@@ -3420,7 +3420,7 @@ Se ejecutaron los 64 casos y todos finalizaron satisfactoriamente.
 
 \begin{table}[htbp]
     \centering
-    \caption{Pruebas automatizadas de los componentes de inteligencia artificial y resultado de su ejecución}
+    \caption{Pruebas automatizadas de los componentes de inteligencia artificial y resultado de su ejecución.}
     \label{tab:pruebas_componentes_ia}
     \small
     \begin{tabular}{|
@@ -3605,7 +3605,7 @@ La persistencia de la información clínica se encuentra
 organizada en el proyecto \texttt{epilexIa-database},
 que utiliza PostgreSQL 17. Su configuración contempla
 un contenedor de base de datos, almacenamiento persistente
-y scripts SQL destinados a la inicialización del esquema
+y \textit{scripts} SQL destinados a la inicialización del esquema
 en instalaciones nuevas.
 
 Por su parte, el proyecto \texttt{epilex-ia-api} implementa
@@ -3695,7 +3695,7 @@ Compose establece los parámetros de inicialización
 de la instancia, la exposición del servicio y la
 asociación con los recursos de almacenamiento
 persistente. Asimismo, contempla la utilización
-de scripts SQL para preparar las estructuras
+de \textit{scripts} SQL para preparar las estructuras
 necesarias cuando se crea una instalación nueva.
 
 En el caso de la API de inteligencia artificial,
@@ -3753,7 +3753,7 @@ cumplen dentro del entorno contenedorizado.
 
 \begin{table}[htbp]
     \centering
-    \caption{Componentes contenedorizados del sistema EpilexIA}
+    \caption{Componentes contenedorizados del sistema EpilexIA.}
     \label{tab:componentes-contenedorizados}
     \small
     \begin{tabularx}{\textwidth}{|
@@ -3766,7 +3766,7 @@ cumplen dentro del entorno contenedorizado.
         \textbf{Responsabilidad principal} \\
         \hline
 
-        \textit{frontend} &
+        \textit{Frontend} &
         Node.js (compilación) y Nginx (ejecución) &
         Compilación y publicación de la interfaz web. \\
         \hline
@@ -4052,7 +4052,7 @@ del inicio de sus respectivos contenedores. También es
 necesario que los servicios de base de datos se encuentren
 preparados para aceptar conexiones y que sus esquemas
 dispongan de las estructuras requeridas por las aplicaciones.
-En este sentido, los scripts de inicialización de la base
+En este sentido, los \textit{scripts} de inicialización de la base
 de datos clínica y los mecanismos de migración utilizados
 por la API de inteligencia artificial forman parte de las
 consideraciones necesarias para preparar el entorno.

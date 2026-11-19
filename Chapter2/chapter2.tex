@@ -328,6 +328,15 @@ se construyen diferentes montajes electroencefalográficos, los cuales se
 desarrollan en la siguiente subsección
 \citep{Acharya2016ElectrodeNomenclature}.
 
+La denominación de algunos electrodos temporales difiere según la
+nomenclatura empleada. En la nomenclatura actual se designan T7, T8, P7 y
+P8, mientras que en la anterior, todavía utilizada por numerosos equipos y
+registros, los mismos electrodos se designan T3, T4, T5 y T6,
+respectivamente \citep{Acharya2016ElectrodeNomenclature}. En este trabajo
+ambas denominaciones se consideran equivalentes: las derivaciones F7--T7 y
+T7--P7 corresponden a las que la interfaz de EpilexIA presenta como F7--T3
+y T3--T5.
+
 
 \subsection{Montajes electroencefalográficos}
 \label{subsec:montajes-eeg}
@@ -957,7 +966,7 @@ registro \citep{NihonKohdenEEGTrend}.
 
 Entre sus funciones de procesamiento se encuentra el análisis espectral de
 las señales mediante la transformada rápida de Fourier (FFT). A partir de
-este procesamiento, el \textit{software} puede presentar diferentes representaciones y parámetros, entre ellos arreglos espectrales de densidad (DSA), potencia, borde espectral y relaciones de potencia. También permite representar EEG integrado en amplitud (aEEG) y determinados parámetros relacionados con patrones de supresión de ráfagas \citep{NihonKohdenEEGTrend}.
+este procesamiento, el \textit{software} puede presentar diferentes representaciones y parámetros, entre ellos la matriz de densidad espectral (\textit{Density Spectral Array}, DSA), potencia, borde espectral y relaciones de potencia. También permite representar EEG integrado en amplitud (aEEG) y determinados parámetros relacionados con patrones de supresión de ráfagas \citep{NihonKohdenEEGTrend}.
 
 EEG Trend Software incorpora además funciones orientadas a facilitar la
 identificación de determinados eventos durante la revisión. De acuerdo con la documentación del fabricante, pueden utilizarse algoritmos opcionales de detección de crisis epilépticas en adultos y neonatos, los cuales señalan formas de onda que podrían corresponder a eventos electrográficos de interés para facilitar su posterior identificación y revisión. Asimismo, dispone de un mecanismo de detección de artefactos de electrodos que permite señalar tendencias que podrían estar influenciadas por dichos artefactos
@@ -1087,7 +1096,7 @@ observar la evolución desde métodos específicos de detección de crisis hasta
 entornos web destinados al procesamiento y revisión colaborativa de señales
 electrofisiológicas.
 
-Shoeb et al. desarrollaron un método automatizado y específico para cada
+Shoeb y cols. desarrollaron un método automatizado y específico para cada
 paciente orientado a la detección del inicio de crisis epilépticas a partir
 de EEG no invasivo. El método utilizó descomposición mediante \textit{wavelets} para obtener características relacionadas con la morfología y distribución
 espacial de las señales, y posteriormente empleó una máquina de vectores de
@@ -1099,7 +1108,7 @@ automáticamente eventos de interés dentro de registros EEG
 \citep{Shoeb2004SeizureDetection}.
 
 Desde una perspectiva orientada a la infraestructura y visualización,
-Jayapandian et al. presentaron Cloudwave, una plataforma web destinada al
+Jayapandian y cols. presentaron Cloudwave, una plataforma web destinada al
 análisis y visualización de señales electrofisiológicas para investigación
 clínica sobre epilepsia. La solución fue desarrollada en el marco del proyecto
 Prevention and Risk Identification of SUDEP Mortality (PRISM) y utilizó
@@ -1118,7 +1127,7 @@ electrofisiológicos compartidos, demostrando la posibilidad de trasladar
 funciones de visualización y análisis de señales hacia una infraestructura
 web \citep{Jayapandian2013Cloudwave}.
 
-Posteriormente, Socrates et al. desarrollaron una aplicación web orientada al
+Posteriormente, Socrates y cols. desarrollaron una aplicación web orientada al
 procesamiento de señales de electroencefalografía estereotáxica (SEEG) para
 el estudio de redes cerebrales relacionadas con la epilepsia. La plataforma
 permite procesar señales SEEG de alta resolución y calcular diferentes
