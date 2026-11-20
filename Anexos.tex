@@ -1,0 +1,213 @@
+% ------ DEFINIMOS DATOS DEL DOCUMENTO ------
+\documentclass[spanish, 12pt, oneside]{Thesis}  
+% Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
+\usepackage[spanish,activeacute]{babel}
+\graphicspath{ThesisFigs/}  % Location of the graphics files (set up for graphics to be in PDF format)
+\usepackage[utf8]{inputenc}
+% \usepackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{subfig}
+\usepackage{float}
+
+% ----- INICIO IMPORTACION DE PAQUETES ------
+%\usepackage[round]{natbib}
+\usepackage{epsfig}
+\usepackage{colortbl}
+% Include any extra LaTeX packages required
+%\usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
+\usepackage[natbibapa]{apacite}
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+\hypersetup{urlcolor=black, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{fancyhdr}
+\usepackage{nomencl}
+%\usepackage{float}
+\usepackage[left]{lineno}
+\usepackage[titletoc]{appendix}
+\usepackage{graphicx}
+%\usepackage{caption}
+%\usepackage{subfigure}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\usepackage{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,calc,positioning,arrows.meta,shapes.geometric,
+    fit}
+\usetikzlibrary{babel}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{rotating}
+% Agregado para girar a horizontal una pagina.
+\usepackage{pdflscape}
+% Agregado para insertar pdf en latex.
+\usepackage{pdfpages}
+%\usepackage{colortbl}
+\usepackage{slashbox}
+\usepackage{longtable}
+\usepackage[inkscapelatex=false]{svg}
+\usepackage{placeins}
+\usepackage{needspace}
+
+\usepackage{lineno}
+
+\definecolor{mylightblue}{RGB}{059,131,189}
+\definecolor{mygreen}{RGB}{040,114,051}
+\definecolor{myblue}{RGB}{062,095,138}
+\definecolor{mygray}{RGB}{156,156,156}
+\definecolor{myorange}{RGB}{255,128,0} 
+
+%  ESPANIOL
+%\usepackage[spanish]{babel}
+%\usepackage{algorithm}
+%\usepackage{algpseudocode}
+
+%\addto\captionsspanish{%
+%  \renewcommand{\algorithmname}{Algoritmo}
+%}
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+
+%Acento
+%\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+%
+
+%%%%%%%
+% En el preámbulo:
+
+% Declaración del entorno:
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definición}[section]
+
+%%%%%%%%%%%%
+
+\tikzstyle{intt}=[draw,text centered,minimum size=6em,text width=5.25cm,text height=0.34cm]
+\tikzstyle{intl}=[draw,text centered,minimum size=2em,text width=2.75cm,text height=0.34cm]
+\tikzstyle{int}=[draw,minimum size=2.5em,text centered,text width=3.5cm]
+\tikzstyle{intg}=[draw,minimum size=3em,text centered,text width=6.cm]
+\tikzstyle{sum}=[draw,shape=circle,inner sep=2pt,text centered,node distance=3.5cm]
+\tikzstyle{summ}=[drawshape=circle,inner sep=4pt,text centered,node distance=3.cm]
+\tikzstyle{decision} = [draw,shape=diamond, fill=blue!20, text width=6em, text badly centered, node distance=3cm, inner sep=0pt]
+
+\usepackage{varioref}
+%\usepackage[tablename=Tabla]{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\setlength\unitlength{20pt}
+\usepackage{pst-plot}
+\addtopsstyle{gridstyle}{gridlabels=0pt,griddots=0}
+% ----- FIN IMPORTACION DE PAQUETES
+
+%% ----------------------------------------------------------------
+\newcommand{\abbrlabel}[1]{\makebox[3cm][l]{\textbf{#1}\ }}
+\newenvironment{abbreviations}{
+    \begin{list}{}
+    {
+    \renewcommand{\makelabel}{\abbrlabel}
+    \setlength\leftmargin{1.5in}
+    \setlength\labelwidth{1.5in}
+    \setlength\itemsep{0pt}
+    \setlength\parsep{0pt}
+    }
+}{
+    \end{list}
+}
+%% -------------------------------------------------------------
+
+\fancypagestyle{mylandscape}{
+\fancyhf{} %Clears the header/footer
+\fancyfoot{% Footer
+\makebox[\textwidth][r]{% Right
+  \rlap{\hspace{.75cm}% Push out of margin by \footskip
+    \smash{% Remove vertical height
+      \raisebox{4.87in}{% Raise vertically
+        \rotatebox{90}{\thepage}}}}}}% Rotate counter-clockwise
+\renewcommand{\headrulewidth}{0pt}% No header rule
+\renewcommand{\footrulewidth}{0pt}% No footer rule
+}
+
+
+\usepackage{xurl}
+
+% Command to use grados
+\newcommand{\grad}{$^{\circ}$ }
+
+% INICIO DEL DOCUMENTO -----------------------------------------------------------
+% Reserva espacio suficiente para los números de página de tres cifras en los índices
+\makeatletter
+\renewcommand{\@pnumwidth}{2.2em}
+\renewcommand{\@tocrmarg}{3.4em}
+\makeatother
+
+\begin{document}
+
+% Los anexos se numeran con letras: Anexo A, B y C
+\addto\captionsspanish{\renewcommand{\appendixname}{Anexo}}
+\renewcommand{\appendixname}{Anexo}
+
+\pagestyle{empty}
+\begin{center}
+\vspace*{4cm}
+{\LARGE\bfseries EpilexIA\par}
+\vspace{0.8cm}
+{\Large Sistema como dispositivo médico para el análisis de señales EEG con el fin de facilitar la detección de síndromes epilépticos\par}
+\vspace{2cm}
+{\huge\bfseries Anexos\par}
+\vspace{2cm}
+{\large Luis Fernando Delvalle \\ Rodrigo Amarilla Sanabria\par}
+\vspace{1.5cm}
+{\large Facultad Politécnica \\ Universidad Nacional de Asunción\par}
+\vfill
+{\large Noviembre de 2026\par}
+\end{center}
+\clearpage
+
+\pagestyle{fancy}
+\pagenumbering{roman}
+\lhead{\emph{Presentación}}
+\chapter*{Presentación}
+
+Este documento reúne los anexos del libro de tesis \emph{Sistema como dispositivo médico para el análisis de señales EEG con el fin de facilitar la detección de síndromes epilépticos}.
+Contiene la versión extendida de los capítulos de análisis y diseño, implementación y pruebas, cuyo contenido se presenta de forma resumida en el libro.
+
+\begin{itemize}
+    \item \textbf{Anexo A. Análisis de requerimientos y diseño.} Requerimientos funcionales y no funcionales completos, diagramas de secuencia, arquitectura, diseño de la base de datos, de los servicios, de la seguridad, de la auditoría y de la interfaz de usuario.
+    \item \textbf{Anexo B. Implementación del sistema.} Detalle de la implementación de la base de datos, el \textit{backend}, el \textit{frontend}, los componentes de inteligencia artificial y el despliegue.
+    \item \textbf{Anexo C. Pruebas y evaluación.} Ejecución de cada prueba funcional y de integración, con su procedimiento, el resultado observado y las evidencias correspondientes.
+\end{itemize}
+
+Las referencias a capítulos, secciones, figuras y cuadros que aparecen en los anexos remiten a este mismo documento, salvo indicación contraria.
+
+\clearpage
+\lhead{\emph{Contenido}}
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+\appendix
+
+\clearpage
+\lhead{\emph{Anexo A. Análisis de requerimientos y diseño}}
+\input{Anexos/anexoA_analisis_y_diseno}
+
+\clearpage
+\lhead{\emph{Anexo B. Implementación del sistema}}
+\input{Anexos/anexoB_implementacion}
+
+\clearpage
+\lhead{\emph{Anexo C. Pruebas y evaluación}}
+\input{Anexos/anexoC_pruebas}
+
+\clearpage
+\lhead{\emph{Referencias}}
+\addtotoc{Referencias}
+\bibliographystyle{apacite}
+\bibliography{References/references}
+\end{document}

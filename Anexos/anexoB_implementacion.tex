@@ -1,0 +1,4267 @@
+\chapter{Implementación del sistema}
+\label{cap:implementacion-sistema}
+
+\section{Introducción}
+\label{introduccion}
+
+En este capítulo se describe el proceso de implementación del sistema
+EpilexIA, desarrollado como una solución informática de apoyo al
+análisis de estudios electroencefalográficos y al proceso de diagnóstico
+de la epilepsia, mediante la gestión de estudios EEG,
+la visualización de señales EEG, la integración de registros de video
+y la utilización de técnicas de inteligencia artificial.
+
+La implementación se llevó a cabo a partir de los requerimientos
+funcionales y no funcionales, así como de las decisiones arquitectónicas
+y de diseño presentadas en el capítulo anterior. Para ello, se utilizaron
+tecnologías de código abierto y una organización modular que permite
+separar las responsabilidades de la interfaz de usuario, los servicios
+de aplicación, la persistencia de datos y los componentes asociados
+al procesamiento mediante inteligencia artificial.
+
+El desarrollo comprendió la construcción e integración de las
+funcionalidades necesarias para el registro y seguimiento de estudios
+EEG, la incorporación y preparación de archivos, la visualización
+y análisis de señales electroencefalográficas, la identificación
+y gestión de anomalías y eventos, y la elaboración de informes
+médicos. Asimismo, se implementaron mecanismos de autenticación,
+autorización y auditoría para controlar el acceso a los recursos
+y registrar las operaciones correspondientes.
+
+En los siguientes apartados se presentan las tecnologías y herramientas
+empleadas, la implementación de los principales componentes del sistema
+y los mecanismos utilizados para su integración y despliegue.
+La descripción se centra en las decisiones técnicas y en las soluciones
+adoptadas durante el desarrollo, con el propósito de mostrar cómo
+los elementos definidos en la etapa de diseño fueron implementados
+e integrados en el sistema desarrollado.
+
+
+\section{Entorno de desarrollo y tecnologías utilizadas}
+\label{entorno-desarrollo-tecnologias-utilizadas}
+
+La implementación de EpilexIA se realizó mediante un conjunto de tecnologías y herramientas orientadas al desarrollo de aplicaciones web, la gestión de información clínica y el procesamiento de señales electroencefalográficas mediante inteligencia artificial. La selección de estos componentes permitió organizar el sistema en módulos con responsabilidades diferenciadas, facilitando su desarrollo, integración y mantenimiento.
+
+El entorno tecnológico comprende herramientas de gestión de código fuente, construcción de aplicaciones, administración de dependencias y ejecución de pruebas, así como \textit{frameworks}, bibliotecas y servicios utilizados para implementar los distintos componentes del sistema. En los siguientes apartados se describen las principales herramientas empleadas y su función dentro de la solución desarrollada.
+
+\subsection{Herramientas y entorno de desarrollo}
+\label{herramientas-entorno-desarrollo}
+
+El desarrollo de EpilexIA se organizó mediante cinco repositorios de código fuente, correspondientes a la interfaz web, los servicios de aplicación, la base de datos clínica, la API de inteligencia artificial y el motor de procesamiento. Esta separación permitió administrar de manera diferenciada los componentes del sistema, sus dependencias y sus configuraciones de ejecución.
+
+Para la gestión del código fuente se utilizó Git, herramienta de control de versiones que permite registrar los cambios realizados durante el desarrollo y mantener un historial de las modificaciones. La organización en repositorios independientes facilita el seguimiento de los componentes y la incorporación de nuevas funcionalidades.
+
+La administración de dependencias y la construcción de las aplicaciones se realizaron mediante herramientas específicas para cada entorno tecnológico. En el \textit{frontend} se utilizó npm para gestionar las dependencias de JavaScript y TypeScript, junto con Vite para ejecutar el servidor de desarrollo y generar los archivos de distribución de la aplicación web. En el \textit{backend} se empleó Maven para administrar las dependencias de Java, ejecutar las tareas de construcción y generar el archivo WAR destinado al servidor de aplicaciones. Por su parte, los componentes desarrollados en Python utilizan archivos de requisitos y el gestor pip para definir e instalar sus dependencias.
+
+Para la verificación del \textit{software}, los repositorios incorporan herramientas de pruebas adaptadas a sus respectivas tecnologías. El \textit{frontend} dispone de Vitest y Testing Library para realizar pruebas sobre componentes y funcionalidades de la interfaz. El \textit{backend} utiliza las herramientas de pruebas de Spring Boot, junto con JUnit, Mockito y Spring Security Test. Los componentes desarrollados en Python incluyen pruebas implementadas mediante el módulo \texttt{unittest}.
+
+Asimismo, se utilizaron mecanismos de configuración específicos para los distintos componentes. El \textit{frontend} emplea variables de entorno gestionadas durante su construcción, mientras que los servicios del \textit{backend}, la API de inteligencia artificial y el motor de procesamiento disponen de parámetros de configuración para establecer conexiones, rutas de archivos y condiciones de ejecución.
+
+Estas herramientas proporcionaron una base de trabajo para desarrollar y mantener los distintos componentes de EpilexIA, conservando la separación entre sus entornos tecnológicos y permitiendo realizar tareas de construcción, configuración y verificación de manera independiente.
+
+
+Además del código fuente, cada repositorio contiene los archivos de contexto utilizados por los asistentes de inteligencia artificial (\texttt{CLAUDE.md}, \texttt{AGENTS.md} y las reglas de Cursor) y una carpeta de documentación con los planes y análisis elaborados durante el desarrollo.
+El repositorio del \textit{backend} incluye además la especificación general del sistema.
+La forma en que estos elementos se utilizaron se describe en el capítulo de metodología del libro.
+
+\subsection{Tecnologías utilizadas}
+
+La implementación de EpilexIA comprende diferentes tecnologías de
+programación, \textit{framework}s y bibliotecas, seleccionadas de acuerdo con
+las responsabilidades de cada componente del sistema. Esta organización
+permite utilizar herramientas especializadas para la construcción de
+la interfaz web, la ejecución de la lógica de negocio, la persistencia
+de información y el procesamiento de señales electroencefalográficas
+mediante inteligencia artificial.
+
+La interfaz web se desarrolló con React, una biblioteca de JavaScript
+orientada a la construcción de interfaces mediante componentes
+reutilizables. Para su implementación se utilizó TypeScript, que
+incorpora tipado estático al desarrollo de aplicaciones basadas en
+JavaScript, junto con Vite como herramienta de desarrollo y
+construcción. La navegación entre las diferentes secciones se
+implementó mediante React Router, mientras que la comunicación con
+los servicios del \textit{backend} se realiza utilizando la API nativa Fetch.
+
+El \textit{backend} se implementó mediante Java 21 y Spring Boot, utilizando
+Spring Web MVC para la exposición de servicios REST. La persistencia
+de información se gestiona mediante Spring Data JPA e Hibernate,
+mientras que Spring Security proporciona los mecanismos de
+autenticación y autorización. La aplicación se empaqueta en formato
+WAR para su ejecución sobre el servidor de aplicaciones WildFly.
+
+Para el almacenamiento de la información clínica se utiliza
+PostgreSQL 17, un sistema gestor de bases de datos relacional. Su
+implementación contempla estructuras para almacenar pacientes,
+estudios electroencefalográficos, usuarios, informes médicos,
+anomalías y otros registros asociados al funcionamiento de EpilexIA.
+
+El subsistema de inteligencia artificial se implementó mediante
+Python y se encuentra organizado en dos componentes diferenciados.
+El primero corresponde a una API desarrollada con FastAPI, encargada de recibir y gestionar las solicitudes relacionadas con el procesamiento de señales EEG y facilitar la comunicación con los servicios asociados. El segundo corresponde a un motor de procesamiento independiente, responsable de ejecutar las tareas de análisis de las señales electroencefalográficas. Ambos componentes utilizan una instancia PostgreSQL destinada a almacenar información relacionada con las ejecuciones y los resultados del procesamiento.
+
+
+Para el tratamiento de señales electroencefalográficas se utilizan
+bibliotecas científicas como MNE-Python, NumPy, SciPy y pandas.
+Asimismo, se emplea joblib para cargar modelos previamente
+entrenados y scikit-learn como dependencia necesaria para su
+ejecución. Estas herramientas permiten desarrollar las operaciones
+de lectura, transformación y procesamiento de datos requeridas
+por el subsistema de inteligencia artificial.
+
+Las tecnologías utilizadas en el desarrollo de EpilexIA
+fueron seleccionadas considerando los requerimientos
+funcionales del sistema, la integración entre sus
+componentes y la disponibilidad de herramientas
+de código abierto.
+
+El Cuadro~\ref{tab:comparacion_tecnologias} presenta
+una comparación cualitativa de tecnologías alternativas
+aplicables a los distintos componentes de la arquitectura,
+junto con los principales criterios que fundamentan
+las elecciones realizadas.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de tecnologías para el desarrollo de EpilexIA.}
+\label{tab:comparacion_tecnologias}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabular}{|
+>{\raggedright\arraybackslash}p{2.1cm}|
+>{\raggedright\arraybackslash}p{2.4cm}|
+>{\raggedright\arraybackslash}p{2.8cm}|
+>{\raggedright\arraybackslash}p{3.6cm}|}
+\hline
+\textbf{Componente} &
+\textbf{Selección} &
+\textbf{Alternativas} &
+\textbf{Criterio de selección} \\
+\hline
+
+\textit{Frontend} &
+React &
+Angular, Vue.js &
+Componentes reutilizables y visualización interactiva. \\
+\hline
+
+\textit{Backend} &
+Spring Boot &
+Django, ASP.NET Core &
+Servicios REST, modularidad e integración con Java. \\
+\hline
+
+Base de datos &
+PostgreSQL &
+MySQL, MariaDB &
+Integridad relacional, transacciones y persistencia de datos. \\
+\hline
+
+API de IA &
+FastAPI &
+Flask, Django REST Framework &
+Integración con Python y exposición de servicios REST. \\
+\hline
+
+Motor de IA &
+Python &
+Java, R &
+Bibliotecas científicas y herramientas de aprendizaje automático. \\
+\hline
+
+Contenedores &
+Docker &
+Podman &
+Aislamiento de servicios y despliegue reproducible. \\
+\hline
+
+\end{tabular}
+\end{table}
+
+A partir de esta comparación, se adoptó una
+arquitectura que combina React para la interfaz
+web, Spring Boot para los servicios de aplicación,
+PostgreSQL para la persistencia de información
+y Python con FastAPI para los componentes de
+inteligencia artificial. Docker permite organizar
+y desplegar los servicios en contenedores.
+
+Las tecnologías y versiones concretas utilizadas
+en la implementación se presentan en el
+Cuadro~\ref{tab:tecnologias_epilexia}.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+
+\begin{longtable}{|
+p{0.18\dimexpr\textwidth-8\tabcolsep-5\arrayrulewidth\relax}|
+p{0.19\dimexpr\textwidth-8\tabcolsep-5\arrayrulewidth\relax}|
+p{0.18\dimexpr\textwidth-8\tabcolsep-5\arrayrulewidth\relax}|
+p{0.45\dimexpr\textwidth-8\tabcolsep-5\arrayrulewidth\relax}|}
+
+\caption[Principales tecnologías utilizadas en EpilexIA]%
+{Tecnologías utilizadas en EpilexIA.}
+\label{tab:tecnologias_epilexia}\\
+\hline
+\textbf{Componente} &
+\textbf{Tecnología} &
+\textbf{Versión} &
+\textbf{Función principal} \\
+\hline
+\endfirsthead
+
+\multicolumn{4}{c}{\textit{Continuación del Cuadro~\ref{tab:tecnologias_epilexia}}}\\
+\hline
+\textbf{Componente} &
+\textbf{Tecnología} &
+\textbf{Versión} &
+\textbf{Función principal} \\
+\hline
+\endhead
+
+\textit{Frontend} & React & 18.3.1 &
+Construcción de la interfaz web \\
+\hline
+\textit{Frontend} & TypeScript & --- &
+Desarrollo tipado de la interfaz \\
+\hline
+\textit{Frontend} & Vite & 6.3.5 &
+Desarrollo y construcción \\
+\hline
+\textit{Backend} & Java & 21 &
+Implementación de la lógica de negocio \\
+\hline
+\textit{Backend} & Spring Boot & 3.5.11 &
+Desarrollo de servicios de aplicación \\
+\hline
+\textit{Backend} & WildFly & 39.0.0.Final &
+Ejecución de la aplicación \textit{backend} \\
+\hline
+Base de datos clínica & PostgreSQL & 17 &
+Persistencia de información clínica \\
+\hline
+API de IA & Python & 3.13 &
+Implementación de servicios de IA \\
+\hline
+API de IA & FastAPI & 0.115.6 &
+Exposición de servicios de integración \\
+\hline
+Base de datos de IA & PostgreSQL & 16 &
+Persistencia de ejecuciones y resultados \\
+\hline
+Motor de IA & Python & 3.13 &
+Ejecución del procesamiento EEG \\
+\hline
+Motor de IA & MNE-Python & $\geq$\,\texttt{1.8.0} &
+Lectura y procesamiento de señales EEG \\
+\hline
+Motor de IA & joblib & $\geq$\,\texttt{1.3.0} &
+Carga de modelos serializados \\
+\hline
+Motor de IA & scikit-learn & 1.8.0 &
+Ejecución del modelo entrenado \\
+\hline
+
+\end{longtable}
+\endgroup
+
+Las versiones indicadas corresponden a las dependencias y
+configuraciones de los repositorios del proyecto.
+En los casos en que se especifican rangos de versiones, la
+versión efectiva depende de las dependencias instaladas durante
+la construcción de cada componente. Para TypeScript, el proyecto no fija una
+versión propia: la transpilación la realiza Vite.
+
+La combinación de estas tecnologías proporciona los recursos
+necesarios para implementar las funcionalidades de EpilexIA,
+manteniendo diferenciadas las responsabilidades de la interfaz
+web, los servicios de aplicación, las bases de datos y el
+procesamiento mediante inteligencia artificial.
+
+
+\subsection{Herramientas de integración y despliegue}
+
+La integración de los componentes de EpilexIA se realiza mediante
+herramientas de contenedorización y servicios de ejecución que
+permiten configurar los distintos entornos tecnológicos del
+sistema. Estas herramientas facilitan la construcción de las
+aplicaciones, la administración de sus dependencias y la
+comunicación entre los servicios que conforman la solución.
+
+Para la contenedorización se utiliza Docker, que permite
+empaquetar las aplicaciones junto con sus dependencias y
+configuraciones de ejecución. Cada uno de los componentes
+principales dispone de archivos de configuración que establecen
+las instrucciones necesarias para construir sus respectivas
+imágenes y definir las condiciones de funcionamiento dentro
+de los contenedores.
+
+La coordinación de los servicios se realiza mediante Docker
+Compose, que permite definir y administrar conjuntos de
+contenedores a través de archivos de configuración. En EpilexIA,
+estos archivos contemplan servicios para la interfaz web, el
+\textit{backend}, las bases de datos y los componentes de inteligencia
+artificial. Asimismo, permiten establecer redes de comunicación,
+volúmenes de almacenamiento y parámetros de configuración
+necesarios para la integración del sistema.
+
+La publicación de la interfaz web se realiza mediante Nginx,
+utilizado para servir los archivos estáticos generados durante
+la construcción de la aplicación React. Su configuración
+también contempla el encaminamiento de solicitudes hacia los
+servicios del \textit{backend}, permitiendo que la interfaz acceda a
+las funcionalidades expuestas por la aplicación.
+
+El \textit{backend} se ejecuta sobre WildFly, un servidor de aplicaciones
+compatible con el entorno Java utilizado en EpilexIA. La
+aplicación desarrollada con Spring Boot se empaqueta en formato
+WAR y se incorpora al servidor para exponer los servicios REST
+responsables de las operaciones de negocio y del acceso a la
+información clínica.
+
+Por su parte, la API de inteligencia artificial utiliza Uvicorn
+como servidor ASGI para ejecutar la aplicación desarrollada con
+FastAPI. Este componente recibe las solicitudes de procesamiento
+procedentes del \textit{backend} y coordina las operaciones asociadas a
+las ejecuciones de inteligencia artificial.
+
+El motor de inteligencia artificial se ejecuta como un proceso
+independiente, sin exponer un servicio HTTP propio. La API registra las solicitudes en la base de datos PostgreSQL destinada al
+subsistema de inteligencia artificial, mientras que el motor
+consulta y procesa las tareas pendientes. Este mecanismo permite desacoplar la recepción de solicitudes de la ejecución
+del procesamiento de señales EEG.
+
+La integración también contempla el uso de volúmenes de
+almacenamiento compartidos para facilitar el acceso a los
+archivos electroencefalográficos requeridos durante el
+procesamiento. Asimismo, los servicios utilizan parámetros
+de configuración para establecer sus conexiones y rutas de
+acceso, evitando incorporar estos valores directamente en
+el código de las aplicaciones.
+
+Las configuraciones disponibles permiten establecer entornos de ejecución locales y un despliegue integrado con servicios y redes diferenciadas, utilizado en el entorno en la nube que se describe en la Sección~\ref{subsec:despliegue-nube}.
+
+En conjunto, Docker, Docker Compose, Nginx, WildFly y Uvicorn
+proporcionan los mecanismos necesarios para ejecutar e integrar
+los componentes de EpilexIA, manteniendo diferenciadas sus
+responsabilidades y facilitando la configuración de los
+servicios que conforman el sistema.
+
+
+\section{Implementación de la base de datos}
+
+La persistencia de información en EpilexIA se implementó mediante
+dos bases de datos PostgreSQL independientes, destinadas a la
+gestión de la información clínica y al almacenamiento de los
+datos asociados al procesamiento mediante inteligencia
+artificial. Esta separación permite organizar los registros
+de acuerdo con las responsabilidades de los componentes que
+integran el sistema.
+
+La base de datos clínica almacena la información relacionada
+con usuarios, pacientes, estudios electroencefalográficos,
+archivos asociados, anomalías, informes médicos y registros
+de auditoría. Su estructura se implementó mediante \textit{scripts}
+SQL y se integra con el \textit{backend} desarrollado en Spring Boot
+a través de Spring Data JPA e Hibernate.
+
+Por otra parte, el subsistema de inteligencia artificial
+dispone de una base de datos destinada a registrar las
+solicitudes de procesamiento, sus estados de ejecución,
+los resultados obtenidos y otros datos asociados al análisis
+de señales EEG. La persistencia de este componente se
+implementó mediante SQLAlchemy, mientras que la evolución
+de su esquema se administra principalmente mediante Alembic.
+
+El almacenamiento de los archivos electroencefalográficos
+y de video se realiza fuera de las bases de datos, mediante
+directorios y volúmenes de almacenamiento. PostgreSQL conserva
+las referencias y los metadatos necesarios para relacionar
+estos recursos con los estudios correspondientes.
+
+En los siguientes apartados se describe la arquitectura de
+persistencia, la implementación del esquema clínico, los
+mecanismos de almacenamiento de archivos y la gestión de
+datos del subsistema de inteligencia artificial. Se
+presentan las principales decisiones técnicas adoptadas,
+sin reiterar el modelo conceptual y las relaciones ya
+desarrolladas en el capítulo de diseño.
+
+
+\subsection{Arquitectura de persistencia}
+
+La arquitectura de persistencia de EpilexIA se organiza mediante
+dos bases de datos PostgreSQL independientes y un sistema de
+almacenamiento de archivos. Esta distribución permite mantener
+separada la información clínica de los registros utilizados
+durante el procesamiento mediante inteligencia artificial,
+asignando responsabilidades específicas a cada componente.
+
+La base de datos clínica, implementada sobre PostgreSQL 17,
+es utilizada por el \textit{backend} desarrollado con Spring Boot.
+A través de Spring Data JPA e Hibernate, el \textit{backend} realiza
+las operaciones de persistencia y consulta de información
+relacionada con usuarios, pacientes, estudios
+electroencefalográficos, informes médicos, anomalías y
+registros de auditoría. Las operaciones se encuentran
+sujetas a las reglas de negocio y a los mecanismos de
+autorización establecidos en los servicios de aplicación.
+
+Por su parte, el subsistema de inteligencia artificial
+utiliza una instancia PostgreSQL 16, a la que acceden
+la API desarrollada con FastAPI y el motor de procesamiento.
+La API emplea SQLAlchemy para administrar los registros
+asociados a las solicitudes de análisis, sus estados de
+ejecución y los resultados generados. El motor consulta
+la información necesaria para ejecutar las tareas y
+persistir los resultados del procesamiento.
+
+
+Dado que las bases de datos clínica y de inteligencia
+artificial corresponden a instancias PostgreSQL
+independientes, no se establecen relaciones de integridad
+referencial directas entre sus estructuras. La asociación
+de la información se realiza mediante identificadores
+de estudios y referencias lógicas utilizadas por los
+componentes de aplicación. De esta manera, cada instancia
+mantiene su propio esquema y sus mecanismos de persistencia.
+
+
+El almacenamiento de archivos EEG y de video se realiza
+en directorios del sistema de archivos, que pueden
+incorporarse a los contenedores mediante volúmenes de
+almacenamiento. La base de datos clínica conserva los
+metadatos y las referencias correspondientes, permitiendo
+vincular los recursos almacenados con los estudios
+electroencefalográficos.
+
+Esta arquitectura diferencia tres responsabilidades
+principales: la persistencia de información clínica,
+el registro de las ejecuciones y resultados de
+inteligencia artificial, y el almacenamiento físico
+de archivos asociados a los estudios. Su integración
+permite que los componentes del sistema accedan a la
+información necesaria para desarrollar sus funciones,
+sin concentrar todos los datos en una única base
+de datos.
+
+La Figura~\ref{fig:arquitectura-persistencia}
+representa la distribución de los componentes
+responsables de la persistencia de información
+en EpilexIA. Se distinguen las dos instancias
+PostgreSQL y el almacenamiento externo de archivos
+asociados a los estudios electroencefalográficos.
+
+
+\begin{figure}[!htbp]
+\centering
+
+\begin{tikzpicture}[
+    >=Latex,
+    font=\small,
+    componente/.style={
+        draw,
+        rounded corners=2pt,
+        align=center,
+        minimum height=0.9cm,
+        text width=3.2cm
+    },
+    bd/.style={
+        componente,
+        fill=gray!10
+    },
+    conexion/.style={
+        <->,
+        thick
+    }
+]
+
+% Subsistema clínico
+\node[componente] (backend) at (0,4)
+    {\textit{Backend} Spring Boot\\
+     \footnotesize JPA / Hibernate};
+
+\node[bd] (clinica) at (-2.4,2)
+    {PostgreSQL 17\\
+     \footnotesize Datos clínicos};
+
+\node[componente] (archivos) at (2.4,2)
+    {Sistema de archivos\\
+     \footnotesize EEG y video};
+
+% Subsistema de inteligencia artificial
+\node[componente] (api) at (-2.4,-0.5)
+    {API FastAPI\\
+     \footnotesize SQLAlchemy};
+
+\node[componente] (motor) at (2.4,-0.5)
+    {Motor de IA\\
+     \footnotesize Procesamiento EEG};
+
+\node[bd] (bdia) at (0,-2.5)
+    {PostgreSQL 16\\
+     \footnotesize Ejecuciones y resultados};
+
+% Conexiones clínicas
+\draw[conexion] (backend) -- (clinica);
+\draw[conexion] (backend) -- (archivos);
+
+% Comunicación entre backend y API
+\draw[->, thick, dashed]
+    (backend.west)
+    -- ++(-3.2,0)
+    |- (api.west);
+
+% Conexiones del subsistema de IA
+\draw[conexion] (api) -- (bdia);
+\draw[conexion] (motor) -- (bdia);
+
+% Acceso del motor a los archivos EEG
+\draw[->, thick, dashed]
+    (archivos.south)
+    -- (motor.north);
+
+\end{tikzpicture}
+
+\caption{Arquitectura de persistencia de EpilexIA.}
+\label{fig:arquitectura-persistencia}
+
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Implementación de la base de datos clínica}
+
+La base de datos clínica de EpilexIA se implementó utilizando
+PostgreSQL 17, mediante un esquema relacional destinado a
+almacenar y organizar la información necesaria para el
+funcionamiento del sistema. Su estructura comprende tablas
+relacionadas con usuarios, roles, permisos, pacientes,
+estudios electroencefalográficos, archivos asociados,
+anomalías, eventos, informes médicos y registros de
+auditoría.
+
+La definición inicial de las estructuras se realizó
+mediante \textit{scripts} SQL que establecen las tablas, los tipos
+de datos, las claves primarias y foráneas, así como las
+restricciones necesarias para mantener la integridad de
+los registros. La implementación también contempla
+índices y valores predeterminados que contribuyen a la
+organización y recuperación de la información almacenada.
+
+Entre las relaciones principales se encuentra la
+asociación de los estudios electroencefalográficos
+con los pacientes registrados. Cada estudio conserva
+la referencia al paciente correspondiente y al
+especialista asociado, permitiendo identificar la
+información clínica relacionada con su realización
+y posterior revisión.
+
+Los archivos vinculados a los estudios se representan
+mediante registros que almacenan sus metadatos y
+referencias de ubicación. Esta organización permite
+mantener la relación entre los estudios y los recursos
+electroencefalográficos o audiovisuales, sin incorporar
+los archivos binarios directamente en las tablas de
+la base de datos.
+
+La persistencia de los informes médicos se organiza
+mediante estructuras que permiten asociar diferentes
+informes a un mismo estudio, conservando la identificación
+del especialista responsable de cada uno. Asimismo,
+se implementaron relaciones para registrar segmentos
+y otros datos vinculados con el contenido de los
+informes, de acuerdo con las reglas de negocio
+establecidas en el sistema.
+
+La base de datos también incorpora estructuras para
+almacenar anomalías y eventos identificados durante
+la revisión de señales EEG. Estos registros permiten
+vincular los hallazgos con los estudios correspondientes
+y conservar información relacionada con su ubicación
+temporal y sus características.
+
+Para el acceso a la información se utiliza Spring Data
+JPA junto con Hibernate, integrados en el \textit{backend}
+desarrollado con Spring Boot. Las entidades Java
+representan las estructuras persistentes del sistema,
+mientras que los repositorios proporcionan las
+operaciones de consulta y actualización requeridas
+por los servicios de aplicación.
+
+La consistencia de los datos se controla mediante
+las restricciones definidas en PostgreSQL y las
+validaciones implementadas en el \textit{backend}. De esta
+manera, las reglas de integridad referencial se
+complementan con las comprobaciones realizadas
+durante la ejecución de las operaciones de negocio.
+
+La creación inicial de la base de datos clínica se
+realiza mediante \textit{scripts} SQL, mientras que las
+modificaciones posteriores se incorporan mediante
+\textit{scripts} de actualización específicos. Este mecanismo
+permite introducir cambios en las estructuras
+persistentes y en los datos de configuración
+necesarios para la evolución del sistema.
+
+Por último, se implementó una estructura de auditoría
+destinada a conservar registros de las operaciones
+de negocio catalogadas para su seguimiento. Estos
+registros incluyen información descriptiva del
+actor y su rol al momento de registrar la operación,
+además del tipo de evento y otros datos asociados,
+facilitando la consulta histórica de las actividades
+realizadas en EpilexIA.
+
+
+\subsection{Persistencia de archivos y metadatos EEG}
+
+La gestión de archivos asociados a los estudios
+electroencefalográficos de EpilexIA se implementó
+mediante un mecanismo que separa el almacenamiento
+físico de los recursos y la persistencia de sus
+metadatos. Esta organización permite mantener los
+archivos de señales EEG y los registros de video
+en el sistema de archivos, mientras que la base
+de datos clínica conserva las referencias
+necesarias para identificarlos y asociarlos con
+los estudios correspondientes.
+
+Los archivos incorporados al sistema se almacenan
+en directorios destinados a los recursos de los
+estudios. La información relacionada con estos
+archivos se registra en la base de datos PostgreSQL
+mediante estructuras que permiten conservar su
+identificación, ubicación y asociación con el
+estudio al que pertenecen. De esta manera, los
+servicios del \textit{backend} pueden consultar los
+registros correspondientes y localizar los
+recursos requeridos para las operaciones de
+visualización y procesamiento.
+
+El sistema contempla la incorporación de archivos
+de señales electroencefalográficas en formato EDF. Asimismo, permite asociar
+archivos de video a los estudios y dispone de
+mecanismos de preparación de determinados formatos
+audiovisuales para su utilización desde la
+interfaz web.
+
+
+Además de los archivos originales, el procesamiento de
+señales EEG puede generar recursos derivados utilizados
+durante las operaciones de análisis. Estos recursos se
+organizan en directorios específicos y pueden ser
+consultados por los componentes encargados del
+procesamiento, de acuerdo con las rutas y configuraciones
+establecidas para su ejecución.
+
+
+La integración entre los servicios y el
+almacenamiento físico se realiza mediante rutas
+configurables y, en los entornos contenedorizados,
+mediante volúmenes que permiten disponer de los
+directorios necesarios dentro de los contenedores.
+Este mecanismo facilita el acceso a los recursos
+sin requerir que su contenido binario se almacene
+directamente en las tablas relacionales.
+
+
+La separación entre archivos y metadatos permite
+mantener la información estructurada de los estudios
+en PostgreSQL, mientras que los recursos EEG y de
+video permanecen en el sistema de archivos.
+Esta organización diferencia la gestión de las
+referencias clínicas del almacenamiento físico
+de los recursos asociados.
+
+
+\subsection[Persistencia del procesamiento de inteligencia \\artificial]{Persistencia del procesamiento de inteligencia \\artificial}
+
+La persistencia de información asociada al procesamiento
+mediante inteligencia artificial se implementó utilizando
+una instancia PostgreSQL 16 independiente de la base de
+datos clínica. Esta instancia permite almacenar los
+registros necesarios para administrar las solicitudes
+de análisis, realizar el seguimiento de sus ejecuciones
+y conservar los resultados generados durante el
+procesamiento de señales electroencefalográficas.
+
+El acceso a los datos del subsistema se realiza
+principalmente mediante SQLAlchemy, utilizado por
+la API desarrollada con FastAPI para representar
+las estructuras persistentes y ejecutar las
+operaciones de consulta y actualización. La
+administración de los cambios en el esquema se
+realiza mediante Alembic, que permite incorporar
+modificaciones a las estructuras de la base de
+datos a través de migraciones versionadas.
+
+Los registros de ejecución permiten identificar
+las solicitudes de procesamiento y conservar
+información sobre su estado. Esta organización
+facilita el seguimiento de las tareas desde su
+registro inicial hasta la finalización del análisis,
+incluyendo las situaciones en las que una ejecución
+no puede completarse correctamente.
+
+Mediante la cola de tareas denominada \texttt{pgqueue}, PostgreSQL también se
+utiliza como mecanismo de coordinación entre la API
+y el motor de inteligencia artificial. La API registra
+las solicitudes pendientes y el motor consulta la
+base de datos para identificar los trabajos que
+deben procesarse. De esta manera, la recepción de
+solicitudes se mantiene separada de la ejecución
+de las tareas de análisis.
+
+Para la adquisición de trabajos pendientes, el
+mecanismo de cola utiliza operaciones transaccionales
+que permiten seleccionar registros disponibles y
+evitar que una misma tarea sea adquirida
+simultáneamente por diferentes procesos. Entre
+los mecanismos implementados se encuentra el uso
+de \texttt{FOR UPDATE SKIP LOCKED}, una cláusula
+de PostgreSQL que permite omitir registros
+bloqueados durante la selección de tareas.
+
+Durante el procesamiento, el subsistema actualiza
+la información correspondiente a las ejecuciones
+y registra los resultados obtenidos. Estos datos
+permiten conservar información asociada a los
+análisis realizados y facilitar su posterior
+consulta desde los componentes autorizados del
+sistema.
+
+La vinculación entre los registros del subsistema
+de inteligencia artificial y los estudios clínicos
+se realiza mediante identificadores y referencias
+lógicas. Debido a que ambas bases de datos
+pertenecen a instancias PostgreSQL independientes,
+no se establecen claves foráneas directas entre
+sus respectivas estructuras.
+
+La persistencia de los resultados del procesamiento
+se mantiene diferenciada de la elaboración de
+informes médicos. Los registros generados por la
+inteligencia artificial corresponden a información
+de apoyo al análisis de señales EEG, mientras que
+los informes médicos se gestionan mediante las
+estructuras de la base de datos clínica y las
+funcionalidades destinadas a los especialistas.
+
+Esta implementación permite mantener un registro
+de las ejecuciones y sus resultados, así como
+coordinar el procesamiento mediante una cola
+persistente (\texttt{pgqueue}). La separación de responsabilidades
+entre la API, el motor y las bases de datos
+contribuye a organizar el tratamiento de la
+información clínica y los datos generados por
+el subsistema de inteligencia artificial.
+
+
+\section{Implementación del \textit{backend}}
+
+El \textit{backend} de EpilexIA se implementó utilizando Java 21
+y Spring Boot, con el propósito de proporcionar los
+servicios de aplicación necesarios para el funcionamiento
+del sistema. Este componente concentra las operaciones
+de negocio, la gestión del acceso a la información
+clínica y los mecanismos de comunicación con la
+interfaz web y los servicios asociados.
+
+La implementación se organiza mediante componentes
+con responsabilidades diferenciadas, que permiten
+separar la recepción de solicitudes, la ejecución
+de las operaciones de negocio y el acceso a los
+datos persistentes. Para ello, se utilizan
+funcionalidades del ecosistema Spring, entre ellas
+Spring Web MVC, Spring Data JPA y Spring Security.
+
+Los servicios del \textit{backend} permiten administrar
+las operaciones relacionadas con usuarios,
+pacientes, estudios electroencefalográficos,
+archivos asociados, anomalías, eventos e informes
+médicos. Asimismo, incorporan mecanismos de
+autenticación y autorización destinados a
+controlar el acceso a las funcionalidades
+según los permisos asignados a cada usuario.
+
+La aplicación se empaqueta en formato WAR para
+su ejecución sobre el servidor de aplicaciones
+WildFly. Su integración con los demás componentes
+de EpilexIA se realiza mediante interfaces de
+comunicación y configuraciones específicas
+que permiten coordinar las operaciones del sistema.
+
+En los siguientes apartados se describe la
+organización interna del \textit{backend}, la implementación
+de los servicios REST, las principales reglas
+de negocio y los mecanismos de seguridad,
+integración y auditoría incorporados durante
+el desarrollo.
+
+
+\subsection{Organización y estructura del \textit{backend}}
+
+El \textit{backend} de EpilexIA se desarrolló siguiendo una
+arquitectura en capas, con una organización que
+diferencia las responsabilidades relacionadas con
+la recepción de solicitudes, la ejecución de la
+lógica de negocio y el acceso a la información
+persistente. Esta estructura se implementó mediante
+paquetes especializados dentro del proyecto Java,
+facilitando la separación de funciones entre los
+componentes de la aplicación.
+
+La capa de controladores, organizada en el paquete
+\texttt{controller}, se encarga de recibir las
+solicitudes HTTP y exponer los servicios REST
+utilizados por la interfaz web. Los controladores
+delegan las operaciones correspondientes a las
+clases del paquete \texttt{service}, donde se
+implementan las reglas de negocio, las validaciones
+funcionales y la coordinación entre los distintos
+componentes del sistema.
+
+El acceso a la base de datos clínica se realiza
+mediante las interfaces del paquete
+\texttt{repository}, implementadas con Spring Data
+JPA. Estas interfaces permiten ejecutar operaciones
+de persistencia y consulta sobre las entidades
+definidas en el paquete \texttt{entity}, que
+representan las estructuras relacionales utilizadas
+por la aplicación.
+
+Para separar los contratos de comunicación del
+modelo persistente, se emplean objetos de
+transferencia de datos, conocidos como DTO.
+Estos se organizan en estructuras destinadas
+a las solicitudes, las respuestas y los
+intercambios de información con servicios
+externos. Su utilización permite definir
+los datos recibidos y devueltos por la API
+sin exponer directamente las entidades de
+persistencia.
+
+La implementación incorpora, además, paquetes
+especializados para la seguridad, la configuración,
+el tratamiento de excepciones y el registro de
+actividades. Asimismo, dispone de componentes
+destinados al procesamiento de archivos
+electroencefalográficos y a la preparación
+de registros de video, de acuerdo con las
+funcionalidades requeridas por EpilexIA.
+
+
+El procesamiento de las solicitudes se organiza
+principalmente mediante la interacción entre controladores,
+servicios y repositorios, siguiendo una arquitectura
+en capas que permite separar las responsabilidades
+de comunicación, lógica de negocio y persistencia.
+
+
+La construcción del \textit{backend} se administra
+mediante Maven, utilizando las dependencias
+de Spring Boot y las bibliotecas necesarias
+para los distintos servicios. La aplicación
+se empaqueta como un archivo WAR, preparado
+para su ejecución sobre WildFly 39 con Java 21.
+Para ello, incorpora una configuración de
+inicialización compatible con el contenedor
+de aplicaciones y establece el contexto
+de despliegue correspondiente a EpilexIA.
+
+Esta organización proporciona una estructura
+de implementación que permite mantener
+diferenciadas las responsabilidades de
+comunicación, negocio y persistencia, así
+como incorporar servicios especializados
+para la gestión de estudios EEG, informes
+médicos y procesamiento de información
+asociada al sistema.
+
+
+La Figura~\ref{fig:capas-backend} presenta una
+representación de la organización en capas del
+\textit{backend} de EpilexIA. Se identifican los componentes
+responsables de la recepción de solicitudes,
+la ejecución de la lógica de negocio y la
+persistencia de información, así como los
+mecanismos complementarios que intervienen
+en el funcionamiento de la aplicación.
+
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[
+        node distance=0.75cm,
+        capa/.style={
+            draw,
+            rounded corners=2pt,
+            align=center,
+            text width=7.3cm,
+            minimum height=0.95cm,
+            font=\small,
+            inner sep=5pt
+        },
+        complemento/.style={
+            draw,
+            dashed,
+            rounded corners=2pt,
+            align=center,
+            text width=7.3cm,
+            minimum height=0.8cm,
+            font=\small,
+            inner sep=5pt
+        },
+        enlace/.style={
+            -{Stealth[length=2mm]},
+            thick
+        }
+    ]
+
+    \node[capa] (controller)
+        {\textbf{Controladores REST}\\
+         Recepción de solicitudes HTTP};
+
+    \node[capa, below=of controller] (service)
+        {\textbf{Servicios}\\
+         Lógica de negocio y validaciones};
+
+    \node[capa, below=of service] (repository)
+        {\textbf{Repositorios}\\
+         Spring Data JPA};
+
+    \node[capa, below=of repository] (entity)
+        {\textbf{Entidades y PostgreSQL}\\
+         Persistencia de información clínica};
+
+    \node[complemento, below=0.95cm of entity] (cross)
+        {\textbf{Componentes complementarios}\\
+         DTO, seguridad, configuración y auditoría};
+
+    \draw[enlace] (controller) -- (service);
+    \draw[enlace] (service) -- (repository);
+    \draw[enlace] (repository) -- (entity);
+
+    \end{tikzpicture}
+
+    \caption{Organización en capas del \textit{backend} de EpilexIA.}
+    \label{fig:capas-backend}
+\end{figure}
+
+\FloatBarrier
+
+
+\subsection{Implementación de los servicios REST}
+
+La comunicación entre la interfaz web y el \textit{backend}
+de EpilexIA se implementó mediante servicios REST
+desarrollados con Spring Web MVC. Estos servicios
+permiten exponer las operaciones de aplicación
+a través de solicitudes HTTP, proporcionando
+mecanismos de acceso a las funcionalidades
+relacionadas con la gestión de usuarios,
+pacientes, estudios electroencefalográficos,
+archivos asociados e informes médicos.
+
+Los puntos de acceso de la API se definen mediante
+controladores que utilizan las anotaciones
+proporcionadas por Spring para establecer las
+rutas y los métodos HTTP correspondientes.
+De acuerdo con la naturaleza de cada operación,
+se emplean métodos como GET, POST, PUT, PATCH
+y DELETE, permitiendo diferenciar las consultas,
+la creación de registros, las actualizaciones
+y las operaciones de eliminación o desactivación
+que correspondan.
+
+Para el intercambio de información se utilizan
+objetos de transferencia de datos (DTO), que
+definen las estructuras de las solicitudes
+recibidas y las respuestas generadas por los
+servicios. Estos objetos permiten establecer
+contratos de comunicación diferenciados de
+las entidades utilizadas para la persistencia,
+así como controlar la información que se
+expone a los clientes de la API.
+
+La recepción de solicitudes contempla mecanismos
+de validación destinados a comprobar los datos
+proporcionados por los clientes. Estas
+comprobaciones se complementan con las
+validaciones funcionales realizadas en los
+servicios de aplicación, donde se verifican
+las condiciones necesarias para ejecutar
+las operaciones solicitadas.
+
+Las respuestas de los servicios se construyen
+utilizando las estructuras definidas para
+cada operación y los códigos de estado HTTP
+correspondientes. De esta manera, la API
+permite comunicar los resultados de las
+solicitudes y distinguir las operaciones
+completadas de aquellas que presentan
+condiciones de error.
+
+
+El tratamiento de excepciones se implementa
+principalmente mediante un componente centralizado
+basado en \texttt{@RestControllerAdvice}, que
+permite gestionar situaciones como solicitudes
+inválidas, recursos no encontrados, errores de
+validación y restricciones de acceso. Este
+mecanismo genera respuestas controladas con
+los códigos de estado HTTP correspondientes.
+Adicionalmente, determinados controladores
+incorporan un tratamiento específico para
+errores asociados a sus operaciones.
+
+
+La documentación de los puntos de acceso
+se realiza mediante OpenAPI y Swagger,
+que permiten consultar las operaciones
+expuestas por el \textit{backend}, sus parámetros
+y las estructuras de intercambio de
+información. Estas herramientas facilitan
+la inspección de los contratos de la API
+y la realización de consultas durante
+las actividades de desarrollo y verificación.
+
+La implementación de los servicios REST
+establece un mecanismo de comunicación
+entre la interfaz web y la lógica de
+aplicación, manteniendo diferenciadas
+las responsabilidades de recepción de
+solicitudes, validación de información
+y ejecución de las operaciones de negocio.
+
+
+\subsection{Implementación de la lógica de negocio}
+
+La lógica de negocio de EpilexIA se implementó
+principalmente mediante clases de servicio
+desarrolladas con Spring Boot. Estos componentes
+se encargan de ejecutar las operaciones
+funcionales del sistema, aplicar las reglas
+establecidas para cada proceso y coordinar
+el acceso a la información persistente.
+Esta organización permite mantener las
+responsabilidades de negocio diferenciadas
+de la recepción de solicitudes HTTP y de
+las operaciones de acceso a datos.
+
+Los servicios de aplicación reciben las
+solicitudes delegadas por los controladores
+REST y realizan las comprobaciones necesarias
+según las características de cada operación.
+Estas comprobaciones incluyen la existencia
+de los recursos involucrados, la consistencia
+de determinados datos y el cumplimiento
+de las condiciones funcionales establecidas
+para los procesos administrados por el sistema.
+
+En la gestión de pacientes, los servicios
+implementan operaciones de creación, consulta
+y actualización de información. Estas
+operaciones incorporan validaciones relacionadas
+con los datos personales y la identificación
+de los pacientes, incluyendo comprobaciones
+sobre la unicidad del documento de identidad.
+
+La gestión de estudios electroencefalográficos
+contempla su creación y distintas operaciones
+específicas de administración. Cada estudio
+se asocia obligatoriamente con un paciente
+y un especialista, mientras que la asignación
+de un técnico es opcional y depende del
+contexto de creación. Asimismo, el sistema
+incorpora reglas para administrar estudios
+incompletos y operaciones de anulación
+y reactivación.
+
+La incorporación de archivos EEG se realiza
+mediante un mecanismo de carga por fragmentos.
+Los servicios comprueban las condiciones
+necesarias para recibir los fragmentos,
+ensamblan el archivo definitivo y registran
+sus referencias y metadatos. Posteriormente,
+se inicia el procesamiento asíncrono de
+las señales, durante el cual se obtiene
+información asociada a los registros EEG
+y se actualiza el estado del estudio
+según el resultado del procesamiento.
+
+Para los archivos audiovisuales, el \textit{backend}
+implementa la carga de videos MP4 y un
+mecanismo de recepción y conversión asíncrona
+de archivos EZVideo. Estas operaciones
+se encuentran sujetas a las condiciones
+funcionales establecidas para los estudios.
+Los archivos se conservan en el sistema
+de archivos, mientras que la base de datos
+almacena las referencias y los metadatos
+necesarios para su identificación.
+
+Durante la revisión de señales EEG, el
+\textit{backend} incorpora servicios diferenciados
+para la gestión de anomalías y eventos.
+Las anomalías registradas mediante las
+operaciones ordinarias de mantenimiento
+se identifican como hallazgos manuales,
+mientras que los resultados procedentes
+de inteligencia artificial se gestionan
+mediante su flujo de integración.
+Por su parte, los eventos EEG disponen
+de operaciones de creación, consulta,
+actualización y eliminación, con
+validaciones relacionadas con su
+ubicación temporal y su asociación
+con el estudio correspondiente.
+
+La elaboración de informes médicos incorpora
+reglas de negocio que permiten asociar
+diferentes informes a un mismo estudio,
+conservando la identificación del especialista
+responsable de cada uno. La implementación
+establece un máximo de un informe por
+especialista y estudio, de manera que
+distintos profesionales pueden elaborar
+informes independientes sobre un mismo
+registro clínico.
+
+Las operaciones de edición de informes
+se encuentran restringidas al especialista
+propietario y consideran el estado del
+informe y del estudio asociado. Un informe
+cerrado no admite modificaciones mediante
+el flujo ordinario de edición. Asimismo,
+la existencia de un informe cerrado
+impide crear nuevos informes para
+el mismo estudio.
+
+Los cambios de estado de los estudios
+se implementan mediante reglas distribuidas
+entre los servicios responsables de
+la carga de archivos, el procesamiento
+de señales y las operaciones de anulación
+y reactivación. Estas reglas permiten
+representar las distintas etapas de
+ejecución de los procesos, sin depender
+de un único componente centralizado
+para administrar todas las transiciones.
+
+La interacción con la base de datos
+clínica se realiza predominantemente
+mediante repositorios de Spring Data JPA,
+utilizados para consultar y modificar
+las entidades persistentes. Determinadas
+operaciones de administración de catálogos
+y permisos acceden directamente a
+repositorios desde sus controladores,
+mientras que otros componentes emplean
+mecanismos específicos de acceso a datos
+según sus necesidades de implementación.
+
+Esta organización permite distribuir
+las responsabilidades funcionales entre
+componentes especializados y mantener
+una separación predominante entre la
+recepción de solicitudes, la ejecución
+de reglas de negocio y la persistencia
+de información. De esta manera, los
+servicios del \textit{backend} proporcionan
+las operaciones necesarias para
+administrar los procesos clínicos
+y técnicos implementados en EpilexIA.
+
+
+\Needspace{8\baselineskip}
+\subsection{Implementación de la autenticación y autorización}
+
+La seguridad del \textit{backend} de EpilexIA se implementó mediante
+Spring Security, incorporando mecanismos de autenticación
+y autorización para controlar el acceso a las funcionalidades
+del sistema. Estos mecanismos permiten identificar a los
+usuarios que realizan solicitudes y verificar los permisos
+necesarios para ejecutar las operaciones disponibles.
+
+La autenticación se realiza mediante credenciales de usuario
+y \textit{tokens} JSON Web Token (JWT). Durante el inicio de sesión,
+el \textit{backend} verifica el nombre de usuario y la contraseña
+mediante los componentes de autenticación de Spring Security.
+Las contraseñas se almacenan utilizando el algoritmo de
+hash BCrypt, evitando conservarlas en texto plano.
+
+Cuando las credenciales son válidas, el sistema genera un
+JWT firmado que contiene el nombre de usuario, un
+identificador único de sesión (\texttt{jti}) y las fechas
+de emisión y expiración. Los roles y permisos no se
+incorporan al \textit{token}, sino que se recuperan desde la base
+de datos al procesar las solicitudes autenticadas.
+
+La comunicación con los servicios protegidos utiliza
+habitualmente el encabezado HTTP \texttt{Authorization}
+con el esquema \texttt{Bearer}. Un filtro de seguridad
+verifica la firma y vigencia del \textit{token}, comprueba la
+existencia de la sesión correspondiente y recupera la
+información actual del usuario y sus permisos. Una vez
+completadas estas verificaciones, establece el contexto
+de autenticación utilizado durante la ejecución de la
+solicitud.
+
+
+Como mecanismo particular para la reproducción de video,
+el \textit{backend} también admite el envío del JWT mediante un
+parámetro de consulta en el punto de acceso destinado
+a la transmisión audiovisual. Esta alternativa responde
+a las características de las solicitudes realizadas por
+el reproductor web. No obstante, el uso de \textit{tokens} en
+parámetros de consulta representa una consideración
+de seguridad, debido a su posible exposición en registros
+de acceso y otros mecanismos de seguimiento. Por ello,
+su utilización debe contemplar medidas de protección
+adecuadas y constituye un aspecto susceptible de mejora
+en futuras versiones del sistema.
+
+
+Aunque Spring Security se configuró para no utilizar
+sesiones HTTP tradicionales, EpilexIA mantiene registros
+persistentes de las sesiones autenticadas. Cada \textit{token}
+se vincula con un registro identificado mediante su
+\texttt{jti}, cuya existencia y vigencia se comprueban
+durante la autenticación de las solicitudes. El cierre
+de sesión elimina el registro correspondiente, impidiendo
+que el mismo \textit{token} continúe utilizándose. También se
+contempla la invalidación de sesiones durante determinados
+procesos de restablecimiento de contraseñas.
+
+La autorización se organiza mediante roles y permisos
+almacenados en la base de datos. La lógica clínica del
+sistema reconoce los perfiles Administrador, Técnico
+y Especialista, mientras que las operaciones disponibles
+se restringen principalmente mediante permisos
+funcionales asociados a los roles correspondientes.
+
+Los controladores REST incorporan restricciones mediante
+la anotación \texttt{@PreAuthorize}, que permite comprobar
+las autoridades requeridas antes de ejecutar una operación.
+Los permisos se representan mediante identificadores
+funcionales y se incorporan al contexto de seguridad
+a partir de la información recuperada de la base de datos.
+
+Además de estas restricciones generales, determinadas
+funcionalidades aplican verificaciones adicionales sobre
+los recursos clínicos. En la gestión de estudios, estas
+comprobaciones consideran la relación del usuario con
+el estudio, incluyendo la asignación de especialistas
+y técnicos, así como la participación de observadores.
+Para los informes médicos se verifican también la
+propiedad del informe y las condiciones establecidas
+por su estado y el del estudio asociado.
+
+La implementación distingue las solicitudes que carecen
+de autenticación válida de aquellas realizadas por
+usuarios autenticados sin autorización suficiente.
+En el primer caso, el \textit{backend} utiliza la respuesta HTTP
+\texttt{401 Unauthorized}; en el segundo, la respuesta
+HTTP \texttt{403 Forbidden}. Estos comportamientos
+se gestionan mediante componentes específicos de
+la infraestructura de seguridad.
+
+La combinación de autenticación mediante JWT, sesiones
+persistentes, permisos funcionales y verificaciones
+de acceso a recursos permite diferenciar la identidad
+del usuario de las condiciones necesarias para ejecutar
+cada operación. De esta manera, el \textit{backend} establece
+controles de acceso para las funcionalidades clínicas
+y administrativas implementadas en EpilexIA.
+
+
+La Figura~\ref{fig:flujo-autenticacion-autorizacion}
+presenta de manera esquemática los principales
+mecanismos de autenticación y autorización
+implementados en el \textit{backend} de EpilexIA.
+Se representan la verificación de credenciales,
+la generación del \textit{token} JWT, la comprobación
+de la sesión persistente y la evaluación de
+los permisos necesarios para acceder a los
+servicios protegidos.
+
+
+% Figura 5.3: Flujo de autenticación y autorización
+
+
+\begin{figure}[p]
+    \centering
+    \begin{tikzpicture}[
+        >=Stealth,
+        font=\small,
+        etapa/.style={
+            draw,
+            rounded corners=2pt,
+            align=center,
+            text width=6.1cm,
+            minimum height=0.85cm,
+            inner sep=5pt
+        },
+        proceso/.style={
+            etapa,
+            fill=gray!8
+        },
+        decision/.style={
+            draw,
+            diamond,
+            aspect=2.8,
+            align=center,
+            text width=3.0cm,
+            inner sep=1pt
+        },
+        flecha/.style={->, thick},
+        etiqueta/.style={
+            font=\scriptsize,
+            fill=white,
+            inner sep=1pt
+        },
+        node distance=0.45cm
+    ]
+
+    % Inicio de sesión
+    \node[etapa] (login)
+        {Inicio de sesión\\
+         Usuario y contraseña};
+
+    \node[proceso, below=of login] (auth)
+        {Spring Security\\
+         Validación con BCrypt};
+
+    \node[decision, below=0.65cm of auth] (valid)
+        {¿Credenciales válidas?};
+
+    \node[proceso, below=0.7cm of valid] (token)
+        {Generación de JWT firmado\\
+         y registro de sesión con \texttt{jti}};
+
+    % Acceso a servicios protegidos
+    \node[etapa, below=0.5cm of token] (request)
+        {Solicitud HTTP al servicio protegido\\
+         \texttt{Authorization: Bearer JWT}};
+
+    \node[proceso, below=of request] (filter)
+        {Filtro JWT\\
+         Validación de firma y expiración};
+
+    \node[proceso, below=of filter] (session)
+        {Verificación de sesión persistente};
+
+    \node[decision, below=0.65cm of session] (sessionvalid)
+        {¿\textit{Token} y sesión válidos?};
+
+    \node[proceso, below=0.7cm of sessionvalid] (permissions)
+        {Recuperación de permisos actuales};
+
+    \node[decision, below=0.65cm of permissions] (access)
+        {¿Autorización suficiente?};
+
+    \node[proceso, below=0.7cm of access] (service)
+        {Ejecución del servicio REST\\
+         y respuesta al cliente};
+
+    % Conexiones principales
+    \draw[flecha] (login) -- (auth);
+    \draw[flecha] (auth) -- (valid);
+
+    \draw[flecha] (valid) --
+        node[etiqueta, right] {Sí} (token);
+
+    \draw[flecha] (token) -- (request);
+    \draw[flecha] (request) -- (filter);
+    \draw[flecha] (filter) -- (session);
+
+    \draw[flecha] (session) -- (sessionvalid);
+
+    \draw[flecha] (sessionvalid) --
+        node[etiqueta, right] {Sí} (permissions);
+
+    \draw[flecha] (permissions) -- (access);
+
+    \draw[flecha] (access) --
+        node[etiqueta, right] {Sí} (service);
+
+    % Respuestas HTTP
+    \node[etapa, right=1.1cm of valid,
+          text width=2.3cm] (invalid)
+        {HTTP 401\\
+         No autenticado};
+
+    \node[etapa, right=1.1cm of sessionvalid,
+          text width=2.3cm] (invalidsession)
+        {HTTP 401\\
+         \textit{Token} o sesión inválidos};
+
+    \node[etapa, right=1.1cm of access,
+          text width=2.3cm] (denied)
+        {HTTP 403\\
+         Acceso denegado};
+
+    % Conexiones de rechazo
+    \draw[flecha] (valid.east) --
+        node[etiqueta, above] {No} (invalid.west);
+
+    \draw[flecha] (sessionvalid.east) --
+        node[etiqueta, above] {No} (invalidsession.west);
+
+    \draw[flecha] (access.east) --
+        node[etiqueta, above] {No} (denied.west);
+
+    \end{tikzpicture}
+
+    \caption{Flujo de autenticación y autorización de EpilexIA.}
+    \label{fig:flujo-autenticacion-autorizacion}
+\end{figure}
+
+
+\subsection{Integración con los componentes del sistema}
+
+La integración del \textit{backend} de EpilexIA con los demás componentes del sistema se implementó mediante mecanismos de comunicación y acceso a recursos que permiten coordinar las operaciones de la interfaz web, el almacenamiento de archivos y el procesamiento mediante inteligencia artificial. El \textit{backend} actúa como componente central para la ejecución de las operaciones de aplicación, manteniendo diferenciadas las responsabilidades de los servicios involucrados.
+
+La comunicación con la interfaz web se realiza mediante servicios REST expuestos por Spring Boot. El \textit{frontend}, desarrollado con React y TypeScript, utiliza solicitudes HTTP para acceder a las funcionalidades disponibles, enviar información y recuperar los datos necesarios para su presentación. Las respuestas se intercambian principalmente mediante estructuras JSON, mientras que las operaciones de transferencia de archivos utilizan mecanismos adecuados para la recepción y entrega de recursos binarios.
+
+Las solicitudes procedentes de la interfaz se procesan de acuerdo con los mecanismos de autenticación y autorización implementados en el \textit{backend}. De esta manera, la comunicación entre ambos componentes permite aplicar las restricciones de acceso correspondientes a cada operación, sin delegar exclusivamente en la interfaz web la protección de los recursos clínicos.
+
+La integración con el almacenamiento de archivos contempla la recepción, conservación y recuperación de señales electroencefalográficas y recursos audiovisuales asociados a los estudios. Para los archivos EEG de gran tamaño, el \textit{backend} dispone de mecanismos de carga por fragmentos que permiten recibir las partes transferidas y reconstruir el archivo correspondiente. Una vez completada la incorporación, se registran las referencias y los metadatos necesarios para vincular el recurso con su estudio.
+
+El procesamiento posterior de los archivos EEG se realiza mediante operaciones asíncronas que permiten preparar la información requerida por las funcionalidades de visualización y análisis. Los recursos generados se mantienen en directorios configurados para su almacenamiento, mientras que los servicios del \textit{backend} proporcionan los mecanismos necesarios para consultar los datos y acceder a los archivos correspondientes.
+
+En cuanto a los recursos audiovisuales, el \textit{backend} permite incorporar archivos de video asociados a los estudios y dispone de un mecanismo de conversión para archivos en formato EZVideo. Esta conversión se ejecuta de manera asíncrona y permite preparar archivos MP4 para su utilización desde la interfaz web. La entrega de los recursos de video se realiza mediante puntos de acceso específicos destinados a su reproducción.
+
+La integración con el subsistema de inteligencia artificial se establece mediante la comunicación entre el \textit{backend} desarrollado con Spring Boot y una API independiente implementada con FastAPI. El \textit{backend} gestiona las operaciones de aplicación relacionadas con las solicitudes de análisis, mientras que la API de inteligencia artificial recibe las solicitudes correspondientes y coordina su procesamiento con los componentes especializados.
+
+La API registra los trabajos de análisis en la base de datos PostgreSQL del subsistema de inteligencia artificial. El motor de procesamiento, ejecutado como componente independiente, consulta los trabajos pendientes y realiza las operaciones necesarias sobre las señales EEG. Esta organización permite mantener separada la recepción de solicitudes de la ejecución de los procesos de análisis.
+
+Los resultados generados por el subsistema de inteligencia artificial se ponen a disposición de los demás componentes de EpilexIA mediante los mecanismos de comunicación establecidos. El \textit{backend} participa en la consulta y presentación de la información asociada al procesamiento, permitiendo que los usuarios autorizados accedan a los resultados desde las funcionalidades correspondientes del sistema.
+
+La comunicación entre los componentes se complementa con parámetros de configuración que permiten establecer direcciones de servicios, rutas de almacenamiento y condiciones de ejecución. En los entornos contenedorizados, estas configuraciones se relacionan con las redes y los volúmenes definidos para facilitar el intercambio de información entre los servicios.
+
+En conjunto, los mecanismos de integración implementados permiten que el \textit{backend} coordine las operaciones procedentes de la interfaz web, el acceso a los archivos clínicos y la interacción con el subsistema de inteligencia artificial. Esta organización conserva las responsabilidades diferenciadas de los componentes y proporciona los medios necesarios para ejecutar las funcionalidades técnicas y clínicas de EpilexIA.
+
+\subsection{Registro de auditoría y trazabilidad}
+
+El registro de auditoría y trazabilidad de EpilexIA se implementó mediante componentes del \textit{backend} destinados a conservar información sobre determinadas operaciones de negocio realizadas en el sistema. Este mecanismo permite identificar las acciones catalogadas para su seguimiento, registrar el momento de su ejecución y mantener información descriptiva del actor responsable.
+
+La implementación se organiza mediante eventos internos generados durante la ejecución de las operaciones funcionales. Los servicios de aplicación publican eventos cuando se realizan acciones contempladas en el catálogo de auditoría. Estos eventos son recibidos por un componente especializado que se encarga de construir y almacenar los registros correspondientes en la base de datos clínica. Esta organización permite diferenciar la ejecución de las operaciones de negocio del mecanismo encargado de conservar su trazabilidad.
+
+Para clasificar las operaciones registradas, el \textit{backend} dispone de un catálogo de tipos de eventos, representado mediante el componente \texttt{AuditEventType}. Este catálogo establece identificadores para las acciones incorporadas al mecanismo de auditoría y permite mantener una clasificación uniforme de los registros. La implementación se limita a las operaciones expresamente catalogadas, por lo que no todas las solicitudes HTTP ni todas las actividades internas generan necesariamente eventos de auditoría de negocio.
+
+La identificación del actor se realiza mediante un componente específico denominado \texttt{AuditActorUtil}, encargado de recuperar la información asociada al usuario que ejecuta la operación. Los datos obtenidos incluyen el identificador del usuario, su nombre descriptivo y la denominación de su rol. Esta información se incorpora al evento y se conserva en el registro persistente, permitiendo consultar posteriormente los datos descriptivos almacenados aunque el perfil del usuario haya sido modificado.
+
+La persistencia de los eventos se implementó mediante un componente
+especializado, denominado \texttt{AuditEventRecordListener},
+responsable de procesar los eventos recibidos y registrar su
+información en PostgreSQL. Los datos se
+almacenan en la tabla \texttt{audit\_event}, que contempla el tipo de
+evento, la fecha y hora de ocurrencia, la identificación del actor y
+otros atributos relacionados con la operación. Asimismo, incorpora
+un campo de tipo JSONB destinado a conservar información
+complementaria según las características del evento registrado.
+
+El almacenamiento de los datos descriptivos del actor permite mantener referencias históricas de las operaciones auditadas. De esta manera, los registros conservan la identificación y la denominación del rol capturadas al generarse el evento, sin depender exclusivamente de los valores actuales asociados al usuario. Este mecanismo contribuye a preservar la información necesaria para interpretar las actividades registradas en distintos momentos de funcionamiento del sistema.
+
+El \textit{backend} también incorpora servicios para consultar los registros de auditoría almacenados. Estas funcionalidades permiten aplicar filtros por fecha, tipo de acción, identificación descriptiva del actor y rol registrado. Además, se implementaron mecanismos de paginación y ordenamiento cronológico descendente, facilitando la recuperación y revisión de los eventos desde las funcionalidades administrativas correspondientes.
+
+La implementación diferencia los eventos de auditoría de negocio
+de los registros técnicos utilizados para el seguimiento del
+funcionamiento de la aplicación. Los primeros se generan a partir
+de operaciones funcionales catalogadas y se almacenan mediante
+el mecanismo de eventos descrito. Por su parte, los registros
+técnicos se relacionan con componentes como
+\texttt{LogAction} y \texttt{LoggingAspect}, utilizados para
+registrar información sobre la ejecución de determinadas
+actividades del \textit{backend}. Ambos mecanismos responden a
+responsabilidades distintas y no deben interpretarse como un
+único sistema de auditoría.
+
+En conjunto, los componentes implementados permiten conservar registros persistentes de las operaciones de negocio incorporadas al catálogo de auditoría de EpilexIA. La separación entre la generación de eventos, la identificación de actores, la persistencia de registros y las funcionalidades de consulta facilita el seguimiento histórico de las actividades auditadas en el sistema.
+
+
+\section{Implementación del \textit{frontend}}
+
+El \textit{frontend} de EpilexIA se implementó como una
+aplicación web de página única (SPA), utilizando
+React 18 y TypeScript, con Vite 6 como herramienta
+de desarrollo y construcción. Este componente
+constituye la interfaz de interacción entre los
+usuarios y las funcionalidades clínicas, técnicas
+y administrativas del sistema.
+
+La organización del código se basa en una
+estructura modular que distingue las páginas,
+las funcionalidades del dominio, los componentes
+compartidos y la configuración general de la
+aplicación. Para la administración del estado
+se emplean mecanismos nativos de React y
+contextos especializados, mientras que la
+comunicación con el \textit{backend} se realiza mediante
+solicitudes HTTP a los servicios REST.
+
+La interfaz permite gestionar estudios
+electroencefalográficos y sus pacientes
+asociados, cargar archivos EEG y video,
+visualizar señales EEG y consultar resultados de inteligencia artificial, elaborar informes médicos y
+acceder a funcionalidades administrativas
+según los permisos del usuario.
+
+En los siguientes apartados se describen
+las tecnologías y la organización interna
+del \textit{frontend}, los mecanismos de navegación,
+la implementación de las principales
+interfaces y las pruebas automatizadas
+identificadas en el proyecto.
+
+
+\subsection{Arquitectura, tecnologías y organización del código}
+
+La implementación del \textit{frontend} sigue una arquitectura
+de aplicación de página única, en la cual React se
+encarga de construir y actualizar las interfaces
+mediante componentes reutilizables. TypeScript
+permite definir tipos para los datos, las propiedades
+de los componentes y las respuestas de los servicios,
+mientras que Vite proporciona las herramientas
+necesarias para el desarrollo y la generación de
+los archivos de distribución de la aplicación.
+
+El código fuente se organiza siguiendo principios
+de modularidad y separación de responsabilidades,
+con una estructura inspirada en el enfoque
+Feature-Sliced Design. Esta organización distingue
+la configuración general de la aplicación, las
+páginas asociadas a las rutas, las funcionalidades
+específicas del dominio y los elementos compartidos.
+Aunque se mantiene esta distribución conceptual,
+algunas pantallas integran múltiples responsabilidades
+debido a la complejidad de sus operaciones.
+
+La estructura principal se distribuye en los
+siguientes directorios:
+
+\begin{itemize}
+    \item \texttt{src/app}: contiene la configuración
+    del enrutamiento, los proveedores de contexto y
+    los componentes generales de disposición de la
+    interfaz.
+
+    \item \texttt{src/pages}: agrupa las páginas
+    asociadas a las diferentes rutas de la aplicación,
+    incluyendo las interfaces de gestión de estudios,
+    visualización EEG, informes y administración.
+
+    \item \texttt{src/features}: reúne componentes,
+    servicios, contextos y funcionalidades
+    relacionados con dominios específicos, como
+    autenticación, pacientes, estudios, informes
+    médicos y visualización de señales EEG.
+
+    \item \texttt{src/shared}: contiene recursos
+    reutilizables, entre ellos componentes visuales,
+    definiciones de tipos, utilidades, mecanismos
+    de verificación de permisos y el cliente HTTP.
+
+    \item \texttt{src/data}: almacena ejemplos y
+    datos simulados utilizados como recursos de
+    apoyo dentro del proyecto.
+\end{itemize}
+
+La administración del estado se realiza principalmente
+mediante mecanismos nativos de React, como
+\texttt{useState}, \texttt{useReducer},
+\texttt{useRef} y \texttt{useEffect}.
+Para compartir información entre componentes
+se utilizan contextos especializados.
+Entre ellos se encuentran \texttt{AuthProvider},
+responsable de mantener los datos de autenticación
+y permisos del usuario, y
+\texttt{UploadProgressProvider}, que permite
+conservar el estado de las transferencias de
+archivos mientras se navega entre las páginas
+de la aplicación.
+
+Asimismo, se emplean hooks especializados
+para encapsular comportamientos asociados
+a determinadas funcionalidades, como la
+consulta de informes médicos, la consulta de espectrogramas y el seguimiento del estado
+de las ejecuciones de inteligencia artificial.
+Este enfoque permite reutilizar parte de la
+lógica de interacción y mantenerla diferenciada
+de los componentes de presentación.
+
+La comunicación con el \textit{backend} se centraliza,
+para las solicitudes JSON habituales, mediante
+la función \texttt{apiRequest}, implementada
+en el cliente HTTP compartido. Este mecanismo
+utiliza una dirección base configurable,
+incorpora el \textit{token} de autenticación cuando
+corresponde, procesa las respuestas de los
+servicios REST y gestiona los errores HTTP.
+Para operaciones que requieren transferencia
+de archivos, descarga de contenido o recepción
+de datos binarios se emplean solicitudes
+específicas mediante la API \texttt{fetch}.
+
+Esta organización proporciona una base común
+para implementar las distintas interfaces
+del sistema, manteniendo diferenciadas las
+responsabilidades de navegación, presentación,
+gestión del estado y comunicación con los
+servicios del \textit{backend}.
+
+
+\subsection{Navegación, autenticación y gestión de interfaces}
+
+La navegación del \textit{frontend} se implementó mediante
+React Router DOM, utilizando el componente
+\texttt{BrowserRouter} para administrar las rutas
+de la aplicación sin requerir la recarga completa
+de la página en cada transición. La configuración
+del enrutamiento se encuentra centralizada en
+\texttt{src/app/router.tsx}, donde se definen
+las rutas públicas y aquellas que requieren
+una sesión autenticada.
+
+Las rutas públicas comprenden el inicio de sesión,
+la activación de cuentas y la recuperación de
+contraseñas. Por su parte, las rutas autenticadas
+permiten acceder a las interfaces de inicio,
+perfil del usuario, gestión de estudios,
+visualización EEG, informes médicos y
+funcionalidades administrativas, de acuerdo
+con los permisos correspondientes.
+
+El control de acceso a las interfaces se
+implementa mediante componentes especializados.
+\texttt{ProtectedLayout} verifica la existencia
+de una sesión de usuario restaurada y redirige
+a la pantalla de inicio de sesión cuando no
+se dispone de ella. Adicionalmente,
+\texttt{RequirePermission} comprueba los
+permisos requeridos por determinadas rutas
+y redirige al panel de control cuando el
+usuario no cuenta con la autorización
+correspondiente.
+
+
+La gestión de la sesión se centraliza mediante
+\texttt{AuthProvider}, que mantiene la información
+del usuario autenticado y sus permisos. El \textit{frontend}
+conserva el \textit{token} JWT y los datos necesarios para
+restaurar la sesión en el almacenamiento local del
+navegador (\texttt{localStorage}). Este mecanismo
+permite recuperar la sesión al volver a cargar la
+aplicación. No obstante, el almacenamiento de \textit{tokens}
+en este medio requiere considerar los riesgos asociados
+a la ejecución de \textit{scripts} maliciosos en el navegador,
+por lo que constituye un aspecto de seguridad
+susceptible de revisión en futuras versiones del sistema.
+
+
+Las solicitudes HTTP autenticadas incorporan
+el \textit{token} mediante la cabecera
+\texttt{Authorization}, utilizando el esquema
+\texttt{Bearer}. Cuando el \textit{backend} devuelve
+una respuesta HTTP 401, el cliente elimina
+los datos locales de la sesión. Asimismo,
+la aplicación sincroniza los cambios de
+autenticación entre pestañas mediante el
+evento \texttt{storage} del navegador y
+dispone de un procedimiento de cierre de
+sesión que invoca el servicio correspondiente
+del \textit{backend} antes de limpiar el estado local.
+
+La presentación de las opciones de navegación
+también considera los permisos del usuario.
+En el panel de control, las tarjetas de acceso
+a determinadas funcionalidades se muestran
+mediante comprobaciones realizadas con
+\texttt{hasPermission}. De esta manera,
+la interfaz presenta los accesos y controles
+pertinentes según las capacidades asociadas
+a la sesión autenticada.
+
+Estos mecanismos constituyen controles de
+navegación y presentación en el \textit{frontend},
+pero no reemplazan las verificaciones de
+seguridad realizadas por el \textit{backend}.
+La autorización efectiva de las operaciones
+se mantiene en los servicios REST, donde
+se validan los permisos y las restricciones
+aplicables a cada recurso.
+
+Para la construcción de las interfaces se
+utilizan componentes reutilizables basados
+en Radix UI, junto con Tailwind CSS y
+módulos CSS para la presentación visual.
+La aplicación incorpora indicadores de
+carga, mensajes de error, notificaciones
+transitorias y estados que informan cuando
+no existen datos disponibles.
+
+
+Asimismo, se emplean diseños adaptables
+mediante puntos de ruptura y distribuciones
+flexibles, complementados con ajustes
+específicos para interfaces complejas,
+como el visualizador EEG. Estas técnicas
+permiten adaptar la disposición de los
+componentes a diferentes dimensiones
+de pantalla.
+
+
+\subsection{Gestión integrada de pacientes y estudios EEG}
+
+La gestión de pacientes y estudios
+electroencefalográficos se implementó mediante
+interfaces que permiten registrar, consultar
+y administrar la información asociada a los
+estudios clínicos. La funcionalidad se concentra
+principalmente en la página de gestión de estudios,
+donde se integran las operaciones de selección
+de pacientes, creación de estudios y consulta
+de los registros existentes.
+
+Durante el registro de un nuevo estudio,
+el usuario puede buscar pacientes previamente
+registrados mediante un campo de búsqueda
+que consulta los resultados de forma diferida,
+reduciendo la cantidad de solicitudes realizadas
+mientras se introduce el texto. A partir de
+los resultados obtenidos, es posible seleccionar
+al paciente correspondiente y asociarlo al
+estudio que se está creando.
+
+Cuando el paciente no se encuentra registrado,
+la interfaz permite registrarlo desde
+el mismo formulario del estudio, siempre que
+el usuario disponga del permiso
+\texttt{patients.create}. Esta operación
+utiliza un componente reutilizable para
+introducir los datos personales y de contacto
+del paciente. Una vez completado el registro,
+el paciente recién creado queda seleccionado
+para continuar con la creación del estudio,
+sin necesidad de abandonar el flujo de trabajo.
+
+El formulario de registro de pacientes
+incorpora validaciones de los datos ingresados,
+incluyendo el documento de identidad, nombre,
+apellido, correo electrónico, teléfono,
+fecha de nacimiento, dirección y consistencia
+de la localidad seleccionada. Estas
+comprobaciones permiten detectar errores
+antes del envío de la información, sin
+sustituir las validaciones realizadas
+por los servicios del \textit{backend}.
+
+La creación de estudios contempla la
+asociación con un paciente y la identificación
+del especialista responsable. Cuando el
+usuario que registra el estudio no posee
+el perfil de Especialista, la interfaz requiere
+seleccionar uno de los profesionales
+disponibles. El formulario también permite
+incorporar el archivo EEG correspondiente
+y, de manera opcional, los archivos de video
+asociados al estudio.
+
+La página de gestión proporciona mecanismos
+de búsqueda, filtrado y paginación para
+consultar los estudios registrados.
+Los filtros disponibles permiten delimitar
+los resultados según criterios como el
+paciente, las fechas, el especialista,
+el estado del estudio y la situación
+del procesamiento mediante inteligencia
+artificial. Desde el listado es posible
+acceder a la visualización detallada
+de cada estudio.
+
+Asimismo, la interfaz presenta acciones
+para anular o reactivar estudios, así como
+para iniciar su procesamiento mediante
+inteligencia artificial, cuando los permisos
+del usuario y las condiciones informadas
+por el \textit{backend} permiten dichas operaciones.
+La disponibilidad de estas acciones se
+determina considerando tanto las capacidades
+del usuario como el estado del estudio.
+
+La gestión de pacientes se integra en el proceso de registro de
+estudios: al crear un estudio, el paciente se busca y, si no existe,
+se registra en ese mismo paso. Sus datos pueden consultarse y editarse
+posteriormente mediante una vista de detalle, accesible desde el estudio.
+
+Esta implementación permite mantener
+relacionadas las operaciones de registro
+de pacientes y estudios dentro de un
+mismo flujo de trabajo, mientras que
+la persistencia de la información y
+la aplicación de las reglas de negocio
+permanecen a cargo del \textit{backend}.
+
+
+\subsection{Carga y seguimiento de archivos EEG y video}
+
+La carga de archivos electroencefalográficos
+y audiovisuales se implementó mediante un
+mecanismo de transferencia que permite gestionar
+archivos de gran tamaño y supervisar el avance
+de las operaciones desde la interfaz web.
+Este procedimiento se integra en el registro
+de estudios y coordina las solicitudes
+necesarias para almacenar y procesar los
+archivos mediante los servicios del \textit{backend}.
+
+Para la transferencia de archivos EEG se
+utiliza un mecanismo de carga por fragmentos,
+implementado mediante una utilidad compartida.
+El archivo seleccionado se divide en partes
+de tamaño configurable, que posteriormente
+se envían al servidor mediante solicitudes
+HTTP. Este procedimiento permite organizar
+la transferencia sin requerir el envío
+del archivo completo en una única solicitud.
+
+La implementación contempla un número
+configurable de transferencias concurrentes,
+con un límite de ocho trabajadores, así
+como mecanismos de reintento para los
+fragmentos cuya transferencia no finaliza
+correctamente. Cuando el \textit{backend} lo requiere,
+el primer fragmento se envía de manera
+secuencial antes de continuar con las
+transferencias restantes. Estas medidas
+permiten coordinar la carga y gestionar
+determinados errores de comunicación
+durante el proceso.
+
+El seguimiento de la transferencia se
+centraliza mediante
+\texttt{UploadProgressProvider}, que conserva
+el estado de la operación activa mientras
+el usuario navega entre las páginas
+autenticadas. De esta manera, la interfaz
+puede mantener disponible la información
+sobre el progreso de la carga sin depender
+exclusivamente del componente desde el
+cual se inició el procedimiento.
+
+Una vez enviados los fragmentos, el \textit{frontend}
+realiza la solicitud de confirmación de la
+carga y consulta periódicamente el estado
+del procesamiento del archivo EEG. Este
+seguimiento permite identificar la evolución
+de las tareas ejecutadas por el \textit{backend},
+sin bloquear la interfaz durante el
+procesamiento asíncrono de las señales.
+
+El sistema admite la selección de archivos
+EEG en formato EDF. Para el material
+audiovisual se contempla la carga de archivos
+MP4 y conjuntos EZVideo. En el flujo de
+registro, cuando se selecciona un video,
+su transferencia se realiza después de la
+etapa correspondiente al archivo EEG.
+En el caso de EZVideo, el \textit{frontend} también
+supervisa la finalización de su conversión
+al formato de reproducción utilizado
+por el sistema.
+
+Antes de iniciar las operaciones, la
+interfaz aplica comprobaciones sobre los
+archivos seleccionados. Estas incluyen
+la validación de extensiones, la coherencia
+de la selección del material audiovisual
+y, para los conjuntos EZVideo, la presencia
+del archivo de índice y sus segmentos,
+la continuidad de la numeración y la
+ausencia de archivos duplicados.
+
+Adicionalmente, se realiza una comprobación
+orientativa entre el nombre del archivo
+y la identificación del paciente asociado
+al estudio. Cuando se detectan diferencias,
+la interfaz puede advertir al usuario,
+pero esta verificación no constituye
+una validación clínica de correspondencia
+entre el archivo y el paciente.
+
+La implementación separa las
+responsabilidades de transferencia y
+presentación del progreso, ejecutadas
+en el \textit{frontend}, de las operaciones de
+almacenamiento, procesamiento y conversión
+realizadas por los servicios del \textit{backend}.
+Esta distribución permite coordinar
+la incorporación de archivos EEG y video
+al estudio, manteniendo informado al
+usuario sobre las distintas etapas
+del procedimiento.
+
+
+\subsection{Implementación del visualizador EEG}
+
+El visualizador EEG constituye uno de los
+componentes principales de la interfaz web
+de EpilexIA, al proporcionar las herramientas
+necesarias para examinar las señales
+electroencefalográficas asociadas a un estudio.
+Su implementación integra la representación
+gráfica de los canales, la navegación temporal,
+la configuración de montajes y filtros, y
+la interacción con las anomalías y eventos
+registrados durante el análisis.
+
+La representación de las señales se realiza
+mediante el componente \texttt{EegStackedChart},
+desarrollado con elementos gráficos SVG
+(Scalable Vector Graphics). Este componente
+construye las trayectorias correspondientes
+a las muestras de cada canal y las dispone
+de forma apilada, permitiendo visualizar
+simultáneamente las distintas derivaciones
+electroencefalográficas. A diferencia de
+otros gráficos presentes en la aplicación,
+el trazado EEG utiliza una implementación
+SVG propia, sin depender de la biblioteca
+Recharts para representar las señales.
+
+Las muestras necesarias para la visualización
+se obtienen mediante solicitudes al \textit{backend},
+delimitadas por intervalos temporales.
+El \textit{frontend} administra la ventana de tiempo
+visible y proporciona controles para avanzar,
+retroceder, modificar la escala temporal
+y desplazar el cursor sobre las señales.
+Asimismo, incorpora mecanismos de caché
+y precarga de segmentos para reutilizar
+información previamente obtenida y facilitar
+la navegación entre diferentes intervalos
+del registro.
+
+La selección de montajes EEG se realiza
+mediante un componente específico que
+presenta las configuraciones disponibles
+recibidas desde el \textit{backend}. Al seleccionar
+un montaje, la interfaz actualiza la
+disposición de los canales correspondientes
+y solicita las señales según las derivaciones
+establecidas. De esta manera, la definición
+y el procesamiento de los montajes se
+mantienen en los servicios del \textit{backend},
+mientras que el \textit{frontend} administra su
+selección y representación visual.
+
+El visualizador dispone de controles para configurar las frecuencias de corte inferior (\textit{Low cut}) y superior (\textit{High cut}), así como un filtro de rechazo de banda (\texttt{notch}) de 50 Hz. También incorpora configuraciones
+predefinidas y ajustes individuales por
+canal. Antes de enviar los parámetros,
+la interfaz comprueba condiciones como
+la utilización de valores positivos,
+la relación entre las frecuencias de
+corte y el límite establecido por la
+frecuencia de Nyquist.
+
+El procesamiento digital de los filtros
+no se ejecuta directamente en el navegador.
+Los parámetros seleccionados se incorporan
+a las solicitudes de segmentos EEG y el
+\textit{backend} devuelve las muestras procesadas
+para su representación. En cambio, los
+ajustes de sensibilidad se aplican en
+el \textit{frontend} mediante modificaciones
+del escalado gráfico, tanto de forma
+general como individual para los canales
+que admiten esta configuración.
+
+Para facilitar la inspección de las
+señales, se implementó un modo de pantalla completa
+que amplía el área disponible para el
+visualizador y reorganiza los elementos
+de la interfaz. Esta funcionalidad
+modifica la disposición de los componentes
+dentro de la aplicación, ocultando
+temporalmente elementos generales de
+navegación. Su implementación se basa
+en estados y estilos de React, sin
+utilizar la API nativa de pantalla
+completa del navegador.
+
+El visualizador también incorpora
+herramientas para consultar y gestionar
+anomalías y eventos EEG. Las anomalías
+registradas manualmente se presentan
+de manera diferenciada de los resultados
+generados mediante inteligencia artificial.
+Según los permisos del usuario, la
+interfaz permite crear, modificar y
+eliminar anomalías manuales, así como
+registrar eventos EEG y desplazarse
+hacia los intervalos temporales
+correspondientes.
+
+Adicionalmente, los segmentos asociados
+a determinadas anomalías pueden
+incorporarse al informe médico
+seleccionado, estableciendo una relación
+entre la exploración visual de las señales
+y la elaboración de los resultados
+clínicos. La persistencia de estas
+operaciones se realiza mediante los
+servicios correspondientes del \textit{backend}.
+
+La implementación del visualizador
+distingue las operaciones de presentación
+e interacción, ejecutadas en el navegador,
+de las tareas de procesamiento digital
+de las señales, realizadas en el \textit{backend}.
+Esta separación permite que el \textit{frontend}
+se concentre en la exploración del
+registro electroencefalográfico y
+en la interacción del especialista
+con la información disponible.
+
+
+La Figura~\ref{fig:frontend-visualizador-eeg}
+presenta la organización funcional del
+visualizador EEG y su interacción con los
+servicios del \textit{backend}. El esquema distingue
+los componentes responsables de la
+configuración, obtención y representación
+de las señales, así como las herramientas
+de consulta y gestión de anomalías y eventos.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    >=Latex,
+    bloque/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        text width=5.2cm,
+        minimum height=1cm,
+        inner sep=5pt
+    },
+    backend/.style={
+        bloque,
+        fill=gray!12
+    },
+    flecha/.style={
+        <->,
+        thick
+    }
+]
+
+% Componentes del frontend
+\node[bloque] (controles) at (0,0)
+{Controles del visualizador EEG\\
+\footnotesize Tiempo, montajes, filtros y sensibilidad};
+
+\node[bloque] (segmentos) at (0,-1.8)
+{Gestión de segmentos EEG\\
+\footnotesize Solicitudes, caché y precarga};
+
+\node[bloque] (grafico) at (0,-3.6)
+{Representación gráfica SVG\\
+\footnotesize \texttt{EegStackedChart} y canales apilados};
+
+\node[bloque] (eventos) at (0,-5.4)
+{Anomalías y eventos EEG\\
+\footnotesize Consulta, registro y navegación};
+
+% Área del frontend
+\node[
+    draw,
+    dashed,
+    rounded corners=5pt,
+    fit=(controles)(segmentos)(grafico)(eventos),
+    inner sep=12pt,
+    label={[font=\bfseries]above:\textit{Frontend} -- React}
+] (frontendArea) {};
+
+% Servicios del backend
+\node[backend] (servicios) at (0,-8)
+{Servicios EEG del \textit{backend}\\
+\footnotesize Consulta de segmentos, filtros y derivaciones};
+
+% Área del backend
+\node[
+    draw,
+    dashed,
+    rounded corners=5pt,
+    fit=(servicios),
+    inner sep=12pt,
+    label={[font=\bfseries]below:\textit{Backend} -- Spring Boot}
+] {};
+
+% Relaciones internas
+
+% Comunicación general entre frontend y backend
+\draw[<->, thick]
+    (frontendArea.south) -- (servicios.north);
+
+
+\end{tikzpicture}
+
+\caption{Organización funcional del visualizador EEG
+y su interacción con los servicios del \textit{backend}.}
+\label{fig:frontend-visualizador-eeg}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Reproducción sincronizada de video y presentación de resultados de IA}
+
+La interfaz de visualización de estudios
+integra la reproducción de los registros
+audiovisuales asociados con las señales
+electroencefalográficas, permitiendo
+examinar de manera conjunta la actividad
+eléctrica cerebral y las manifestaciones
+observables durante el registro. Esta
+funcionalidad se incorpora al visualizador
+EEG y utiliza los archivos de video
+disponibles para cada estudio.
+
+La reproducción audiovisual se realiza
+mediante un componente basado en el
+elemento HTML5 \texttt{video}, que
+proporciona los controles necesarios
+para iniciar, pausar y desplazar la
+reproducción. El \textit{frontend} obtiene el
+recurso audiovisual mediante los
+servicios del \textit{backend} y administra
+su presentación dentro de la interfaz
+de análisis del estudio.
+
+La sincronización entre las señales
+EEG y el video se establece mediante
+una referencia temporal compartida.
+Durante la navegación por el registro,
+la interfaz relaciona la posición
+temporal de las señales con el instante
+correspondiente del video, de modo
+que ambas representaciones puedan
+examinarse dentro de un mismo contexto
+de análisis.
+
+El control de la reproducción considera
+las interacciones realizadas sobre
+el visualizador EEG, incluyendo los
+desplazamientos temporales y la
+selección de intervalos del registro.
+La coordinación de estos elementos
+se realiza en el \textit{frontend}, mientras
+que el \textit{backend} proporciona los
+segmentos EEG y los recursos
+audiovisuales necesarios para
+su presentación.
+
+En relación con la inteligencia
+artificial, el \textit{frontend} incorpora
+interfaces para solicitar el análisis
+de un estudio y consultar el estado
+de su ejecución. Debido a que el
+procesamiento se desarrolla de manera
+asíncrona, la aplicación realiza
+consultas periódicas a los servicios
+correspondientes para obtener
+información actualizada sobre
+su evolución y finalización.
+
+Una vez disponibles los resultados,
+la interfaz permite consultar las
+anomalías identificadas mediante
+inteligencia artificial y relacionarlas
+con los intervalos temporales del
+registro EEG. Esta presentación
+facilita que el especialista examine
+los segmentos señalados utilizando
+las herramientas de navegación
+y visualización de señales
+implementadas en el sistema.
+
+Los resultados generados mediante
+inteligencia artificial se presentan
+de forma diferenciada de las
+anomalías registradas manualmente
+por los profesionales. Esta
+distinción permite identificar
+el origen de la información
+consultada y evita confundir
+las detecciones automáticas
+con las observaciones incorporadas
+durante la evaluación clínica.
+
+La interfaz también contempla
+estados de carga, procesamiento,
+finalización y error, mediante
+los cuales informa al usuario
+sobre la disponibilidad de los
+resultados. La presentación
+de estos estados depende de
+las respuestas proporcionadas
+por los servicios del \textit{backend},
+sin que el navegador ejecute
+directamente los modelos
+de inteligencia artificial.
+
+La implementación mantiene
+separadas las responsabilidades
+de reproducción y sincronización
+audiovisual, visualización de
+resultados y procesamiento
+automático de señales. De esta
+manera, el \textit{frontend} proporciona
+un entorno de consulta integrado,
+mientras que la ejecución de
+los algoritmos de inteligencia
+artificial permanece a cargo
+de los componentes especializados
+del sistema.
+
+
+\subsection{Elaboración y consulta de informes médicos}
+
+La elaboración de informes médicos se implementó
+mediante una interfaz integrada al visualizador
+de estudios EEG, que permite a los especialistas
+registrar y consultar las observaciones clínicas
+derivadas del análisis electroencefalográfico.
+Esta funcionalidad vincula la exploración de las
+señales con la documentación de los resultados
+correspondientes a cada estudio.
+
+La interfaz de informes se organiza mediante
+el componente \texttt{MedicalReportPanel},
+responsable de presentar los datos del informe
+seleccionado y proporcionar los controles
+necesarios para su elaboración y consulta.
+El formulario contempla el médico solicitante, los datos clínicos, las condiciones técnicas del registro, los hallazgos ictales e interictales, una conclusión breve y las observaciones.
+
+La implementación permite que distintos
+especialistas elaboren informes individuales
+sobre un mismo estudio. Para ello, la interfaz
+presenta los informes disponibles y permite
+seleccionar el documento que se desea consultar.
+Cada informe conserva su identificación y
+asociación con el especialista correspondiente,
+evitando que las modificaciones realizadas
+sobre un documento afecten el contenido
+de los demás informes del estudio.
+
+Cuando un especialista inicia la elaboración
+de su propio informe, el \textit{frontend} genera
+un formulario con los campos clínicos
+inicialmente vacíos. Este comportamiento
+se implementó mediante una estructura de
+datos específica para la creación de informes,
+que establece la referencia al estudio,
+el estado inicial de borrador y los valores
+predeterminados requeridos por el servicio.
+De esta manera, no se reutiliza el contenido
+de otro informe que pudiera encontrarse
+seleccionado previamente en la interfaz.
+
+Durante la edición, el especialista puede
+incorporar y actualizar la información
+clínica correspondiente a su informe.
+Las operaciones de guardado utilizan el identificador del informe propio del especialista, de modo que las modificaciones se aplican únicamente al documento correspondiente.
+La interfaz también permite consultar
+informes elaborados por otros especialistas,
+sin habilitar su modificación cuando
+el usuario no dispone de la autorización
+correspondiente.
+
+Los informes médicos contemplan estados
+que determinan las operaciones disponibles
+sobre cada documento. Mientras un informe
+permanece en estado de borrador, su
+contenido puede modificarse conforme
+a los permisos del usuario. Una vez
+cerrado, el informe se presenta como
+un documento no editable, de acuerdo
+con las restricciones establecidas
+por la lógica de negocio del sistema.
+
+La interfaz incorpora mecanismos para
+relacionar segmentos del registro EEG
+con el informe médico seleccionado.
+Estos segmentos permiten conservar
+referencias a intervalos temporales
+relevantes durante el análisis,
+facilitando la vinculación entre
+las observaciones clínicas y las
+señales examinadas por el especialista.
+
+La gestión de los informes se complementa
+con controles de carga, validación y
+presentación de errores, que permiten
+informar al usuario sobre el resultado
+de las operaciones realizadas.
+Las restricciones de propiedad,
+estado y autorización se verifican
+también en el \textit{backend}, por lo que
+los controles de la interfaz no
+constituyen el único mecanismo
+de protección de los documentos.
+
+Esta implementación permite organizar
+la elaboración de informes médicos
+individuales dentro de un mismo estudio,
+manteniendo diferenciados sus autores,
+contenidos y estados. Asimismo, facilita
+la integración de la información clínica
+con los segmentos electroencefalográficos
+consultados durante el análisis.
+
+
+\subsection{Administración de usuarios y consulta de auditoría}
+
+Las funcionalidades administrativas del \textit{frontend}
+se implementaron mediante interfaces destinadas
+a la gestión de cuentas de usuario y la consulta
+de los registros de auditoría del sistema.
+Estas herramientas permiten realizar operaciones
+de administración y seguimiento desde la
+aplicación web, utilizando los servicios REST
+proporcionados por el \textit{backend}.
+
+
+La administración de usuarios dispone de una
+interfaz que permite consultar, buscar, filtrar
+y paginar las cuentas registradas, así como
+crear nuevas cuentas y modificar los datos
+de los usuarios existentes. Las operaciones
+de edición comprenden el nombre, apellido,
+correo electrónico, teléfono y rol asignado.
+Asimismo, la interfaz permite activar o
+desactivar cuentas, reenviar enlaces de
+activación y solicitar o reenviar enlaces
+de restablecimiento de contraseña, según
+el estado de cada usuario.
+
+La asignación de roles se realiza mediante
+un selector que obtiene los perfiles
+disponibles desde los servicios del \textit{backend}.
+En la implementación actual, estos
+corresponden a Administrador, Técnico y
+Especialista. La interfaz permite asignar
+o modificar el rol de una cuenta utilizando
+este catálogo, pero no incorpora
+funcionalidades para crear nuevos roles
+ni modificar directamente los permisos
+asociados a ellos.
+
+Las opciones administrativas se presentan
+de acuerdo con las condiciones de acceso
+establecidas para el usuario autenticado.
+Los controles disponibles en el \textit{frontend}
+permiten orientar la navegación y las
+operaciones habilitadas, mientras que
+la autorización definitiva se verifica
+en los servicios del \textit{backend}. De esta
+manera, la presentación de una opción
+administrativa no constituye por sí sola
+una autorización para ejecutar la operación.
+
+Por otra parte, la consulta de auditoría
+se implementó mediante una interfaz
+que presenta los eventos de negocio
+registrados durante la utilización
+del sistema. La información se obtiene
+a través de los servicios REST de
+auditoría y permite examinar las
+operaciones catalogadas, junto con
+los datos descriptivos del usuario
+que las realizó y el momento en
+que fueron registradas.
+
+La interfaz incorpora mecanismos de
+búsqueda y filtrado que permiten
+delimitar los resultados según
+criterios como la fecha, el tipo
+de evento, el usuario y el rol
+asociado a la operación. Para
+facilitar la selección de los
+criterios, se emplean controles
+específicos, incluyendo la
+selección de fechas y opciones
+de roles disponibles.
+
+Los resultados se presentan mediante
+un listado paginado, que permite
+consultar los eventos registrados
+sin cargar simultáneamente la
+totalidad de la información.
+La consulta utiliza los parámetros
+de filtrado y paginación admitidos
+por el \textit{backend}, manteniendo
+la presentación de los registros
+ordenados desde los más recientes.
+
+La información mostrada corresponde
+a los datos conservados en los
+registros de auditoría, incluyendo
+la identificación descriptiva
+y el rol del actor al momento
+de la operación. La interfaz
+se limita a consultar y presentar
+estos datos, sin intervenir
+en la generación de los eventos
+ni modificar su contenido
+almacenado.
+
+Esta implementación proporciona
+herramientas para la administración
+de cuentas y la revisión de
+operaciones registradas en EpilexIA,
+manteniendo separadas las
+responsabilidades de presentación
+del \textit{frontend} y las funciones
+de autorización, persistencia
+y trazabilidad implementadas
+en el \textit{backend}.
+
+
+\subsection{Pruebas automatizadas y limitaciones de la implementación}
+
+La implementación del \textit{frontend} de EpilexIA
+incorpora pruebas automatizadas destinadas
+a verificar el comportamiento de funciones,
+componentes de interfaz y mecanismos de
+comunicación con los servicios del sistema.
+Para ello, se utiliza Vitest como herramienta
+de ejecución, junto con React Testing Library,
+jest-dom y jsdom para la evaluación de
+componentes y comportamientos asociados
+al entorno del navegador.
+
+Las pruebas se organizan en archivos
+con las extensiones \texttt{.test.ts} y
+\texttt{.test.tsx}, distribuidos entre
+los módulos funcionales y los recursos
+compartidos de la aplicación. La
+configuración establece un entorno
+simulado de navegador y contempla
+operaciones de preparación y limpieza
+para facilitar la ejecución independiente
+de los casos.
+
+El \textit{frontend} cuenta con 40 archivos de pruebas
+automatizadas, que comprenden un total
+de 225 casos. La ejecución de la suite
+mediante el comando \texttt{npm test}
+finalizó satisfactoriamente, con
+225 pruebas aprobadas y ninguna fallida.
+Los resultados se resumen en el
+Cuadro~\ref{tab:pruebas-frontend}.
+
+\begin{table}[htbp]
+\centering
+\caption{Resultados de las pruebas
+automatizadas del \textit{frontend}.}
+\label{tab:pruebas-frontend}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Indicador} & \textbf{Resultado} \\
+\hline
+Archivos de pruebas ejecutados & 40 \\
+\hline
+Casos de prueba ejecutados & 225 \\
+\hline
+Casos aprobados & 225 \\
+\hline
+Casos fallidos & 0 \\
+\hline
+\end{tabular}
+\end{table}
+
+Las pruebas implementadas comprenden
+principalmente verificaciones unitarias
+de funciones auxiliares y pruebas de
+integración de componentes con
+dependencias simuladas. También se
+incluyen comprobaciones de servicios
+y contratos de comunicación mediante
+respuestas HTTP simuladas, sin requerir
+la disponibilidad de los servicios
+reales del \textit{backend} durante su ejecución.
+
+Una parte importante de las pruebas
+se concentra en el visualizador EEG.
+Se verifican mecanismos relacionados
+con la representación de señales,
+escalas gráficas, ejes temporales,
+montajes, filtros, sensibilidad,
+navegación y modo de pantalla completa.
+Asimismo, existen casos destinados
+a comprobar la administración de
+segmentos, la precarga y los
+mecanismos de almacenamiento
+temporal en memoria.
+
+También se incluyen pruebas
+relacionadas con la consulta y
+representación de anomalías,
+el inicio y seguimiento de
+ejecuciones de inteligencia
+artificial y la gestión de
+informes médicos. En este
+último ámbito se comprueban
+escenarios de creación,
+selección, consulta y edición
+de informes individuales,
+incluyendo restricciones
+asociadas a su propietario
+y estado.
+
+En relación con la transferencia
+de archivos, las pruebas
+verifican la división en
+fragmentos, la concurrencia
+limitada y los mecanismos
+de reintento. Sin embargo,
+estas comprobaciones no
+abarcan el procedimiento
+completo de transferencia,
+confirmación y procesamiento
+mediante los servicios reales
+del \textit{backend}.
+
+Algunas funcionalidades tienen
+cobertura automatizada parcial
+o carecen de pruebas directas.
+Entre ellas se encuentran
+la autenticación completa
+y recuperación de sesión,
+la gestión integral de
+pacientes y usuarios,
+la sincronización temporal
+entre EEG y video y la
+consulta de registros
+de auditoría.
+
+Asimismo, no se cuenta con
+pruebas automatizadas de
+extremo a extremo que
+comprueben el funcionamiento
+integrado del \textit{frontend} con
+el \textit{backend}, las bases de
+datos y los componentes de
+inteligencia artificial.
+Tampoco se dispone de una
+herramienta configurada
+para medir cuantitativamente
+la cobertura del código,
+por lo que no es posible
+establecer un porcentaje
+global de cobertura a
+partir de las pruebas
+ejecutadas.
+
+Respecto de las limitaciones
+de implementación, el
+visualizador EEG concentra
+numerosas responsabilidades
+en su componente principal,
+incluyendo la coordinación
+de señales, video, montajes,
+filtros, anomalías, informes
+y ejecuciones de inteligencia
+artificial. Aunque parte
+de estas operaciones se
+encuentra distribuida en
+componentes y funciones
+auxiliares, su integración
+incrementa la complejidad
+de mantenimiento y
+verificación.
+
+Para el tratamiento de
+estudios extensos, el
+\textit{frontend} incorpora mecanismos
+de precarga segmentada,
+almacenamiento temporal
+y descarte de información
+según un presupuesto de
+memoria. No obstante, la
+configuración contempla
+un consumo nominal que
+puede aproximarse a
+400 MB para los arreglos
+de muestras EEG, lo cual
+requiere considerar las
+capacidades de los equipos
+utilizados durante la
+visualización.
+
+Por otra parte, no se
+identificaron pruebas
+automatizadas de rendimiento
+con registros clínicos
+extensos, evaluaciones
+integrales de compatibilidad
+en dispositivos móviles
+ni ensayos de recuperación
+de transferencias ante
+interrupciones prolongadas.
+Por consiguiente, estos
+aspectos requieren
+verificaciones adicionales
+en condiciones de uso
+representativas.
+
+
+En conjunto, la ejecución satisfactoria de las pruebas
+automatizadas proporciona evidencia de verificación
+para diversas funciones y componentes del \textit{frontend}.
+Sin embargo, la ausencia de pruebas de extremo a extremo,
+de medición formal de cobertura y de evaluaciones de
+rendimiento limita el alcance de la verificación integral
+de la aplicación.
+
+
+\section{Implementación de los componentes de inteligencia artificial}
+
+La implementación de los componentes de inteligencia artificial
+de EpilexIA comprende los servicios encargados de gestionar
+las solicitudes de análisis electroencefalográfico, ejecutar
+los procedimientos de procesamiento de señales y poner a
+disposición los resultados obtenidos. Estos componentes
+complementan las funcionalidades del sistema clínico mediante
+mecanismos de análisis automatizado que proporcionan
+información de apoyo para la evaluación de los estudios EEG.
+
+La solución se organiza en dos componentes principales:
+una interfaz de servicios desarrollada con FastAPI y un
+motor independiente de procesamiento implementado en Python.
+Esta separación permite distinguir las responsabilidades
+de comunicación, validación y gestión de ejecuciones de
+las operaciones de procesamiento científico e inferencia.
+
+La coordinación entre ambos componentes se realiza mediante
+una base de datos PostgreSQL, utilizada tanto para conservar
+la información de las ejecuciones como para gestionar una
+cola persistente de trabajos. De esta manera, las solicitudes
+de análisis pueden registrarse y consultarse sin requerir
+que el procesamiento intensivo se complete durante la
+atención de una petición HTTP.
+
+El motor de inteligencia artificial incorpora procedimientos
+para la lectura de archivos EEG, la preparación de las señales,
+su segmentación temporal, la extracción de características
+y la aplicación de un modelo de clasificación previamente
+entrenado. Los resultados seleccionados se almacenan
+asociados a sus respectivas ejecuciones, permitiendo su
+posterior consulta desde los componentes del sistema.
+
+En los apartados siguientes se describe la organización
+de esta arquitectura, la implementación de los servicios
+y mecanismos de coordinación, las etapas del procesamiento
+electroencefalográfico y la persistencia de los resultados.
+Asimismo, se presentan las pruebas automatizadas
+identificadas y las principales limitaciones técnicas
+de la implementación.
+
+
+\subsection{Arquitectura y organización de los componentes de inteligencia artificial}
+
+La implementación de los componentes de inteligencia
+artificial de EpilexIA se organiza en dos proyectos
+independientes, denominados \texttt{epilex-ia-api}
+y \texttt{epilex-ia-motor}. Esta separación permite
+diferenciar las operaciones de comunicación y gestión
+de solicitudes de las tareas de procesamiento
+electroencefalográfico e inferencia, que requieren
+la ejecución de procedimientos computacionales
+especializados.
+
+El proyecto \texttt{epilex-ia-api} constituye la
+interfaz de servicios de inteligencia artificial.
+Se encuentra desarrollado en Python y utiliza
+FastAPI como \textit{framework} principal para exponer
+los servicios HTTP. Su implementación comprende
+la recepción y validación de solicitudes, la
+administración de ejecuciones, la consulta de
+estados y resultados, y la interacción con la
+capa de persistencia. Para el acceso a la base
+de datos se utiliza SQLAlchemy, mientras que
+Alembic permite administrar las modificaciones
+del esquema mediante migraciones.
+
+La organización interna de la API distingue
+los módulos encargados de definir las rutas
+HTTP, los esquemas de intercambio de datos,
+la lógica de los servicios, los modelos de
+persistencia y la configuración de la aplicación.
+Esta distribución permite mantener separadas
+las responsabilidades de exposición de servicios,
+validación de información y acceso a los datos,
+aunque determinadas operaciones requieren
+la coordinación entre varios de estos módulos.
+
+Por su parte, el proyecto
+\texttt{epilex-ia-motor} implementa el componente
+encargado de ejecutar los trabajos de procesamiento
+de inteligencia artificial. Se desarrolla en Python
+y funciona como un proceso independiente, sin
+exponer una interfaz HTTP propia. Su organización
+comprende los mecanismos de recuperación de
+trabajos pendientes, la ejecución del procesamiento
+electroencefalográfico y el registro de los
+resultados y estados de las ejecuciones.
+
+Dentro del motor se distinguen las responsabilidades
+de coordinación de trabajos y procesamiento
+científico. La primera comprende la obtención de
+las solicitudes pendientes y el seguimiento de
+su ejecución, mientras que la segunda incorpora
+los procedimientos de lectura y preparación
+de señales EEG, segmentación temporal, extracción
+de características y aplicación del modelo
+de clasificación. Esta separación permite
+mantener diferenciada la administración de
+trabajos de las operaciones de análisis de señales.
+
+La coordinación entre la API y el motor se
+implementa mediante una base de datos PostgreSQL
+compartida por ambos componentes. La API registra las solicitudes de procesamiento
+en una cola persistente
+y el motor recupera los trabajos disponibles
+para su ejecución. Los estados y resultados
+se conservan en la misma base de datos, lo que
+permite a la API atender posteriormente las
+consultas realizadas por el \textit{backend} clínico.
+
+
+Los componentes utilizan mecanismos de configuración
+para establecer las conexiones a la base de datos,
+las rutas de los archivos y los parámetros necesarios
+para su funcionamiento. Asimismo, requieren acceso
+a los recursos EEG y a los archivos del modelo
+utilizados durante el procesamiento, mediante
+las rutas y volúmenes configurados en el entorno.
+Esta disposición permite mantener separados
+los servicios de comunicación y los procesos
+de análisis, conservando el acceso a los
+recursos necesarios para cada ejecución.
+
+En conjunto, esta arquitectura establece una
+separación funcional entre la gestión de solicitudes
+y el procesamiento de inteligencia artificial.
+La API proporciona los servicios de interacción
+con el resto del sistema, mientras que el motor
+independiente asume la ejecución de los trabajos
+mediante la cola persistente. Los mecanismos
+específicos de comunicación, coordinación,
+procesamiento y persistencia se desarrollan
+en los siguientes apartados.
+
+
+La Figura~\ref{fig:arquitectura-componentes-ia}
+presenta la organización de los componentes de
+inteligencia artificial, basada en una cola persistente. El esquema muestra
+la comunicación entre el \textit{backend} clínico y la API
+de inteligencia artificial, la coordinación de
+trabajos mediante PostgreSQL y el acceso del motor
+a los archivos EEG y al modelo de clasificación.
+
+
+% Figura 5.5: Arquitectura de los componentes de IA
+\begin{figure}[p]
+    \centering
+    \begin{tikzpicture}[
+        font=\small,
+        >=Latex,
+        componente/.style={
+            draw,
+            rounded corners=3pt,
+            align=center,
+            text width=7cm,
+            minimum height=1.35cm,
+            inner sep=7pt
+        },
+        recurso/.style={
+            draw,
+            rounded corners=3pt,
+            align=center,
+            text width=3.05cm,
+            minimum height=1.15cm,
+            inner sep=5pt
+        },
+        conexion/.style={
+            <->,
+            thick
+        }
+    ]
+
+    % Backend clínico
+    \node[componente] (backend) {
+        \textbf{\textit{Backend} clínico -- Spring Boot}\\
+        Solicitudes de análisis y consulta de resultados
+    };
+
+    % API de inteligencia artificial
+    \node[componente, below=1.15cm of backend] (api) {
+        \textbf{API de IA -- FastAPI}\\
+        Servicios REST y gestión de ejecuciones\\
+        \texttt{epilex-ia-api}
+    };
+
+    % Base de datos
+    \node[
+        componente,
+        below=1.15cm of api,
+        fill=gray!10
+    ] (db) {
+        \textbf{PostgreSQL 16}\\
+        Cola persistente de trabajos\\
+        Estados y resultados
+    };
+
+    % Motor de inteligencia artificial
+    \node[componente, below=1.15cm of db] (motor) {
+        \textbf{Motor de IA -- Python}\\
+        Procesamiento EEG e inferencia\\
+        \texttt{epilex-ia-motor}
+    };
+
+    % Recursos externos
+    \node[
+        recurso,
+        below left=1.4cm and -0.2cm of motor
+    ] (eeg) {
+        \textbf{Archivos EEG}\\
+        Señales de entrada
+    };
+
+    \node[
+        recurso,
+        below right=1.4cm and -0.2cm of motor
+    ] (modelo) {
+        \textbf{Modelo de IA}\\
+        Archivo \texttt{.joblib}
+    };
+
+    % Conexiones principales
+    \draw[conexion] (backend) -- node[right] {
+        \scriptsize HTTP / JSON
+    } (api);
+
+    \draw[conexion] (api) -- node[right] {
+        \scriptsize SQL
+    } (db);
+
+    \draw[conexion] (db) -- node[right] {
+        \scriptsize Reserva y actualización
+    } (motor);
+
+    % Acceso a recursos
+    \draw[->, thick] (eeg.north) -- (motor.south west);
+
+    \draw[->, thick] (modelo.north) -- (motor.south east);
+
+    \end{tikzpicture}
+
+    \caption{Arquitectura de los componentes de
+inteligencia artificial del sistema EpilexIA
+con la cola persistente \texttt{pgqueue}.}
+
+    \label{fig:arquitectura-componentes-ia}
+\end{figure}
+
+\FloatBarrier
+
+
+\subsection{Implementación de la API de inteligencia artificial}
+
+La interfaz de servicios de inteligencia artificial
+de EpilexIA se implementó mediante FastAPI, un
+\textit{framework} de Python que permite desarrollar
+servicios HTTP para la comunicación entre los
+componentes del sistema. Esta API constituye
+el punto de acceso a las funcionalidades de
+procesamiento automatizado de señales EEG,
+proporcionando operaciones para registrar
+solicitudes de análisis, consultar su evolución
+y recuperar los resultados generados.
+
+La aplicación organiza sus servicios mediante
+rutas HTTP que reciben las solicitudes y
+delegan las operaciones correspondientes a
+los componentes internos. Para el intercambio
+de información se utilizan estructuras de
+datos definidas mediante esquemas de validación,
+que permiten comprobar los parámetros recibidos
+y establecer el formato de las respuestas.
+De esta manera, se mantiene diferenciada
+la recepción de solicitudes de las operaciones
+de gestión y persistencia de las ejecuciones.
+
+Entre las funcionalidades principales se
+encuentra el registro de nuevas ejecuciones
+de inteligencia artificial asociadas a un
+estudio EEG. Al recibir una solicitud, la API
+comprueba los datos requeridos y registra
+la información necesaria para administrar
+el procesamiento. La solicitud incorpora
+la identificación del estudio y los parámetros
+admitidos por el servicio, mientras que
+la ejecución del análisis se desarrolla
+posteriormente, mediante la cola de ejecuciones.
+
+La API también proporciona servicios para
+consultar las ejecuciones registradas y
+obtener información sobre su estado. Estas
+operaciones permiten conocer la evolución
+del procesamiento sin mantener abierta
+la solicitud HTTP utilizada para iniciar
+el análisis. El \textit{backend} clínico puede
+realizar consultas posteriores y presentar
+al usuario la información disponible sobre
+las distintas etapas de ejecución.
+
+Una vez finalizado el procesamiento, los
+servicios de consulta permiten recuperar
+los resultados asociados a la ejecución.
+La información disponible comprende los
+datos registrados por el componente de
+procesamiento y las referencias temporales
+correspondientes a las detecciones
+identificadas en las señales EEG. La API
+se encarga de recuperar y exponer estos
+datos, sin realizar nuevamente la inferencia
+durante las operaciones de consulta.
+
+
+La implementación incorpora mecanismos de autenticación
+HTTP Basic para proteger los servicios utilizados en la
+comunicación con el \textit{backend} clínico. Las solicitudes se
+verifican mediante las credenciales configuradas en la API,
+diferenciando las operaciones autorizadas de aquellas que
+no cumplen las condiciones de acceso. Dado que HTTP Basic
+no proporciona cifrado de las credenciales durante su
+transmisión, su utilización requiere considerar la
+protección del canal de comunicación, especialmente
+cuando los servicios se exponen fuera de una red interna
+controlada. Asimismo, se contemplan respuestas HTTP
+para informar sobre solicitudes inválidas, recursos no
+disponibles y errores producidos durante las operaciones.
+
+
+Además de la administración de ejecuciones
+y resultados, la API incorpora servicios
+complementarios relacionados con la
+información clínica y la generación de
+representaciones derivadas de las señales
+EEG, como los espectrogramas DSA. Estas
+funcionalidades se implementan mediante
+operaciones específicas y permiten atender
+solicitudes de otros componentes de EpilexIA.
+La generación de espectrogramas se describe
+con mayor detalle en el apartado correspondiente.
+
+La configuración de la aplicación permite
+establecer los parámetros de conexión a
+PostgreSQL, las rutas de acceso a los recursos
+necesarios y las opciones de ejecución. Esta configuración
+mantiene diferenciados los aspectos propios
+del entorno de despliegue de la lógica
+utilizada para atender las solicitudes.
+
+En conjunto, la API proporciona una interfaz
+de comunicación entre el \textit{backend} clínico
+y los componentes especializados de
+inteligencia artificial. Su implementación
+centraliza la recepción y validación de
+solicitudes, la administración de ejecuciones
+y la exposición de resultados, mientras
+que las tareas de procesamiento EEG e
+inferencia se desarrollan en el motor independiente.
+
+
+\subsection{Gestión asíncrona de ejecuciones y coordinación con el motor}
+
+La gestión de las ejecuciones de inteligencia
+artificial de EpilexIA se implementó mediante
+mecanismos de procesamiento asíncrono que
+permiten separar la recepción de solicitudes
+de análisis de la ejecución de las operaciones
+computacionales. Esta organización evita
+que el \textit{backend} clínico deba mantener abierta
+una solicitud HTTP durante todo el procesamiento
+de un estudio electroencefalográfico.
+
+La coordinación entre la API de inteligencia
+artificial y el motor independiente se realiza
+mediante una cola persistente implementada
+sobre PostgreSQL. Cuando se solicita el análisis
+de un estudio, la API registra la ejecución
+y la información necesaria para su procesamiento.
+Posteriormente, el motor consulta la base
+de datos para identificar los trabajos
+pendientes y comenzar su ejecución.
+
+El mecanismo de recuperación de trabajos
+utiliza operaciones transaccionales sobre
+PostgreSQL, incluyendo la cláusula
+\texttt{FOR UPDATE SKIP LOCKED}. Esta
+instrucción permite seleccionar y bloquear
+registros disponibles, omitiendo aquellos
+que ya se encuentran bloqueados por otras
+transacciones. Su utilización contribuye
+a coordinar la reserva de trabajos cuando
+existen procesos que consultan la misma
+cola, reduciendo la posibilidad de que
+un trabajo sea reservado simultáneamente
+por más de un trabajador.
+
+Una vez reservado un trabajo, el motor
+recupera los parámetros asociados a la
+ejecución y prepara el entorno necesario
+para iniciar el procesamiento. La ejecución
+del análisis se delega a un subproceso,
+lo que permite diferenciar el mecanismo
+encargado de administrar los trabajos
+de las operaciones científicas aplicadas
+sobre las señales EEG.
+
+Durante el procesamiento, la implementación
+conserva información sobre el estado de
+las ejecuciones y contempla mecanismos
+de seguimiento destinados a identificar
+trabajos en curso. El motor actualiza
+los registros correspondientes a medida
+que avanza la ejecución, permitiendo
+que los servicios de consulta proporcionen
+información sobre su situación sin
+interrumpir el procesamiento.
+
+La administración de estados permite
+distinguir las solicitudes pendientes,
+las ejecuciones en curso y aquellas que
+han finalizado, ya sea correctamente
+o debido a un error. Esta información
+se conserva en la base de datos y puede
+ser recuperada por la API para responder
+a las consultas del \textit{backend} clínico.
+De esta manera, la interfaz web puede
+informar al usuario sobre la evolución
+del análisis mediante consultas periódicas.
+
+La implementación contempla mecanismos
+para gestionar determinadas situaciones
+de interrupción o fallo durante la ejecución.
+Entre ellos se encuentran el seguimiento
+de la actividad de los trabajadores,
+el tratamiento de errores y la actualización
+de los estados asociados a los trabajos.
+Estos procedimientos permiten identificar
+ejecuciones que no completaron normalmente
+su procesamiento, aunque no implican
+por sí mismos una garantía de recuperación
+automática ante cualquier tipo de fallo.
+
+Al finalizar el análisis, el motor registra
+los resultados obtenidos y actualiza
+la información de la ejecución. La API
+puede consultar posteriormente estos
+datos y ponerlos a disposición del
+\textit{backend} clínico mediante sus servicios
+REST. La coordinación se realiza a través
+de PostgreSQL, sin requerir una comunicación
+HTTP directa entre la API y el motor.
+
+
+En conjunto, estos mecanismos permiten
+organizar el procesamiento de inteligencia
+artificial como una actividad independiente
+de las solicitudes HTTP que lo originan.
+La persistencia de las ejecuciones,
+la reserva transaccional de trabajos
+y la consulta de estados proporcionan
+los elementos necesarios para coordinar
+la API con el motor, manteniendo
+diferenciadas las responsabilidades
+de gestión y procesamiento.
+
+
+\subsection{Integración del modelo de detección}
+\label{subsec:modelo-vigente-hgb}
+
+El modelo de detección y el procedimiento de análisis que lo acompaña fueron desarrollados por el equipo de ciencia de datos del proyecto EpilexIA.
+El presente trabajo no comprende su diseño ni su entrenamiento, sino su integración en el motor y en la plataforma.
+Por ello, esta subsección describe el procedimiento únicamente en el nivel necesario para explicar dicha integración.
+
+Al iniciar una ejecución, el motor recupera la ruta relativa del archivo EEG almacenada en el campo \texttt{edf\_path} de la tabla \texttt{ai\_executions} y la combina con la ruta base del volumen configurado.
+Antes de comenzar el análisis, comprueba la existencia del archivo EDF y del paquete del modelo.
+
+El modelo vigente, denominado HGB~2.0, es un clasificador de \textit{Gradient Boosting} basado en histogramas (\textit{Histogram-based Gradient Boosting}, HGB), en línea con los antecedentes desarrollados en la FP-UNA \citep{Lezcano2026GradientBoosting}.
+Su procedimiento de análisis comprende las siguientes etapas:
+
+\begin{itemize}
+    \item \textbf{Lectura y montaje:} el archivo EDF se lee por partes y las señales, remuestreadas a 256~Hz, se adaptan a un montaje bipolar longitudinal de 18 derivaciones, contemplando las equivalencias de nomenclatura entre electrodos.
+    \item \textbf{Filtrado:} se aplica un filtro pasabanda entre 0,5 y 45~Hz, junto con un filtro de rechazo de la frecuencia de red.
+    \item \textbf{Segmentación:} el registro se divide en ventanas consecutivas de 10 segundos, y los tramos en los que la señal permanece plana se excluyen del análisis.
+    \item \textbf{Características:} para cada derivación se calculan 75 características, por lo que cada ventana se representa mediante 1350 valores.
+    \item \textbf{Normalización:} las características se normalizan para cada registro mediante estadísticos robustos calculados sobre los primeros 30 minutos de señal válida, o sobre 10 minutos cuando la duración del registro no lo permite.
+    \item \textbf{Regla de detección:} un intervalo se señala únicamente cuando dos ventanas consecutivas superan un umbral de probabilidad de 0,95, lo que equivale a 20 segundos continuos por encima de dicho umbral.
+\end{itemize}
+
+El motor invoca este procedimiento para cada ejecución, indicando el archivo EDF, el paquete del modelo y el archivo de salida.
+El paquete serializado del modelo incluye la configuración de preprocesamiento con la que fue entrenado.
+Antes de ejecutar la inferencia, el motor verifica que la frecuencia de muestreo, la duración de las ventanas, las derivaciones y las características coincidan con dicha configuración, y aborta la ejecución en caso contrario.
+El umbral y la cantidad de ventanas consecutivas se obtienen del paquete del modelo y pueden establecerse para cada ejecución; el umbral aplicado queda registrado junto con la ejecución.
+
+Como salida, el procedimiento genera un archivo con una fila por cada ventana analizada.
+Los resultados se almacenan por ventana: cada ventana de diez segundos que integra una secuencia señalada se registra como un resultado individual, de modo que una detección de 20 segundos se presenta como dos registros consecutivos.
+La persistencia y la consulta de estos resultados se describen más adelante en esta sección.
+
+\subsection{Evolución del modelo de detección}
+\label{subsec:evolucion-modelo}
+
+La integración se realizó inicialmente con una primera versión del modelo, identificada como MLP, que permitió construir y probar el circuito completo del sistema: la solicitud del análisis, la cola de ejecuciones, el procesamiento y la presentación de los resultados.
+Durante el proyecto, el equipo de ciencia de datos continuó el desarrollo de sus modelos y proporcionó la versión HGB~2.0, que reemplazó a la anterior.
+Todas las pruebas finales documentadas en el Anexo~\ref{pruebas_evaluacion} se realizaron con este modelo.
+
+El reemplazo requirió adaptar el motor al nuevo procedimiento de análisis, sin modificaciones en la comunicación con el \textit{backend} clínico ni en la interfaz web.
+Dado que cada modelo se distribuye como un paquete que incluye su propia configuración, el sistema queda preparado para incorporar las versiones posteriores que resulten de la continuidad de esa línea de trabajo.
+
+\subsection{Persistencia y consulta de los resultados}
+
+La persistencia de los resultados constituye la etapa posterior a la
+ejecución del modelo de clasificación en el motor de inteligencia
+artificial de EpilexIA. Su finalidad es conservar la información
+obtenida durante el procesamiento de las señales EEG y permitir
+su posterior recuperación mediante los servicios de la API,
+sin necesidad de ejecutar nuevamente el análisis.
+
+Una vez completada la inferencia, el procedimiento dispone de
+las predicciones correspondientes a las ventanas temporales
+procesadas y, cuando el estimador lo permite, de las probabilidades
+asociadas a las clases evaluadas. Esta información constituye
+la entrada para los mecanismos encargados de seleccionar
+las detecciones que serán almacenadas.
+
+La selección de resultados considera las ventanas clasificadas
+como crisis y que disponen de una probabilidad válida. Para
+conservar una detección, dicha probabilidad debe cumplir el
+umbral configurado para la ejecución. De esta manera, el
+criterio de almacenamiento se aplica posteriormente a la
+clasificación realizada por el modelo y permite distinguir
+entre las predicciones generadas y las detecciones finalmente
+registradas.
+
+Cada detección seleccionada conserva una referencia a la
+ejecución de inteligencia artificial que la produjo, junto
+con los tiempos de inicio y finalización del intervalo
+analizado y la probabilidad de crisis correspondiente.
+Los tiempos se expresan en segundos respecto del comienzo
+del registro EEG, lo que permite relacionar posteriormente
+las detecciones con los segmentos temporales del estudio.
+
+La información se almacena en la base de datos PostgreSQL
+utilizada por los componentes de inteligencia artificial.
+Esta base de datos también conserva los registros de las
+ejecuciones y sus estados, permitiendo mantener asociados
+los resultados con el procesamiento que les dio origen.
+La persistencia se realiza mediante los mecanismos de
+acceso a datos implementados en el entorno Python.
+
+Además de las detecciones, la implementación contempla
+la actualización del estado de la ejecución al finalizar
+el procesamiento. Cuando el análisis concluye correctamente,
+los resultados almacenados quedan disponibles para su
+consulta posterior. En caso de producirse un error, la
+información correspondiente se registra mediante los
+mecanismos de seguimiento de ejecuciones, diferenciando
+los trabajos finalizados de aquellos que no pudieron
+completarse satisfactoriamente.
+
+La consulta de resultados se realiza a través de los
+servicios HTTP expuestos por la API de inteligencia
+artificial. Estos servicios recuperan la información
+persistida y permiten obtener los datos asociados a una
+ejecución, incluyendo su estado y las detecciones
+disponibles. La recuperación de esta información no
+requiere volver a cargar el modelo ni repetir los
+procedimientos de extracción de características e
+inferencia.
+
+El \textit{backend} clínico utiliza estos servicios para acceder
+a los resultados del análisis y ponerlos a disposición
+de la interfaz web. De esta manera, el especialista
+puede consultar las detecciones obtenidas y relacionarlas
+con los intervalos correspondientes del registro EEG
+mediante las herramientas de visualización implementadas
+en EpilexIA.
+
+La persistencia de los resultados de inteligencia
+artificial se mantiene diferenciada del almacenamiento
+de los informes médicos y de las anomalías registradas
+manualmente por los profesionales. Esta separación
+permite conservar el origen de las detecciones automáticas
+y evita confundirlas con las observaciones clínicas
+incorporadas durante la evaluación del estudio.
+
+En conjunto, estos mecanismos permiten conservar los
+resultados del procesamiento automatizado y facilitar
+su consulta desde los componentes clínicos del sistema.
+La asociación entre ejecuciones, detecciones e intervalos
+temporales proporciona la información necesaria para
+integrar los resultados de inteligencia artificial
+con la visualización y el análisis de las señales EEG.
+
+\subsection{Generación de espectrogramas DSA}
+
+La implementación de EpilexIA incorpora la generación de
+espectrogramas DSA como
+una herramienta complementaria para la visualización y el
+análisis de las señales electroencefalográficas. Esta
+funcionalidad permite representar la evolución temporal
+del contenido frecuencial de un registro EEG, facilitando
+la identificación visual de variaciones en su actividad
+espectral.
+
+La generación de espectrogramas se encuentra implementada
+en el proyecto \texttt{epilex-ia-api}, mediante un servicio
+de procesamiento espectral independiente del motor de
+clasificación de crisis. A diferencia de las ejecuciones
+de inferencia, este procedimiento se realiza bajo demanda,
+sin utilizar la cola persistente de trabajos ni el
+componente \texttt{epilex-ia-motor}.
+
+La solicitud se origina en la interfaz web y se transmite
+al \textit{backend} clínico mediante un servicio REST asociado al
+estudio EEG. El \textit{backend} comprueba la existencia del estudio,
+verifica que disponga de un archivo EDF y construye la
+solicitud correspondiente a la API de inteligencia
+artificial. Esta última recibe los parámetros de selección
+de canales, referencia y límites temporales, y ejecuta
+el procesamiento necesario para generar la representación
+espectral.
+
+Para acceder a las señales, el servicio localiza el archivo
+EDF en los directorios configurados y lo abre mediante
+la biblioteca MNE, utilizando la función
+\texttt{mne.io.read\_raw\_edf()}. La lectura se realiza
+con carga diferida, lo que permite recuperar las muestras
+correspondientes al intervalo solicitado sin necesidad
+de precargar el registro completo. Los valores obtenidos
+se convierten de voltios a microvoltios para su
+procesamiento posterior.
+
+La implementación permite seleccionar electrodos
+individuales o conjuntos de canales. Asimismo, contempla
+dos modalidades de referencia: conservar la referencia
+original del registro o aplicar una referencia basada
+en los electrodos auriculares A1 y A2. En esta última
+modalidad, las señales se obtienen mediante diferencias
+respecto del electrodo auricular correspondiente o del
+promedio de ambos, según la ubicación del canal. Cuando
+no se dispone de los dos electrodos necesarios, el
+procedimiento utiliza la referencia original del registro.
+
+Antes del cálculo espectral, las señales seleccionadas
+se someten a un procedimiento de filtrado. Este comprende
+un filtro Butterworth pasabanda de cuarto orden, con
+frecuencias de corte de 0,5 y 30 Hz, aplicado en ambas
+direcciones mediante \texttt{filtfilt()}. Adicionalmente,
+se contempla un filtro de rechazo de banda de 50 Hz,
+siempre que la frecuencia de muestreo permita su
+aplicación. El procesamiento utiliza la frecuencia
+de muestreo original del archivo EDF, sin realizar
+un remuestreo a una frecuencia fija.
+
+Para calcular el espectrograma se utiliza la función
+\mbox{\texttt{scipy.signal.spectrogram()}}.
+El procesamiento emplea ventanas de Hann de dos segundos,
+con un solapamiento del 90\,\%.
+
+Los parámetros utilizados son
+\texttt{scaling="spectrum"} y
+\texttt{mode="magnitude"}.
+Esta configuración produce magnitudes espectrales,
+en lugar de una estimación de densidad espectral
+de potencia mediante el método de Welch.
+
+La representación obtenida comprende aproximadamente
+el intervalo de frecuencias entre 0,5 y 20 Hz. Cada
+ventana de análisis produce valores espectrales
+asociados a un instante temporal, conformando una
+matriz bidimensional organizada por frecuencia y
+tiempo. Esta estructura constituye la información
+utilizada posteriormente para la representación
+gráfica del espectrograma.
+
+La implementación también incorpora mecanismos de
+evaluación de calidad de las señales. Para ello,
+se examinan épocas de un segundo y se identifican
+condiciones de señal plana cuando la desviación
+estándar es inferior a 0,5~$\mu$V, así como
+posibles artefactos cuando la amplitud absoluta
+supera los 1000~$\mu$V. Estos criterios
+permiten distinguir los canales considerados
+válidos durante la combinación de los resultados
+espectrales.
+
+Cuando se seleccionan varios canales, el servicio
+calcula un promedio de sus magnitudes espectrales
+para cada instante, utilizando preferentemente
+aquellos que cumplen los criterios de calidad.
+Si no existen canales válidos en un intervalo,
+el procedimiento conserva el promedio de los
+espectros disponibles y registra la condición
+de calidad correspondiente.
+
+Para limitar el volumen de información transferida,
+la matriz espectral puede someterse a una reducción
+temporal mediante el cálculo de medianas. Este
+procedimiento disminuye la cantidad de columnas
+cuando supera el límite configurado, conservando
+una representación resumida de la evolución
+espectral del registro.
+
+El resultado se devuelve mediante una respuesta
+JSON que contiene la matriz espectral, los valores
+de tiempo y frecuencia, los canales utilizados,
+la referencia aplicada y los indicadores de calidad.
+También se incluyen parámetros destinados a
+controlar la escala visual de la representación.
+
+En la interfaz web, los datos recibidos se procesan
+y representan mediante un elemento
+\texttt{Canvas}. El componente de visualización
+normaliza las magnitudes espectrales, aplica una
+transformación gamma y asigna colores mediante
+una escala cromática. De esta manera, las
+variaciones de magnitud se representan visualmente
+a lo largo de los ejes temporal y frecuencial.
+
+El visualizador permite seleccionar conjuntos de
+electrodos, modificar la referencia, ajustar la
+escala de amplitud y consultar el registro completo
+o intervalos temporales de 15, 30 y 60 segundos.
+Asimismo, el espectrograma mantiene una relación
+con la posición temporal del visualizador EEG,
+permitiendo identificar el intervalo observado
+y navegar hacia distintos momentos del registro.
+
+La generación de espectrogramas no produce registros
+persistentes en PostgreSQL ni archivos derivados
+almacenados permanentemente. En su lugar, la API
+mantiene una caché temporal en memoria para
+reutilizar resultados de solicitudes equivalentes.
+El \textit{frontend} también incorpora un mecanismo de
+caché local para evitar consultas repetidas
+durante la interacción con el visualizador.
+
+En conjunto, esta implementación proporciona una
+herramienta de exploración espectral integrada
+al análisis de los estudios EEG. Su funcionamiento
+se mantiene independiente de la clasificación
+automática de crisis, permitiendo complementar
+la observación de las señales con información
+sobre su comportamiento frecuencial, sin
+confundir esta representación con las
+detecciones generadas por el modelo de
+inteligencia artificial.
+
+La Figura~\ref{fig:espectrograma_dsa} muestra la
+interfaz de visualización del espectrograma DSA
+implementada en EpilexIA. Se presentan los controles
+de selección de canales, referencia y período temporal,
+junto con la representación cromática de las magnitudes
+espectrales en función del tiempo y la frecuencia.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter5/chapter5Figs/espectrograma_dsa.png}
+    \caption{Visualización del espectrograma DSA
+    implementado en EpilexIA.}
+    \label{fig:espectrograma_dsa}
+\end{figure}
+
+
+\subsection[Pruebas automatizadas y limitaciones de la implementación]{Pruebas automatizadas y limitaciones de la \\implementación}
+
+La implementación de los componentes de inteligencia artificial de
+EpilexIA incorpora pruebas automatizadas orientadas a verificar
+determinadas operaciones de los servicios de procesamiento y del motor
+de clasificación. Estas pruebas permiten comprobar comportamientos
+específicos del código, especialmente aquellos relacionados con la
+validación de parámetros, el tratamiento de señales y la selección
+de resultados. No obstante, su alcance debe distinguirse de una
+validación integral del procesamiento electroencefalográfico y del
+desempeño clínico del modelo.
+
+Los proyectos \texttt{epilex-ia-api} y \texttt{epilex-ia-motor} cuentan con nueve archivos de pruebas automatizadas, que reúnen 64 casos.
+Ambos utilizan el módulo \texttt{unittest} de Python y sus mecanismos de simulación de dependencias.
+Las pruebas son unitarias y verifican el código de integración, no el desempeño del modelo.
+
+El Cuadro~\ref{tab:pruebas_componentes_ia} resume las pruebas por grupo y el resultado de su ejecución.
+Se ejecutaron los 64 casos y todos finalizaron satisfactoriamente.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Pruebas automatizadas de los componentes de inteligencia artificial y resultado de su ejecución.}
+    \label{tab:pruebas_componentes_ia}
+    \small
+    \begin{tabular}{|
+        >{\raggedright\arraybackslash}p{0.15\textwidth}|
+        >{\raggedright\arraybackslash}p{0.19\textwidth}|
+        >{\raggedright\arraybackslash}p{0.29\textwidth}|
+        >{\centering\arraybackslash}p{0.07\textwidth}|
+        >{\centering\arraybackslash}p{0.14\textwidth}|}
+        \hline
+        \textbf{Componente} &
+        \textbf{Grupo de pruebas} &
+        \textbf{Qué verifica} &
+        \textbf{Casos} &
+        \textbf{Aprobados} \\
+        \hline
+        API &
+        Modelo activo y ejecución &
+        Resolución del modelo configurado, validación de sus parámetros y registro del umbral en cada ejecución. &
+        21 & 21 \\
+        \hline
+        API &
+        Contrato de anomalías &
+        Formato de los resultados que consume la plataforma web. &
+        1 & 1 \\
+        \hline
+        API &
+        Regla de ventanas consecutivas &
+        Que una ventana aislada no se señale y que una secuencia de ventanas sí. &
+        3 & 3 \\
+        \hline
+        API &
+        Inclusión de resultados en informes &
+        Ventanas confirmadas y anotaciones manuales asociadas a los informes. &
+        8 & 8 \\
+        \hline
+        API &
+        Espectrogramas &
+        Identificación de canales, tratamiento de señales planas, cálculo por partes y reducción temporal. &
+        22 & 22 \\
+        \hline
+        Motor &
+        Canales constantes &
+        Que una señal constante no interrumpa el procesamiento. &
+        4 & 4 \\
+        \hline
+        Motor &
+        Regla de ventanas consecutivas &
+        La misma regla, en el motor. &
+        3 & 3 \\
+        \hline
+        Motor &
+        Selección de resultados &
+        Que solo se registren las ventanas que cumplen el umbral. &
+        2 & 2 \\
+        \hline
+        \textbf{Total} &
+        &
+        &
+        \textbf{64} &
+        \textbf{64} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+No se cuenta con una configuración para medir la cobertura de código, por lo que no se informa un porcentaje de cobertura.
+
+En cuanto al alcance de las verificaciones, las pruebas
+existentes no recorren de manera integral el procesamiento
+de un estudio EEG, desde la lectura del archivo EDF hasta
+la carga del modelo, la clasificación de las ventanas
+temporales y el almacenamiento de las detecciones en una
+instancia real de PostgreSQL. Tampoco se cuenta con
+pruebas automatizadas de concurrencia entre múltiples
+instancias del motor, cancelación de trabajos, control de
+tiempos máximos de ejecución o recuperación ante
+interrupciones.
+
+Respecto del procesamiento, el motor requiere que el archivo
+EDF contenga los canales necesarios para construir las
+derivaciones del montaje esperado por el modelo. Cuando
+algunas derivaciones no pueden construirse, el procedimiento
+las completa para mantener la estructura requerida, y la
+ejecución se interrumpe si no es posible construir ninguna.
+La compatibilidad entre el paquete del modelo y el
+procedimiento de análisis se verifica al inicio de cada
+ejecución.
+
+El procesamiento de registros extensos presenta
+igualmente consideraciones relacionadas con el consumo
+de memoria. Si bien la lectura de determinadas señales
+se organiza por bloques, los datos transformados pueden
+acumularse y concatenarse para las etapas posteriores.
+No se cuenta con pruebas de rendimiento que permitan
+establecer límites de memoria o tiempos máximos de
+procesamiento bajo diferentes tamaños de registros.
+
+En el caso de los espectrogramas DSA, las pruebas
+numéricas verifican operaciones específicas del cálculo,
+pero no abarcan el recorrido completo de una solicitud
+HTTP con lectura de un archivo EDF real. Asimismo,
+su generación se realiza bajo demanda y los resultados
+se mantienen únicamente en mecanismos temporales de
+caché, sin persistencia permanente. Esta modalidad
+requiere repetir el cálculo cuando los resultados
+almacenados temporalmente dejan de estar disponibles.
+
+En conjunto, las pruebas automatizadas identificadas
+constituyen mecanismos de verificación para operaciones
+concretas de los componentes de inteligencia artificial.
+No obstante, las limitaciones observadas y la ausencia
+de pruebas integrales evidencian la necesidad de ampliar
+las verificaciones sobre la compatibilidad del modelo,
+la preparación de señales, la concurrencia y el
+comportamiento del sistema ante registros extensos.
+
+Finalmente, debe señalarse que las pruebas de \textit{software}
+descritas no constituyen una evaluación del desempeño
+clínico del clasificador. La determinación de métricas
+como sensibilidad, especificidad o precisión requiere
+procedimientos de validación independientes, con
+conjuntos de datos y criterios de evaluación apropiados.
+
+
+\section{Despliegue e integración de los componentes}
+
+El despliegue de EpilexIA comprende la configuración y puesta en
+funcionamiento de los componentes que conforman el sistema, así
+como el establecimiento de los mecanismos necesarios para su
+comunicación y acceso a los recursos compartidos. La implementación
+se organiza en proyectos independientes que incluyen la interfaz
+web, el \textit{backend} clínico, la base de datos clínica, la API de
+inteligencia artificial y el motor de procesamiento.
+
+Para facilitar la construcción y ejecución de estos componentes,
+se utilizan contenedores Docker y archivos de configuración
+Docker Compose. Esta organización permite definir las dependencias
+de ejecución, los puertos de comunicación, las variables de
+entorno y los recursos de almacenamiento necesarios para cada
+servicio.
+
+La integración se realiza mediante una red Docker compartida,
+servicios HTTP y mecanismos de persistencia. Asimismo, se
+emplean volúmenes para conservar la información de las bases
+de datos y permitir el acceso a los archivos electroencefalográficos
+y a los modelos de clasificación.
+
+En los siguientes apartados se describe la organización del
+entorno de despliegue, la configuración de los contenedores,
+las redes y los volúmenes, así como los mecanismos de
+comunicación entre los componentes y las principales
+consideraciones operativas de la implementación.
+
+\subsection{Organización del entorno de despliegue}
+
+La organización del entorno de despliegue de EpilexIA se basa
+en la separación de sus componentes funcionales en cinco
+proyectos. Cada uno dispone de sus propios archivos de
+configuración y mecanismos de ejecución, lo que permite
+administrar de manera diferenciada la interfaz web, los
+servicios clínicos, la persistencia de datos y el procesamiento
+de inteligencia artificial.
+
+El proyecto de la interfaz web, denominado
+\texttt{epilexIa-web-front-end}, utiliza React y TypeScript.
+Durante el desarrollo, la aplicación se ejecuta mediante Vite,
+mientras que su distribución contenedorizada comprende una
+etapa de compilación y una etapa de publicación de los
+archivos estáticos mediante Nginx. Este servidor también
+actúa como intermediario para las solicitudes dirigidas
+al \textit{backend} clínico.
+
+El proyecto \texttt{epilexIa-back-end} implementa los
+servicios clínicos mediante Java 21 y Spring Boot. La
+aplicación se empaqueta como un archivo WAR y se despliega
+sobre el servidor de aplicaciones WildFly 39. Su entorno
+de ejecución incorpora las herramientas necesarias para
+el procesamiento de videos y dispone de configuraciones
+para conectarse con la base de datos clínica y con la
+API de inteligencia artificial.
+
+La persistencia de la información clínica se encuentra
+organizada en el proyecto \texttt{epilexIa-database},
+que utiliza PostgreSQL 17. Su configuración contempla
+un contenedor de base de datos, almacenamiento persistente
+y \textit{scripts} SQL destinados a la inicialización del esquema
+en instalaciones nuevas.
+
+Por su parte, el proyecto \texttt{epilex-ia-api} implementa
+los servicios de inteligencia artificial mediante FastAPI,
+ejecutado con Uvicorn. Este componente utiliza una instancia
+independiente de PostgreSQL 16 para administrar las ejecuciones,
+sus estados y los resultados del procesamiento. También
+incorpora los mecanismos necesarios para gestionar las
+migraciones del esquema mediante Alembic.
+
+El proyecto \texttt{epilex-ia-motor} contiene el motor de
+procesamiento de inteligencia artificial, implementado
+en Python. A diferencia de los servicios web, este componente
+se ejecuta como un proceso de trabajo independiente, sin
+exponer una interfaz HTTP. Este proceso consulta la base de datos de inteligencia artificial para
+recuperar los trabajos pendientes, ejecutar el análisis
+de las señales EEG y almacenar los resultados obtenidos.
+
+Cada proyecto dispone de una configuración Docker Compose
+independiente. La comunicación entre los servicios se
+establece mediante una red Docker externa compartida,
+denominada \texttt{epilexia-net}, y mediante los mecanismos
+de conexión definidos para cada componente. Esta
+organización requiere que determinados recursos, como
+la red y los volúmenes compartidos, estén disponibles
+antes de iniciar los servicios que dependen de ellos.
+
+Además de las configuraciones individuales, existe una configuración conjunta que reúne todos los servicios y que se utiliza en el despliegue en la nube descrito en la subsección siguiente.
+
+\subsection{Entorno de despliegue en la nube}
+\label{subsec:despliegue-nube}
+
+EpilexIA se encuentra desplegado en infraestructura en la nube provista por la empresa BigQ, socio del sector privado del proyecto.
+Sobre este entorno se realizaron las pruebas documentadas en el Anexo~\ref{pruebas_evaluacion} y las sesiones de validación con la especialista del IPS, quien accede al sistema por internet desde el hospital.
+
+El despliegue reúne en un servidor los componentes descritos en la subsección anterior, ejecutados como contenedores mediante una configuración conjunta de Docker Compose.
+Un servidor Nginx actúa como punto único de entrada: publica la aplicación web y encamina las solicitudes hacia el \textit{backend} clínico.
+Las bases de datos, la API de inteligencia artificial y el motor de procesamiento no se exponen a internet y se comunican únicamente a través de una red interna.
+Los archivos EEG y los modelos entrenados se almacenan en volúmenes compartidos entre los servicios que los requieren.
+
+El acceso de los usuarios se realiza mediante HTTPS, bajo un dominio provisto por la empresa, cuya infraestructura incorpora además mecanismos de protección perimetral.
+De este modo se atiende el requerimiento RNF-SEG-003.
+La administración de estos elementos corresponde al proveedor de infraestructura y no forma parte del alcance de este trabajo.
+
+Este entorno constituye la base operativa del sistema durante el proceso de transferencia al IPS, que prevé su despliegue en servidores propios de la institución.
+
+\subsection{Contenedorización y configuración de servicios}
+
+La contenedorización de los componentes de EpilexIA se implementa
+mediante Docker, utilizando archivos \texttt{Dockerfile} para definir los
+entornos de ejecución y configuraciones Docker Compose para
+administrar los servicios asociados a cada proyecto. Esta
+organización permite establecer las dependencias necesarias,
+los comandos de inicio, las variables de entorno y los recursos
+requeridos para el funcionamiento de las aplicaciones.
+
+En el \textit{frontend}, la construcción de la imagen utiliza un
+procedimiento de múltiples etapas. Inicialmente, se emplea
+un entorno Node.js para instalar las dependencias y generar
+los archivos estáticos de la aplicación mediante el proceso
+de compilación de Vite. Posteriormente, los archivos
+generados se incorporan a una imagen de Nginx, encargada
+de publicar la interfaz web y atender las solicitudes
+HTTP de los usuarios.
+
+La configuración de Nginx también contempla el
+encaminamiento de determinadas solicitudes hacia el
+\textit{backend} clínico. De esta manera, el servidor web
+permite distribuir los recursos estáticos del \textit{frontend}
+y actuar como intermediario para las operaciones que
+requieren acceder a los servicios REST del sistema.
+
+Para el \textit{backend} clínico, la construcción y ejecución
+se organizan alrededor de una aplicación Java empaquetada
+en formato WAR. El artefacto generado se despliega
+sobre una imagen de WildFly 39, que proporciona el
+entorno de ejecución de los servicios desarrollados
+con Spring Boot. La configuración del contenedor
+incorpora las dependencias necesarias para las
+operaciones de procesamiento y conversión de videos,
+así como los parámetros de conexión con los servicios
+externos utilizados por la aplicación.
+
+La base de datos clínica se ejecuta mediante un
+contenedor PostgreSQL 17. Su configuración Docker
+Compose establece los parámetros de inicialización
+de la instancia, la exposición del servicio y la
+asociación con los recursos de almacenamiento
+persistente. Asimismo, contempla la utilización
+de \textit{scripts} SQL para preparar las estructuras
+necesarias cuando se crea una instalación nueva.
+
+En el caso de la API de inteligencia artificial,
+la imagen de ejecución incorpora un entorno Python
+con las dependencias requeridas por FastAPI,
+SQLAlchemy y los procedimientos de procesamiento
+implementados en este componente. El servicio
+HTTP se inicia mediante Uvicorn y utiliza
+parámetros de configuración para establecer
+la conexión con su base de datos PostgreSQL
+y gestionar la cola de trabajos de inteligencia artificial.
+
+La configuración del proyecto de la API también
+contempla una instancia PostgreSQL 16 destinada
+a conservar la información de las ejecuciones
+y los resultados del análisis. La administración
+de los cambios del esquema se realiza mediante
+Alembic, manteniendo diferenciada esta base de
+datos de la utilizada por los servicios clínicos.
+
+Por su parte, el motor de inteligencia artificial
+dispone de un entorno contenedorizado basado en
+Python, con las bibliotecas necesarias para
+la lectura de registros EEG, la extracción de
+características y la aplicación del modelo de
+clasificación. El contenedor ejecuta un proceso de trabajo que
+consulta las solicitudes disponibles en PostgreSQL
+y desarrolla el procesamiento correspondiente,
+sin necesidad de publicar un servicio HTTP propio.
+
+Las configuraciones Docker Compose permiten
+establecer los servicios, las variables de entorno,
+las asociaciones de almacenamiento y las condiciones
+necesarias para su ejecución. Sin embargo, al
+encontrarse distribuidas entre proyectos independientes,
+la puesta en funcionamiento del sistema requiere
+considerar previamente la disponibilidad de los
+recursos compartidos y de los servicios de los
+que depende cada componente.
+
+La utilización de contenedores facilita la
+reproducción de los entornos de ejecución y
+permite mantener diferenciadas las dependencias
+del \textit{frontend}, el \textit{backend} clínico y los componentes
+de inteligencia artificial. No obstante, esta
+organización no elimina la necesidad de configurar
+correctamente las conexiones, las rutas de archivos
+y los recursos persistentes utilizados por el sistema.
+
+
+El Cuadro~\ref{tab:componentes-contenedorizados} resume los
+principales componentes de ejecución de EpilexIA, indicando
+las tecnologías utilizadas y las responsabilidades que
+cumplen dentro del entorno contenedorizado.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Componentes contenedorizados del sistema EpilexIA.}
+    \label{tab:componentes-contenedorizados}
+    \small
+    \begin{tabularx}{\textwidth}{|
+        >{\raggedright\arraybackslash}p{0.27\textwidth}|
+        >{\raggedright\arraybackslash}p{0.27\textwidth}|
+        >{\raggedright\arraybackslash}X|}
+        \hline
+        \textbf{Componente} &
+        \textbf{Entorno de ejecución} &
+        \textbf{Responsabilidad principal} \\
+        \hline
+
+        \textit{Frontend} &
+        Node.js (compilación) y Nginx (ejecución) &
+        Compilación y publicación de la interfaz web. \\
+        \hline
+
+        \textit{backend} clínico &
+        Java 21 y WildFly 39 &
+        Ejecución de los servicios clínicos y las operaciones de negocio. \\
+        \hline
+
+        Base de datos clínica &
+        PostgreSQL 17 &
+        Almacenamiento persistente de la información clínica. \\
+        \hline
+
+        API de inteligencia artificial &
+        Python, FastAPI y Uvicorn &
+        Recepción de solicitudes y administración de ejecuciones y resultados. \\
+        \hline
+
+        Base de datos de inteligencia artificial &
+        PostgreSQL 16 &
+        Persistencia de ejecuciones, cola de trabajos y resultados del análisis. \\
+        \hline
+
+        Motor de inteligencia artificial &
+        Python &
+        Procesamiento de señales EEG y ejecución del modelo de clasificación. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+
+\subsection{Configuración de redes, puertos y volúmenes}
+
+La integración de los componentes contenedorizados de EpilexIA
+requiere configurar los mecanismos de comunicación entre
+servicios y los recursos de almacenamiento utilizados durante
+su ejecución. Para ello, las configuraciones Docker Compose
+contemplan redes, volúmenes y variables de entorno que permiten
+establecer las conexiones necesarias y mantener disponibles
+los datos y archivos utilizados por el sistema.
+
+La comunicación entre los contenedores se organiza mediante
+una red Docker externa compartida, denominada
+\texttt{epilexia-net}. Esta red permite que los servicios
+pertenecientes a distintos proyectos puedan comunicarse
+utilizando los nombres y direcciones definidos en sus
+respectivas configuraciones. Al tratarse de un recurso
+externo, su disponibilidad debe garantizarse antes de
+iniciar los contenedores que dependen de ella.
+
+La utilización de una red compartida permite establecer
+la comunicación interna entre el \textit{backend} clínico, los
+servicios de persistencia y la API de inteligencia
+artificial. De esta manera, las operaciones que requieren
+acceder a otros componentes pueden realizarse mediante
+las conexiones configuradas en el entorno de ejecución,
+sin depender exclusivamente de los puertos publicados
+hacia el equipo anfitrión.
+
+Por otra parte, las configuraciones contemplan la
+publicación de determinados puertos para permitir
+el acceso a los servicios desde el exterior de los
+contenedores. Estos mecanismos se utilizan para
+atender las solicitudes HTTP dirigidas a la interfaz
+web y a los servicios que requieren comunicación
+externa. La asignación de puertos depende de la
+configuración particular de cada proyecto y del
+entorno donde se realiza el despliegue.
+
+
+En relación con la persistencia, las instancias
+PostgreSQL utilizadas por EpilexIA disponen de
+recursos de almacenamiento asociados a sus
+respectivos contenedores. Estos recursos permiten
+conservar los archivos de datos de las bases clínica
+y de inteligencia artificial cuando los contenedores
+se detienen o se recrean, siempre que se mantengan
+los volúmenes o directorios persistentes
+correspondientes.
+
+
+La separación entre ambas instancias de PostgreSQL
+también se mantiene en el entorno contenedorizado.
+La base de datos clínica conserva la información
+administrada por el \textit{backend}, mientras que la base
+de datos de inteligencia artificial almacena las
+ejecuciones, los estados, la cola persistente de
+trabajos y los resultados del procesamiento.
+Cada componente utiliza los parámetros de conexión
+correspondientes a su propia instancia.
+
+Además de las bases de datos, el sistema requiere
+acceso a los archivos asociados a los estudios EEG.
+Estos archivos se conservan fuera de las tablas
+relacionales y se ponen a disposición de los
+componentes que necesitan utilizarlos mediante
+rutas y recursos de almacenamiento configurados
+en el entorno. Esta organización permite mantener
+separados los archivos de señales de la información
+estructurada almacenada en PostgreSQL.
+
+
+En particular, el \textit{backend} clínico administra las operaciones relacionadas con la recepción y el almacenamiento de los archivos de los estudios, mientras que los componentes de inteligencia artificial requieren acceder a los archivos EEG para ejecutar los procedimientos de análisis. Por este motivo, las rutas utilizadas por los distintos servicios deben corresponder con las ubicaciones de almacenamiento disponibles en sus respectivos entornos de ejecución.
+
+
+El motor de inteligencia artificial también
+necesita acceder al archivo del modelo de
+clasificación previamente entrenado. La ubicación
+de este recurso se establece mediante los
+parámetros de configuración del entorno,
+permitiendo que el proceso de inferencia
+localice el archivo serializado sin incorporarlo
+a la información almacenada en las bases de datos.
+
+La configuración de las conexiones y rutas
+se apoya en variables de entorno y parámetros
+definidos para cada servicio. Entre ellos se
+encuentran las direcciones de los componentes,
+las credenciales de acceso a las bases de datos
+y las ubicaciones de los recursos necesarios
+para el procesamiento. Esta organización permite
+diferenciar los parámetros propios del despliegue
+de la lógica implementada en las aplicaciones.
+
+No obstante, la distribución del sistema entre
+varios proyectos implica que la correspondencia
+entre nombres de servicios, redes, puertos y
+rutas de almacenamiento debe mantenerse de
+manera consistente. Una configuración incorrecta
+de estos recursos puede impedir la comunicación
+entre componentes o el acceso a los archivos
+requeridos para ejecutar determinadas operaciones.
+
+En conjunto, los mecanismos de red y almacenamiento
+permiten integrar los servicios clínicos y de
+inteligencia artificial, manteniendo diferenciadas
+sus responsabilidades y recursos de persistencia.
+Su correcta configuración constituye una condición
+necesaria para el funcionamiento coordinado del
+sistema en un entorno contenedorizado.
+
+
+\subsection{Integración y comunicación entre componentes}
+
+La integración de los componentes de EpilexIA se implementa
+mediante mecanismos de comunicación que permiten coordinar
+las operaciones de la interfaz web, el \textit{backend} clínico y los
+servicios de inteligencia artificial. Esta organización
+mantiene diferenciadas las responsabilidades de cada
+componente, estableciendo los intercambios de información
+necesarios para atender las funcionalidades del sistema.
+
+La interfaz web constituye el punto de interacción con
+los usuarios. Desde ella se realizan las solicitudes
+relacionadas con la gestión de estudios EEG, la consulta
+de información clínica, la visualización de señales y
+el acceso a los resultados del procesamiento automatizado.
+Estas operaciones se comunican con el \textit{backend} clínico
+mediante solicitudes HTTP, utilizando principalmente
+estructuras JSON para el intercambio de información.
+
+En el entorno contenedorizado, Nginx publica los recursos
+estáticos de la interfaz web y actúa como intermediario
+para determinadas solicitudes dirigidas al \textit{backend}.
+Esta configuración permite que el \textit{frontend} acceda a los
+servicios REST sin establecer directamente las conexiones
+internas utilizadas por los demás componentes del sistema.
+
+El \textit{backend} clínico, implementado con Spring Boot, concentra
+las operaciones relacionadas con la información de los
+pacientes, los estudios electroencefalográficos, los
+informes médicos y las funcionalidades administrativas.
+Para conservar y recuperar estos datos, utiliza los
+mecanismos de persistencia asociados a la base de datos
+clínica PostgreSQL 17.
+
+Las operaciones que requieren procesamiento de inteligencia
+artificial se coordinan mediante la comunicación entre el
+\textit{backend} clínico y la API desarrollada con FastAPI. El
+\textit{backend} envía las solicitudes de análisis y posteriormente
+consulta la información disponible sobre las ejecuciones,
+sus estados y los resultados obtenidos. Este intercambio
+se realiza mediante servicios HTTP, sin que el \textit{backend}
+clínico tenga que ejecutar directamente los procedimientos
+de extracción de características o clasificación de
+señales EEG.
+
+La API de inteligencia artificial utiliza su propia
+base de datos PostgreSQL 16 para administrar las
+ejecuciones y conservar los resultados del procesamiento.
+Las solicitudes registradas por la API quedan disponibles para el motor
+independiente de inteligencia artificial, que recupera
+los trabajos pendientes y ejecuta las operaciones
+correspondientes.
+
+La coordinación entre la API y el motor se realiza
+mediante los registros compartidos en la base de datos
+de inteligencia artificial. Por tanto, no se requiere una comunicación HTTP directa entre ambos
+componentes. El motor consulta los trabajos disponibles,
+actualiza la información de las ejecuciones y registra
+los resultados, mientras que la API proporciona los
+servicios necesarios para su posterior recuperación.
+
+La ejecución de los análisis también requiere el acceso
+a los archivos EEG almacenados por el sistema. El \textit{backend}
+clínico administra las operaciones de recepción y
+almacenamiento de estos archivos, mientras que los
+componentes de inteligencia artificial utilizan las
+rutas configuradas para localizar los registros que
+deben procesarse. De esta manera, la información
+estructurada y los archivos de señales se mantienen
+en recursos diferenciados, pero accesibles para las
+operaciones que los requieren.
+
+
+La arquitectura contempla la recuperación de los resultados persistidos mediante la API de inteligencia artificial, una vez finalizado el procesamiento. El \textit{backend} clínico utiliza estos servicios para poner la información disponible a disposición de la interfaz web, donde las detecciones pueden relacionarse con los intervalos temporales del estudio EEG. Este mecanismo permite consultar resultados previamente almacenados sin repetir las operaciones de procesamiento e inferencia. La verificación de esta consulta y de la ejecución completa del análisis se documenta en el Anexo~\ref{pruebas_evaluacion}.
+
+
+Por otra parte, la generación de espectrogramas DSA
+utiliza un mecanismo de integración diferente al de
+las ejecuciones de clasificación. En este caso, el
+\textit{backend} clínico solicita el procesamiento espectral
+a la API de inteligencia artificial, que calcula
+la representación requerida y devuelve los datos
+necesarios para su visualización. Esta operación
+se realiza bajo demanda, sin utilizar la cola
+persistente de trabajos del motor independiente.
+
+La integración también contempla mecanismos de
+autenticación diferenciados. El acceso de los usuarios
+a las funcionalidades clínicas se controla mediante
+los mecanismos de seguridad del \textit{backend}, mientras
+que la comunicación con los servicios protegidos
+de la API de inteligencia artificial utiliza las
+credenciales HTTP Basic configuradas para dicho
+componente. Esta separación permite aplicar los
+controles de acceso correspondientes a cada interfaz
+de comunicación.
+
+En conjunto, la integración implementada permite
+coordinar las operaciones clínicas, el acceso a los
+archivos EEG y los procedimientos de inteligencia
+artificial mediante interfaces y recursos definidos.
+La separación entre los componentes facilita mantener
+diferenciadas sus responsabilidades, mientras que
+los mecanismos de comunicación y persistencia
+proporcionan los medios necesarios para el
+funcionamiento conjunto de EpilexIA.
+
+
+\subsection[Consideraciones operativas y limitaciones del despliegue]{Consideraciones operativas y limitaciones del \\despliegue}
+
+La puesta en funcionamiento de EpilexIA requiere considerar
+determinadas condiciones operativas derivadas de la
+distribución del sistema en varios componentes independientes.
+Aunque la utilización de contenedores Docker permite definir
+los entornos de ejecución y sus dependencias, el funcionamiento
+conjunto de las aplicaciones depende de la disponibilidad
+de los servicios, las conexiones y los recursos compartidos
+configurados para cada proyecto.
+
+Una de las principales consideraciones corresponde a la
+preparación del entorno antes de iniciar los contenedores.
+Debido a que los proyectos utilizan configuraciones Docker
+Compose independientes, determinados recursos deben existir
+previamente para que los servicios puedan establecer sus
+conexiones. Entre ellos se encuentra la red externa compartida
+\texttt{epilexia-net}, utilizada para la comunicación entre
+los componentes del sistema.
+
+La inicialización de las bases de datos constituye otra
+condición relevante. El \textit{backend} clínico requiere disponer
+de la instancia PostgreSQL 17 y de las estructuras necesarias
+para administrar la información del sistema. Por su parte,
+la API de inteligencia artificial y el motor de procesamiento
+dependen de la instancia PostgreSQL 16, utilizada para
+conservar las ejecuciones, los resultados y la cola
+persistente de trabajos.
+
+La disponibilidad de estas instancias no depende únicamente
+del inicio de sus respectivos contenedores. También es
+necesario que los servicios de base de datos se encuentren
+preparados para aceptar conexiones y que sus esquemas
+dispongan de las estructuras requeridas por las aplicaciones.
+En este sentido, los \textit{scripts} de inicialización de la base
+de datos clínica y los mecanismos de migración utilizados
+por la API de inteligencia artificial forman parte de las
+consideraciones necesarias para preparar el entorno.
+
+El acceso a los recursos de almacenamiento también requiere
+una configuración consistente entre los componentes. Los
+archivos EEG utilizados durante el procesamiento deben
+encontrarse en ubicaciones accesibles para los servicios
+que los necesitan. Asimismo, el motor de inteligencia
+artificial debe disponer del archivo correspondiente al
+modelo de clasificación previamente entrenado.
+
+Estas condiciones implican que las rutas configuradas
+dentro de los contenedores deben corresponder con los
+recursos disponibles en el entorno de ejecución. Una configuración incorrecta de los directorios o de los volúmenes puede impedir la lectura de los archivos EEG, la localización del modelo o la conservación de la información persistente.
+
+
+Otro aspecto operativo corresponde a la administración
+de las variables de entorno. Las configuraciones de los
+distintos proyectos incluyen parámetros relacionados con
+las conexiones a las bases de datos, las direcciones de
+los servicios, las credenciales de acceso y las rutas
+de almacenamiento. La correspondencia entre estos valores
+resulta necesaria para que los componentes puedan
+intercambiar información y utilizar los recursos previstos.
+
+En particular, la comunicación entre el \textit{backend} clínico
+y la API de inteligencia artificial depende de que las
+direcciones y credenciales configuradas sean compatibles
+con los servicios disponibles. De manera similar, la API y el motor de inteligencia artificial
+deben compartir la configuración de acceso a la base de datos
+de inteligencia artificial.
+
+La organización mediante proyectos independientes también
+introduce consideraciones relacionadas con el orden de
+puesta en funcionamiento. Los componentes que dependen
+de servicios de persistencia, redes compartidas o recursos
+de almacenamiento requieren que dichos elementos estén
+disponibles antes de realizar las operaciones que los
+utilizan. Por consiguiente, el inicio de los contenedores
+no garantiza por sí solo que todas las funcionalidades
+del sistema se encuentren inmediatamente disponibles.
+
+En cuanto a las limitaciones del despliegue, el despliegue se encuentra distribuido entre
+configuraciones Docker Compose individuales y una configuración conjunta utilizada en la nube.
+No se dispone de un procedimiento único y completamente automatizado que abarque la preparación de todos los recursos, la inicialización de los servicios y la verificación integral de su funcionamiento.
+
+Esta organización requiere coordinar las configuraciones
+de los distintos proyectos y comprobar la disponibilidad
+de sus dependencias. Asimismo, los cambios realizados
+en nombres de servicios, variables de entorno, rutas
+de almacenamiento o parámetros de conexión pueden
+requerir ajustes en más de un componente para conservar
+la integración del sistema.
+
+Por otra parte, la utilización de una cola persistente
+permite desacoplar la recepción de solicitudes de
+inteligencia artificial de la ejecución de los trabajos.
+Sin embargo, la disponibilidad del procesamiento
+automatizado depende de que el motor se encuentre en
+funcionamiento y pueda acceder tanto a la base de datos
+de inteligencia artificial como a los archivos necesarios
+para realizar el análisis.
+
+La implementación dispone de mecanismos para registrar
+los estados de las ejecuciones e identificar determinadas
+situaciones de error. No obstante, estos mecanismos no
+equivalen por sí mismos a una solución completa de
+supervisión operativa, recuperación automática ante
+cualquier interrupción o garantía de disponibilidad
+continua de los servicios.
+
+Finalmente, no se evaluaron la escalabilidad, la tolerancia
+a fallos ni el comportamiento del sistema bajo cargas elevadas.
+La evaluación de estas propiedades requiere pruebas
+específicas y condiciones de ejecución definidas,
+que deben distinguirse de la descripción de los
+mecanismos de contenedorización implementados.
+
+En conjunto, las consideraciones identificadas muestran
+que el funcionamiento integrado de EpilexIA depende
+tanto de la correcta configuración de sus componentes
+como de la disponibilidad de las redes, los servicios
+de persistencia y los recursos de almacenamiento.
+La arquitectura contenedorizada proporciona una
+organización diferenciada de los entornos de ejecución,
+mientras que la coordinación de sus dependencias
+constituye un aspecto fundamental para la puesta
+en funcionamiento del sistema.
+
+La Figura~\ref{fig:arquitectura-despliegue}
+presenta una representación general de la integración
+de los componentes de EpilexIA en el entorno
+contenedorizado. Se distinguen las comunicaciones
+HTTP entre la interfaz web, el \textit{backend} clínico y
+la API de inteligencia artificial, así como las
+conexiones con las bases de datos y los recursos
+de almacenamiento necesarios para el procesamiento
+de los estudios EEG. Asimismo, se representa
+la interacción del motor de inteligencia artificial
+con la base de datos que administra la cola
+persistente de trabajos.
+
+% En el preámbulo, si todavía no están cargados:
+% \usepackage{tikz}
+% \usetikzlibrary{arrows.meta,positioning,fit,calc}
+
+\begin{figure}[p]
+\centering
+\begin{adjustbox}{max width=0.95\textwidth}
+\begin{tikzpicture}[
+    font=\small,
+    >=Latex,
+    componente/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        minimum width=4.4cm,
+        minimum height=1.1cm,
+        fill=blue!6
+    },
+    bd/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        minimum width=3.4cm,
+        minimum height=1cm,
+        fill=green!8
+    },
+    recurso/.style={
+        draw,
+        rounded corners=3pt,
+        align=center,
+        minimum width=3.4cm,
+        minimum height=0.9cm,
+        fill=orange!9
+    },
+    conexion/.style={-Latex, thick},
+    bidireccional/.style={Latex-Latex, thick}
+]
+
+\node[componente] (frontend)
+    {Interfaz web\\
+     \footnotesize React, TypeScript y Nginx};
+
+\node[componente, below=1.25cm of frontend] (backend)
+    {\textit{Backend} clínico\\
+     \footnotesize Spring Boot y WildFly 39};
+
+\node[componente, below=1.45cm of backend] (api)
+    {API de inteligencia artificial\\
+     \footnotesize FastAPI y Uvicorn};
+
+\node[componente, below=2.0cm of api] (motor)
+    {Motor de inteligencia artificial\\
+     \footnotesize Python};
+
+\node[bd, left=1.3cm of backend] (bdclinica)
+    {Base de datos clínica\\
+     \footnotesize PostgreSQL 17};
+
+\node[bd, right=1.3cm of api] (bdia)
+    {Base de datos de IA\\
+     \footnotesize PostgreSQL 16};
+
+\node[recurso, left=1.3cm of motor] (archivos)
+    {Archivos EEG\\
+     \footnotesize Almacenamiento compartido};
+
+\node[recurso, right=1.3cm of motor] (modelo)
+    {Modelo de clasificación\\
+     \footnotesize Archivo serializado};
+
+\draw[bidireccional] (frontend) --
+    node[right, font=\scriptsize]{HTTP/REST} (backend);
+
+\draw[bidireccional] (backend) --
+    node[right, font=\scriptsize]{HTTP/REST} (api);
+
+\draw[bidireccional] (backend) -- (bdclinica);
+
+\draw[bidireccional] (api) -- (bdia);
+
+\draw[bidireccional]
+    (motor.north) -- ++(0,0.55)
+    -| (bdia.south);
+
+\draw[conexion] (archivos) -- (motor);
+
+% El motor carga el modelo de clasificación serializado
+\draw[conexion] (modelo.west) -- (motor.east);
+
+\draw[conexion, dashed] (backend.south west) -|
+    (archivos.north);
+
+\node[
+    draw,
+    dashed,
+    rounded corners=5pt,
+    inner sep=12pt,
+    fit=(frontend)(backend)(api)(motor)
+        (bdclinica)(bdia)(archivos)(modelo),
+    label={[font=\small]above:
+        Red Docker compartida: \texttt{epilexia-net}}
+] {};
+
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Arquitectura de despliegue e integración
+de los componentes del sistema EpilexIA.}
+\label{fig:arquitectura-despliegue}
+\end{figure}

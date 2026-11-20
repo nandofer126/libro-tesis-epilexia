@@ -22,7 +22,7 @@ LATEXMK := latexmk -outdir=$(OUT) -interaction=nonstopmode -file-line-error -syn
 INCLUDE_DIRS := $(shell sed -n 's/^[[:space:]]*\\include{\([^}/]*\)\/.*/\1/p' Thesis.tex | sort -u)
 MKDIRS := mkdir -p $(addprefix $(OUT)/,$(INCLUDE_DIRS))
 
-.PHONY: pdf docker watch clean open overleaf
+.PHONY: pdf docker watch clean open overleaf anexos
 
 pdf:
 	$(MKDIRS)
@@ -53,3 +53,9 @@ overleaf:
 	@git diff --quiet HEAD -- . || echo "AVISO: hay cambios sin commitear; NO están incluidos (se exporta $(REF))."
 	@echo "Listo: $(OVERLEAF_DIR)/ ($$(find $(OVERLEAF_DIR) -type f | wc -l | tr -d ' ') archivos) desde $(REF) = $$(git rev-parse --short $(REF))"
 	@echo "Subir TODO su contenido a Overleaf y confirmar Overwrite (ver README, sección Overleaf)."
+
+# Compila los anexos (Anexos.tex) y los divide en un PDF por anexo dentro de Anexos/.
+# Requiere pypdf (pip install pypdf). Los PDF resultantes se versionan: el libro los enlaza.
+anexos:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=$(OUT) Anexos.tex
+	python3 Anexos/dividir_anexos.py

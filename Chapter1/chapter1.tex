@@ -14,7 +14,6 @@
 % - epilepsia y EEG
 La epilepsia es una enfermedad cerebral crónica no transmisible que afecta a personas de todas las edades y constituye uno de los trastornos neurológicos más frecuentes a nivel mundial \citep{WHO2024Epilepsy}. El electroencefalograma (EEG) es una herramienta de especial relevancia para apoyar el diagnóstico, la clasificación y el seguimiento de pacientes con epilepsia \citep{NoachtarRemi2009}. Mediante el registro de la actividad eléctrica cerebral, el EEG permite al especialista identificar patrones y eventos de interés para la evaluación neurológica. En la práctica clínica, estos estudios pueden generar registros extensos cuya revisión requiere tiempo, experiencia y herramientas adecuadas para facilitar su análisis.
 
-
 % - contexto del Hospital Central del IPS
 En el área de Neurología del Hospital Central del Instituto de Previsión Social (IPS), la adquisición y la revisión de las señales EEG se realizan mediante el \textit{software} Easy III, de Cadwell. Esta herramienta permite la captura y visualización de los registros electroencefalográficos. No obstante, a partir del relevamiento realizado en el contexto del proyecto se identificaron necesidades relacionadas con la integración del flujo de trabajo posterior a la adquisición, entre ellas el acceso mediante navegador web, la gestión centralizada de pacientes, estudios e informes médicos y una mayor trazabilidad de las actividades realizadas durante el proceso de análisis.
 
@@ -26,7 +25,6 @@ En el flujo de trabajo relevado, la especialista revisa los estudios en la misma
 En el marco del proyecto EpilexIA, el presente trabajo se centra en el desarrollo de una plataforma web concebida como \textit{software} de apoyo para el ámbito médico, orientada a complementar el flujo de trabajo existente en el área de Neurología del Hospital Central del IPS. La plataforma busca centralizar la gestión de pacientes, los estudios de EEG y los informes médicos, permitir la visualización interactiva de señales electroencefalográficas y presentar las anomalías identificadas por los servicios de inteligencia artificial integrados al proyecto. Asimismo, incorpora mecanismos de control de acceso basados en roles y funciones de auditoría destinadas a favorecer la trazabilidad de las operaciones realizadas.
 %CORREGIDO FIN:
 
-
 % - marco institucional del proyecto
 EpilexIA se desarrolla en el marco de un proyecto de investigación conjunta sustentado en una alianza entre tres sectores.
 La cooperación internacional, a través de la Agencia de Cooperación Internacional de Corea (KOICA), aporta el financiamiento y el acompañamiento técnico del proyecto.
@@ -34,13 +32,9 @@ La academia, representada por la Facultad Politécnica de la Universidad Naciona
 El sector privado, representado por la empresa BigQ, provee la infraestructura de cómputo para el entrenamiento de los modelos y el alojamiento del sistema en la nube.
 El destinatario de la solución es el IPS, institución pública cuyo servicio de Neurología define los requerimientos, aporta los estudios y valida el sistema con sus especialistas.
 
-Esta forma de colaboración permite orientar las capacidades de la cooperación internacional, la empresa y la universidad hacia un problema del sistema público de salud.
-La participación del sector privado facilita el acceso a una infraestructura que de otro modo no estaría disponible para la investigación académica y favorece que sus resultados alcancen un entorno de uso real.
-
 % - motivación para desarrollar EpilexIA
 La motivación principal del proyecto radica en aprovechar tecnologías web para proporcionar una plataforma integrada y accesible desde diferentes dispositivos, como computadoras, \textit{notebooks} y \textit{tablets}, que complemente
  las herramientas utilizadas en el hospital. EpilexIA no pretende sustituir a Easy III en la etapa de adquisición del EEG, sino incorporar una capa complementaria para las etapas posteriores de carga, visualización, análisis asistido, revisión clínica, elaboración de informes y seguimiento del proceso.
-
 
 El desarrollo de la propuesta consideró, además, las condiciones del
 entorno en el que se llevó a cabo el proyecto, en particular la
@@ -51,9 +45,6 @@ necesidades identificadas durante las actividades realizadas en el
 Hospital Central del IPS, y se validaron en sesiones periódicas con una
 médica especialista del servicio.
 
-
-
-
 \section{Revisión de la literatura}
 \label{sec:revision-literatura}
 
@@ -61,35 +52,13 @@ El electroencefalograma constituye una de las principales herramientas para el e
 
 El desarrollo de herramientas computacionales ha permitido complementar el análisis convencional de las señales EEG mediante técnicas de procesamiento de señales y aprendizaje automático. Estas técnicas pueden emplearse para identificar características presentes en los registros electroencefalográficos y apoyar la detección de períodos asociados a crisis epilépticas u otros eventos de interés. En este ámbito, \citet{Shoeb2009} investigó la aplicación de métodos de aprendizaje automático para detectar el inicio de crisis epilépticas a partir de registros de EEG, lo que constituye un antecedente relevante para el desarrollo de métodos automatizados aplicados a este tipo de señales.
 
-La investigación en este campo también se ha beneficiado de la disponibilidad de conjuntos de datos de EEG utilizados para el desarrollo y la evaluación de métodos computacionales. Un ejemplo es la CHB-MIT Scalp EEG Database, publicada en PhysioNet, que contiene registros de pacientes pediátricos con crisis epilépticas y anotaciones asociadas a dichos eventos \citep{Guttag2010CHBMIT}. Estos recursos han favorecido el estudio de métodos orientados al procesamiento y a la detección automatizada de eventos en señales de EEG.
-
-Estos antecedentes evidencian la incorporación progresiva de herramientas computacionales como apoyo al procesamiento y al análisis de registros electroencefalográficos. Sin embargo, la identificación automatizada de eventos constituye solo una parte del proceso de análisis. Para su utilización en un entorno clínico, los resultados obtenidos deben presentarse de manera que el profesional pueda acceder al estudio, visualizar las señales, revisar la información generada por los métodos automatizados y utilizarla como elemento de apoyo durante la evaluación y la elaboración del informe médico.
-
-
-
-Esta evolución se relaciona también con el desarrollo de sistemas de
-\textit{software} destinados a cumplir funciones específicas dentro del ámbito
-médico. En este contexto adquiere relevancia el concepto de \textit{software}
-como dispositivo médico (\textit{Software as a Medical Device}, SaMD),
-definido por el Foro Internacional de Reguladores de Dispositivos
-Médicos (IMDRF) \citep{IMDRF2013SaMD}, así como las consideraciones
-asociadas al uso de herramientas informáticas que proporcionan
-información de apoyo con fines clínicos. Estos conceptos, junto con
-los fundamentos de la electroencefalografía, el procesamiento de
-señales y la inteligencia artificial aplicada al EEG, se desarrollan
-con mayor profundidad en el marco teórico y en el estado del arte
-presentados en el Capítulo~2.
-
-
 Dentro de este contexto, EpilexIA se plantea como una plataforma web que reúne la gestión de pacientes y estudios de EEG, la visualización de señales electroencefalográficas, la presentación de anomalías registradas a partir de un servicio de inteligencia artificial integrado y la elaboración de informes médicos. De esta manera, el proyecto no se limita al análisis automatizado de las señales, sino que busca incorporar sus resultados en un entorno que apoye el flujo de trabajo del profesional especialista.
-
 
 \section{Objetivos}
 \label{sec:objetivos}
 
 \subsection{Objetivo general}
 \label{subsec:objetivo-general}
-
 
 Desarrollar un sistema web de apoyo a la detección de crisis epilépticas
 mediante el análisis de señales electroencefalográficas (EEG) asistido
@@ -98,9 +67,6 @@ EEG e informes médicos, así como visualizar las anomalías identificadas
 por el componente de inteligencia artificial integrado, con el propósito
 de complementar el flujo de trabajo existente con Easy III en el
 área de Neurología del Hospital Central del Instituto de Previsión Social.
-
-
-
 
 \subsection{Objetivos específicos}
 \label{subsec:objetivos-especificos}
@@ -116,10 +82,8 @@ de complementar el flujo de trabajo existente con Easy III en el
 
     \item Construir un \textit{frontend} web adaptable (\textit{responsive}) con React y TypeScript, que incluya un visualizador interactivo de señales EEG, un módulo de gestión de anomalías provenientes del servicio de IA, un editor de informes médicos y un panel de auditoría, accesible desde computadoras, \textit{notebooks} y \textit{tablets}.
 
-
     \item Evaluar el sistema mediante pruebas funcionales, de usabilidad e integración con registros EEG reales del Hospital Central del IPS.
 \end{enumerate}
-
 
 \section{Problema y oportunidad}
 \label{sec:problema-oportunidad}
@@ -128,21 +92,6 @@ En el área de Neurología del Hospital Central del Instituto de Previsión Soci
 
 Una de las necesidades identificadas es el acceso a los registros electroencefalográficos desde distintos dispositivos. La dependencia de equipos con el \textit{software} instalado limita la
 posibilidad de consultar los estudios en un navegador web desde computadoras, \textit{notebooks} o \textit{tablets}, por lo que el acceso a la información queda condicionado a la disponibilidad de los equipos y herramientas utilizados en el flujo de trabajo existente.
-
-
-Asimismo, la información relacionada con pacientes, estudios EEG e informes médicos puede encontrarse distribuida entre las herramientas utilizadas en las diferentes etapas del proceso.
- Esta situación dificulta contar con un entorno unificado que reúna la información necesaria para la revisión del estudio y el seguimiento de las actividades realizadas al respecto.
-
-Otra necesidad se refiere a la trazabilidad de las operaciones y al control de acceso. El manejo de información asociada a pacientes, estudios e informes requiere mecanismos que permitan registrar las acciones efectuadas por los usuarios y establecer permisos de acuerdo con las responsabilidades de los distintos perfiles que intervienen en el proceso.
-
-A estas necesidades se suma la incorporación de herramientas computacionales
-que apoyen la revisión de registros EEG extensos. La identificación
-automatizada de posibles anomalías puede proporcionar información
-complementaria al especialista y facilitar la localización de segmentos de
-interés dentro del registro. Estos resultados, sin embargo, deben utilizarse
-como elementos de apoyo y permanecer sujetos a la revisión e interpretación
-del profesional especialista.
-
 
 Las necesidades identificadas representan una oportunidad para
 complementar el flujo de trabajo existente mediante una plataforma web
@@ -156,7 +105,6 @@ auditoría de las actividades realizadas. De esta manera, se plantea
 una solución unificada de apoyo al trabajo de los profesionales del
 área de Neurología.
 
-
 \section{Justificación}
 \label{sec:justificacion}
 
@@ -168,33 +116,6 @@ entorno diferentes actividades asociadas con la revisión de los
 estudios EEG y facilitar el acceso a la información necesaria
 durante el trabajo de los profesionales del área.
 
-
-Desde el punto de vista operativo, la centralización de pacientes, estudios
-EEG e informes médicos permite organizar y relacionar la información
-correspondiente a las distintas etapas del proceso. A ello se suman
-mecanismos de control de acceso y auditoría, mediante los cuales es posible
-establecer permisos de acuerdo con las responsabilidades de cada perfil de
-usuario y registrar las operaciones realizadas dentro del sistema. Estas
-características están orientadas a favorecer la trazabilidad de las
-actividades y el seguimiento de los estudios.
-
-El enfoque web permite además ampliar las posibilidades de acceso a las
-funcionalidades de la plataforma. Mediante tecnologías compatibles con
-navegadores modernos y una interfaz adaptable, EpilexIA puede utilizarse
-desde computadoras, \textit{notebooks} y \textit{tablets} sin requerir
-la instalación de la aplicación en cada dispositivo. Esta característica proporciona una alternativa para la consulta y revisión de la información asociada con los
-estudios EEG desde los dispositivos compatibles con el sistema.
-
-Otro elemento que fundamenta el proyecto es la integración de un servicio
-de inteligencia artificial para el análisis de señales EEG. Los resultados
-generados por este componente pueden presentarse dentro del sistema como
-información complementaria para apoyar la identificación y revisión de
-segmentos de interés. La incorporación de esta capacidad no pretende
-sustituir el criterio del especialista ni establecer de manera autónoma un
-diagnóstico clínico, sino proporcionar información de apoyo que pueda ser
-evaluada por el profesional junto con las señales EEG y los demás datos
-disponibles en el estudio.
-
 Desde una perspectiva tecnológica y académica, EpilexIA permite aplicar e
 integrar tecnologías de desarrollo web, gestión de bases de datos,
 procesamiento de señales e inteligencia artificial en un problema del ámbito
@@ -203,7 +124,6 @@ plataforma, sino también el relevamiento de requerimientos, el diseño
 de su arquitectura, la integración de sus diferentes componentes
 y la realización de pruebas funcionales del sistema. De esta manera, se busca desarrollar una solución tecnológica acorde con las necesidades identificadas en el área de Neurología del Hospital Central del IPS y generar conocimiento y experiencia aplicables al desarrollo de sistemas informáticos
 de apoyo al análisis de información clínica.
-
 
 \section{Solución propuesta}
 \label{sec:solucion-propuesta}
@@ -217,37 +137,6 @@ adquisición del EEG, proporcionando herramientas para la gestión de pacientes
 y estudios, la visualización de señales, la revisión de anomalías y la
 elaboración de informes médicos.
 
-La plataforma contempla la gestión de la información necesaria para asociar
-cada estudio EEG con el paciente correspondiente y mantener organizados los
-datos generados durante su procesamiento y revisión. Los archivos de señales
-pueden ser incorporados al sistema para su posterior visualización mediante
-un visor interactivo, desde el cual el profesional especialista puede explorar
-los diferentes canales del registro y utilizar herramientas destinadas a
-facilitar su análisis.
-
-
-EpilexIA incorpora además la integración con un servicio de inteligencia
-artificial destinado al procesamiento automatizado de señales EEG.
-La plataforma está diseñada para incorporar los resultados de este
-componente y presentarlos al profesional como información de apoyo
-para la identificación y revisión de segmentos de interés dentro
-del registro. Estos resultados no constituyen por sí mismos un
-diagnóstico clínico y su interpretación permanece bajo la
-responsabilidad del profesional especialista.
-
-
-Como parte del flujo de revisión, el sistema permite elaborar y gestionar
-informes médicos asociados con los estudios EEG. De esta manera, la visualización de las señales, la consulta de anomalías registradas en la plataforma y la elaboración del informe
-pueden realizarse dentro de un mismo entorno, manteniendo la relación entre la información correspondiente a cada estudio.
-
-
-La solución contempla asimismo mecanismos de autenticación, autorización y
-control de acceso basados en los perfiles definidos para los usuarios del
-sistema. Las operaciones relevantes son registradas mediante funcionalidades
-de auditoría, con el propósito de proporcionar trazabilidad sobre las acciones
-realizadas dentro de la plataforma y facilitar el seguimiento de las
-actividades relacionadas con los estudios.
-
 Desde el punto de vista tecnológico, EpilexIA se estructura como una
 aplicación web compuesta por una interfaz de usuario, servicios de \textit{backend},
 una base de datos relacional y componentes destinados a la integración y
@@ -257,16 +146,6 @@ del sistema y favorecer su mantenimiento y evolución. La arquitectura y las
 decisiones de diseño se presentan en el Capítulo~4, mientras que los aspectos
 relacionados con su implementación e integración se desarrollan en el
 Capítulo~5.
-
-En conjunto, la solución propuesta busca proporcionar un entorno integrado
-que complemente las herramientas existentes en el Hospital Central del IPS.
-EpilexIA no sustituye al sistema utilizado para la adquisición de las
-señales EEG, sino que complementa las etapas posteriores del flujo de
-trabajo mediante la organización de la información, la visualización
-de señales, el apoyo al análisis, la revisión clínica, la elaboración
-de informes y la trazabilidad de los estudios.
-
-
 
 \section{Alcance y delimitaciones}
 \label{sec:alcance}
@@ -280,22 +159,12 @@ señales EEG, su visualización interactiva, la presentación de resultados
 provenientes del procesamiento mediante inteligencia artificial y la
 elaboración de informes médicos asociados con los estudios.
 
-La plataforma contempla además mecanismos de autenticación y autorización
-para controlar el acceso a las diferentes funcionalidades según el perfil
-del usuario, así como el registro de operaciones mediante funciones de
-auditoría. El acceso se realiza mediante una interfaz web adaptable a
-diferentes tamaños de pantalla, con el propósito de permitir la utilización
-del sistema desde computadoras, \textit{notebooks} y \textit{tablets}
-compatibles con navegadores web modernos.
-
-
 El proyecto se delimita a las etapas posteriores a la adquisición de las
 señales electroencefalográficas. Por tanto, EpilexIA no controla los equipos
 utilizados para realizar el electroencefalograma ni sustituye al \textit{software}
 empleado para la adquisición original de los registros. Los archivos
 generados durante este proceso constituyen la información de entrada que
 posteriormente puede ser incorporada y procesada dentro de la plataforma.
-
 
 EpilexIA contempla la integración de un componente de inteligencia
 artificial destinado al procesamiento automatizado de señales EEG.
@@ -311,15 +180,6 @@ resultados obtenidos mediante inteligencia artificial constituyen
 información de apoyo y no representan por sí mismos un diagnóstico
 médico. La evaluación e interpretación clínica permanecen bajo la
 responsabilidad del profesional especialista.
-
-
-La gestión de pacientes incluida en el sistema se limita a la información
-necesaria para su identificación y para la asociación con los estudios EEG
-gestionados por la plataforma. En consecuencia, EpilexIA no pretende
-reemplazar los sistemas institucionales destinados a la administración
-integral de historias clínicas ni centralizar la totalidad de la información
-médica del paciente.
-
 
 Finalmente, las pruebas y verificaciones realizadas se circunscriben al contexto y a los requerimientos relevados para el área de Neurología del Hospital Central del IPS. Si bien la arquitectura y las tecnologías utilizadas permiten considerar futuras adaptaciones o ampliaciones, la utilización del sistema en otros entornos clínicos podría requerir nuevos relevamientos, ajustes funcionales
 y procesos de validación específicos.
@@ -343,7 +203,6 @@ funcionalidades en un mismo entorno podría contribuir además a facilitar
 determinadas etapas del proceso de revisión y elaboración de informes
 médicos, complementando el flujo de trabajo existente.
 
-
 La hipótesis considera el procesamiento mediante inteligencia artificial como
 un mecanismo de apoyo al análisis y no como un sustituto de la evaluación
 médica. En consecuencia, los posibles beneficios derivados del uso del
@@ -351,7 +210,6 @@ sistema se relacionan con la organización, accesibilidad, trazabilidad y
 asistencia durante el proceso de revisión, mientras que la interpretación de
 los registros EEG y las decisiones clínicas continúan siendo responsabilidad
 del profesional especialista.
-
 
 \section{Resultados esperados}
 \label{sec:resultados-esperados}
@@ -363,50 +221,6 @@ Neurología del Hospital Central del Instituto de Previsión Social. La
 solución deberá proporcionar un entorno accesible mediante navegador web
 y adaptable a los diferentes dispositivos contemplados dentro del alcance
 del proyecto.
-
-Se espera que el sistema permita gestionar la información necesaria de los
-pacientes y asociarla con sus respectivos estudios EEG e informes médicos,
-manteniendo organizados los datos generados durante las diferentes etapas
-del proceso. Asimismo, se espera disponer de mecanismos de autenticación,
-control de acceso y auditoría que permitan gestionar las responsabilidades
-de los usuarios y proporcionar trazabilidad sobre las operaciones realizadas
-en la plataforma.
-
-
-Otro resultado esperado corresponde a la disponibilidad de un visualizador
-interactivo de señales electroencefalográficas que proporcione al profesional
-especialista herramientas para explorar y revisar los registros EEG. Este
-visualizador deberá permitir la consulta de las anomalías identificadas
-mediante el componente de inteligencia artificial, de manera que puedan
-ser localizadas y examinadas por el especialista en conjunto con las
-señales EEG dentro del mismo entorno de trabajo.
-
-
-Se espera además que la plataforma permita elaborar y gestionar informes
-médicos asociados con los estudios EEG, integrando esta actividad con la
-visualización de las señales y la revisión de los resultados del análisis
-automatizado. Esta integración busca proporcionar continuidad entre las
-diferentes etapas posteriores a la adquisición del estudio y mantener
-relacionada la información utilizada durante su evaluación.
-
-Como parte de los resultados del proyecto, se prevé también disponer de la
-documentación técnica y de usuario necesaria para describir el funcionamiento
-del sistema, sus principales componentes y los procedimientos requeridos
-para su utilización. Esta documentación deberá servir de apoyo tanto para
-los usuarios de la plataforma como para las tareas posteriores de
-mantenimiento y evolución del sistema.
-
-
-Finalmente, se espera evaluar el funcionamiento de EpilexIA mediante
-pruebas funcionales, de integración y de usabilidad, considerando
-registros EEG y el contexto de utilización definido para el Hospital
-Central del IPS. Estas pruebas permitirán verificar el cumplimiento
-de los requerimientos funcionales establecidos y analizar los
-resultados obtenidos respecto de los objetivos planteados para el
-proyecto, sin que ello implique una validación de la eficacia
-diagnóstica del componente de inteligencia artificial.
-
-
 
 \section{Metodología general}
 \label{sec:metodologia-general}
@@ -421,40 +235,9 @@ las actividades de desarrollo y las instancias de verificación y
 validación se encuentra fundamentada en el enfoque de ingeniería de
 sistemas descrito por \citet{ForsbergMooz1991}.
 
-
-En el proyecto EpilexIA, la aplicación de esta metodología parte del
-relevamiento de requerimientos realizado con profesionales del área de
-Neurología del Hospital Central del Instituto de Previsión Social. 
-A partir de las necesidades identificadas se realizaron las actividades
-de análisis y diseño del sistema, seguidas por la implementación e
-integración de sus componentes. Posteriormente, se llevaron a cabo pruebas orientadas a verificar
-el comportamiento de las funcionalidades desarrolladas, su integración
-y su correspondencia con los requerimientos establecidos.
-
-
-
-La aplicación del Modelo V fue adaptada a las condiciones particulares del
-proyecto y a las posibilidades de interacción con los profesionales del
-Hospital Central del IPS. Las instancias de trabajo con los usuarios se utilizaron para relevar
-necesidades, presentar avances y obtener observaciones sobre las
-funcionalidades desarrolladas. La retroalimentación obtenida permitió
-realizar ajustes durante el desarrollo y mantener la correspondencia
-entre los requerimientos identificados, la solución implementada y
-las actividades de verificación realizadas.
-
-
-Esta adaptación tuvo en cuenta la disponibilidad de los profesionales
-del área de Neurología para participar en las actividades del proyecto.
-Por este motivo, las instancias de interacción se organizaron de
-acuerdo con sus posibilidades de participación, procurando aprovechar
-cada encuentro para revisar los requerimientos, evaluar los avances
-del sistema y recopilar observaciones que contribuyeran a su mejora.
-
-
 La descripción detallada del Modelo V, su adaptación al proyecto EpilexIA,
 las actividades realizadas y los mecanismos de verificación y validación
 empleados se presenta en el Capítulo~3.
-
 
 \section{Organización del trabajo}
 \label{sec:organizacion}
@@ -510,11 +293,14 @@ de evaluación realizadas, sus principales limitaciones y el grado
 de cumplimiento de los requerimientos establecidos, considerando
 los objetivos planteados para el proyecto.
 
-
-
 Finalmente, el Capítulo 7 presenta las conclusiones derivadas del
 desarrollo y la evaluación de EpilexIA, analiza el grado de
 cumplimiento de los objetivos y la evidencia obtenida en relación
 con la hipótesis planteada, identifica los principales aportes
 y limitaciones del proyecto y establece posibles líneas de
 trabajo futuro.
+
+\begin{nuevotexto}
+El detalle del diseño, de la implementación y de la ejecución de las pruebas se presenta en los Anexos A, B y C, respectivamente, que se listan al final del documento.
+\end{nuevotexto}
+

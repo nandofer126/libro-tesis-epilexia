@@ -146,6 +146,15 @@
 \renewcommand{\@tocrmarg}{3.4em}
 \makeatother
 
+% --- Modo revisión: con \revisiontrue, el texto nuevo o reescrito se muestra en azul.
+% La versión final se compila con \revisionfalse.
+\newif\ifrevision
+\revisionfalse
+\newenvironment{nuevotexto}{\ifrevision\color{blue}\fi}{}
+% Segunda tanda de revisión (verde).
+\newenvironment{nuevotextodos}{\ifrevision\color[rgb]{0,0.5,0}\fi}{}
+\newcommand{\marcanuevo}{\ifrevision\color{blue}\fi}
+
 \begin{document}
 \maketitle
 \setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
@@ -249,8 +258,35 @@
 
 \clearpage
 \lhead{\emph{Referencias}}
+\addtotoc{Referencias}
 \bibliographystyle{apacite}
 \bibliography{References/references}
+
+%% --------------- INICIO ANEXOS ---------------------------------------
+% Los anexos se compilan aparte (Anexos.tex) y se publican como PDF en el repositorio.
+% Si cambia la rama o la ubicación de los PDF, basta con actualizar \anexosbase.
+\newcommand{\anexosbase}{https://github.com/nandofer126/libro-tesis-epilexia/blob/update/libro-condensado-con-anexos/Anexos}
+\clearpage
+\lhead{\emph{Anexos}}
+\chapter*{Anexos}
+\addtotoc{Anexos}
+\label{chap:anexos}
+
+\begin{nuevotexto}
+Los anexos de este trabajo se publican en formato digital, en el mismo repositorio en el que se mantiene el presente documento.
+Contienen la versión extendida de los capítulos de análisis y diseño, de implementación y de pruebas, cuyo contenido se presenta aquí de forma resumida.
+
+\begin{description}
+    \item[Anexo A. Análisis de requerimientos y diseño.] Lista completa de los requerimientos funcionales y no funcionales, diagramas de secuencia, arquitectura, diseño de la base de datos, de los servicios, de la seguridad, de la auditoría y de la interfaz de usuario. \\
+    \url{\anexosbase/Anexo_A_Analisis_y_diseno.pdf}
+    \item[Anexo B. Implementación del sistema.] Detalle de la implementación de la base de datos, del \textit{backend}, del \textit{frontend}, de los componentes de inteligencia artificial y del despliegue, incluidas las pruebas automatizadas del \textit{frontend} y de los componentes de inteligencia artificial. \\
+    \url{\anexosbase/Anexo_B_Implementacion.pdf}
+    \item[Anexo C. Pruebas y evaluación.] Ejecución de cada prueba funcional (PF-01 a PF-15) y de integración (PI-01 a PI-17), con su procedimiento, el resultado observado y las evidencias correspondientes. \\
+    \url{\anexosbase/Anexo_C_Pruebas.pdf}
+\end{description}
+\end{nuevotexto}
+%% --------------- FIN ANEXOS ---------------------------------------
+
 \end{document}
 
 

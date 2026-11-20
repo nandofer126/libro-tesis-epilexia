@@ -119,3 +119,21 @@ Resumen rápido (detalle en [CONTRIBUTING.md](CONTRIBUTING.md)):
 <https://github.com/nandofer126/libro-tesis-epilexia>
 
 Repos relacionados del sistema EpilexIA (código fuente): `epilexIa-back-end`, `epilexIa-web-front-end`, `epilexIa-database`, `epilex-ia-api`, `epilex-ia-motor`.
+
+## Anexos
+
+El libro (`Thesis.tex`) presenta de forma resumida el análisis y diseño, la implementación y las pruebas.
+La versión extendida de esos capítulos se publica como anexos en PDF, dentro de la carpeta `Anexos/`:
+
+| Anexo | Contenido | Fuente | PDF |
+|---|---|---|---|
+| A | Análisis de requerimientos y diseño | `Anexos/anexoA_analisis_y_diseno.tex` | `Anexos/Anexo_A_Analisis_y_diseno.pdf` |
+| B | Implementación del sistema | `Anexos/anexoB_implementacion.tex` | `Anexos/Anexo_B_Implementacion.pdf` |
+| C | Pruebas y evaluación | `Anexos/anexoC_pruebas.tex` | `Anexos/Anexo_C_Pruebas.pdf` |
+
+- Los anexos se compilan aparte, con `Anexos.tex` (en la raíz). El libro no depende de ellos para compilar.
+- `make anexos` compila `Anexos.tex` y genera los tres PDF (requiere `pip install pypdf`).
+- Los PDF de los anexos **se versionan**, porque el libro los enlaza. Si se modifica un anexo, hay que regenerar su PDF y subirlo en el mismo commit.
+- La dirección base de los enlaces se define una sola vez en `Thesis.tex`, en el comando `\anexosbase`. Si los PDF cambian de rama o de carpeta, hay que actualizar ese valor.
+- El texto nuevo del libro condensado está dentro del entorno `nuevotexto`. Con `\revisiontrue` (en el preámbulo de `Thesis.tex`) se muestra en azul para su revisión; la versión final se compila con `\revisionfalse`.
+
